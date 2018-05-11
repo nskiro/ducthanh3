@@ -1,0 +1,37 @@
+{
+  "name": "ducthanh3",
+  "version": "1.0.0",
+  "scripts": {
+    "client": "cd client && yarn start",
+    "client-build": "cd client && serve -s build",
+    "server": "nodemon server.js",
+    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
+    "production": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client-build\""
+  },
+  "dependencies": {
+    "antd": "^3.5.0",
+    "body-parser": "^1.18.2",
+    "cookie-parser": "^1.4.3",
+    "cors": "^2.8.4",
+    "debug": "^2.6.9",
+    "directory-tree": "^2.1.0",
+    "express": "^4.16.3",
+    "express-fileupload": "^0.4.0",
+    "express-session": "^1.15.6",
+    "frameguard": "^3.0.0",
+    "http-errors": "^1.6.3",
+    "jade": "^1.11.0",
+    "jsonwebtoken": "^8.2.1",
+    "lodash": "^4.17.10",
+    "morgan": "^1.9.0",
+    "mysql": "^2.15.0",
+    "nodemon": "^1.17.3",
+    "xlsx": "^0.12.10",
+    "mongoose": "^5.0.0"
+  },
+  "devDependencies": {
+    "concurrently": "^3.5.1",
+    "react-app-rewire-less": "^2.1.1",
+    "react-app-rewired": "^1.5.2"
+  }
+}
