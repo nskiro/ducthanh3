@@ -4,6 +4,7 @@ import { Form, Select, message } from 'antd';
 import _ from 'lodash';
 
 import Aux from '../../../hoc';
+import cmConfig from '../../../CommonConfig';
 import axios from '../../../axiosInst';
 
 const Option = Select.Option;
@@ -22,7 +23,7 @@ class ViewReport extends Component {
     }
 
     componentDidMount(){
-        axios.get(`/api/production/listfolder/`)
+        axios.get(`/api/production/listfolder`)
         .then((res) => {
             if(res.data.length > 0){
                 message.success('Files found. Please select report file');
@@ -79,7 +80,7 @@ class ViewReport extends Component {
                     </Col>
                 </Row>
                 <Row className="show-grid">
-                    {this.state.selectedFile !== null ? <PdfViewer pdfUrl={`http://localhost:5000/${_.replace(this.state.selectedFile,'upload\\','')}`} /> : null }
+                    {this.state.selectedFile !== null ? <PdfViewer pdfUrl={`${cmConfig.baseURL + _.replace(this.state.selectedFile,'upload\\','')}`} /> : null }
                 </Row>
             </Aux>
         );

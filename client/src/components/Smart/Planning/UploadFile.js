@@ -4,6 +4,7 @@ import { Upload, message } from 'antd';
 import FontAwesome from 'react-fontawesome';
 
 import Aux from '../../../hoc';
+import cmConfig from '../../../CommonConfig';
 
 const Dragger = Upload.Dragger;
 
@@ -13,7 +14,7 @@ class UploadFile extends Component {
             name: 'planningFile',
             accept: '.xlsx',
             multiple: false,
-            action: 'http://localhost:5000/api/upload/planning',
+            action: `${cmConfig.baseURL}api/upload/planning`,
             headers: {
               'Authorization': 'Bearer ' + localStorage.getItem('token')
             },

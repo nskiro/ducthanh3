@@ -41,6 +41,9 @@ node_modules/
 jspm_packages/
 client/node_modules/
 
+#Upload data file
+upload/
+
 # Typescript v1 declaration files
 typings/
 
