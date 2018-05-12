@@ -67,7 +67,7 @@ class ViewReport extends Component {
                             <FormItem label="Choose report file">
                                 <Select
                                     showSearch
-                                    style={{ width: 200 }}
+                                    style={{ width: 350 }}
                                     placeholder = "Select report file"
                                     optionFilterProp = "children"
                                     onFocus = {this.handleFileFocus}
