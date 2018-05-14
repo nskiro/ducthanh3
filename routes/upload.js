@@ -117,7 +117,8 @@ router.post('/production',(req,res,next)=>{
     if (!req.files)
         return res.status(500).send('No files were uploaded');
     const sampleFile = req.files.productionFile;
-    sampleFile.mv(`./upload/file/production/${sampleFile.name}`, function(err) {
+    const fileNameArr = sampleFile.name.split("-");
+    sampleFile.mv(`./upload/file/production/${fileNameArr[0]}/${sampleFile.name}`, function(err) {
         if (err)
             switch(typeof err){
                 case 'object':
