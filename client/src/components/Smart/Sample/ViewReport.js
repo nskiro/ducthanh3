@@ -6,7 +6,9 @@ import _ from 'lodash';
 import Aux from '../../../hoc';
 import cmConfig from '../../../CommonConfig';
 import axios from '../../../axiosInst';
+import DeptInfo from '../../Dumb/DeptInfo/DeptInfo';
 
+import SampleAvatar from '../../../assets/images/dept/maymau.png';
 const Option = Select.Option;
 const FormItem = Form.Item;
 
@@ -61,6 +63,17 @@ class ViewReport extends Component {
                 <Row className="show-grid">
                     <Col xs={12} sm={12}>
                         <legend>View Sample Report</legend>
+                    </Col>
+                </Row>
+                <Row className="show-grid">
+                    <Col xs={12} sm={12}>
+                        <DeptInfo 
+                            title="Sample"
+                            avatar={SampleAvatar}
+                            head = "Ms Quyen"
+                            email = "lequyen@ducthanh3.com.vn"
+                            mobile = "09.4567.0637"
+                        />
                     </Col>
                 </Row>
                 <Row className="show-grid">

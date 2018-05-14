@@ -6,7 +6,9 @@ import _ from 'lodash';
 import Aux from '../../../hoc';
 import cmConfig from '../../../CommonConfig';
 import axios from '../../../axiosInst';
+import DeptInfo from '../../Dumb/DeptInfo/DeptInfo';
 
+import QaAvatar from '../../../assets/images/dept/qa.png';
 const Option = Select.Option;
 const FormItem = Form.Item;
 
@@ -89,6 +91,17 @@ class ViewReport extends Component {
                 <Row className="show-grid">
                     <Col xs={12} sm={12}>
                         <legend>View QA/QC Report</legend>
+                    </Col>
+                </Row>
+                <Row className="show-grid">
+                    <Col xs={12} sm={12}>
+                        <DeptInfo 
+                            title="QA"
+                            avatar={QaAvatar}
+                            head = "Mr. Phan Phong"
+                            email = "phanphong@ducthanh3.com.vn"
+                            mobile = "0974986555"
+                        />
                     </Col>
                 </Row>
                 <Row className="show-grid">

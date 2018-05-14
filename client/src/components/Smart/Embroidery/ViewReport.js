@@ -6,7 +6,9 @@ import _ from 'lodash';
 import Aux from '../../../hoc';
 import cmConfig from '../../../CommonConfig';
 import axios from '../../../axiosInst';
+import DeptInfo from '../../Dumb/DeptInfo/DeptInfo';
 
+import EmbroideryAvatar from '../../../assets/images/dept/phoihang.png';
 const Option = Select.Option;
 const FormItem = Form.Item;
 
@@ -59,6 +61,16 @@ class ViewReport extends Component {
                 <Row className="show-grid">
                     <Col xs={12} sm={12}>
                         <legend>View Embroidery Report</legend>
+                    </Col>
+                </Row>
+                <Row className="show-grid">
+                    <Col xs={12} sm={12}>
+                        <DeptInfo 
+                            title="Embroidery"
+                            avatar={EmbroideryAvatar}
+                            head = "Mr Huynh Ty"
+                            email = "huynhty@ducthanh3.com.vn"
+                        />
                     </Col>
                 </Row>
                 <Row className="show-grid">

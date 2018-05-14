@@ -6,7 +6,9 @@ import _ from 'lodash';
 import Aux from '../../../hoc';
 import cmConfig from '../../../CommonConfig';
 import axios from '../../../axiosInst';
+import DeptInfo from '../../Dumb/DeptInfo/DeptInfo';
 
+import ProductionAvatar from '../../../assets/images/dept/quandoc.png';
 const Option = Select.Option;
 const FormItem = Form.Item;
 
@@ -22,20 +24,25 @@ class ViewReport extends Component {
         selectedFile: null
     }
 
-    componentDidMount(){
-        axios.get(`/api/production/listfolder`)
-        .then((res) => {
-            if(res.data.length > 0){
-                message.success('Files found. Please select report file');
-                this.setState({fileDeptList: res.data});
-            }
-            else{
-                message.warning('No files found');
-            }
-        })
-        .catch((err) => {
-            console.log(err);
-        });
+    handleSubDeptChange = (value) => {
+        if(this.state.dept === ''){
+            message.warning('Please select department first');
+        }
+        else{
+            axios.get(`/api/production/listfolder/${value}`)
+            .then((res) => {
+                if(res.data.length > 0){
+                    message.success('Files found. Please select report file');
+                    this.setState({fileDeptList: res.data});
+                }
+                else{
+                    message.warning('No files found');
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+        }
     }
 
     handleFileFocus = (value) => {
@@ -63,7 +70,34 @@ class ViewReport extends Component {
                 </Row>
                 <Row className="show-grid">
                     <Col xs={12} sm={12}>
+                        <DeptInfo 
+                            title="Production"
+                            avatar={ProductionAvatar}
+                            head = "Ms. Thanh Truc"
+                            email = "thanhtruc@ducthanh3.com.vn"
+                            mobile = ""
+                        />
+                    </Col>
+                </Row>
+                <Row className="show-grid">
+                    <Col xs={12} sm={12}>
                         <Form layout="inline">
+                            <FormItem label="Choose sub-department">
+                                <Select
+                                    showSearch
+                                    style={{ width: 200 }}
+                                    placeholder = "Select sub-department"
+                                    optionFilterProp = "children"
+                                    onSelect = {this.handleSubDeptChange}
+                                    filterOption = {(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}>
+                                    <Option value="EB1">EB 1</Option>
+                                    <Option value="EB2">EB 2</Option>
+                                    <Option value="EB3">EB 3</Option>
+                                    <Option value="EB4">EB 4</Option>
+                                    <Option value="EB5">EB 5</Option>
+                                    <Option value="EB6">EB 6</Option>
+                                </Select>
+                            </FormItem>
                             <FormItem label="Choose report file">
                                 <Select
                                     showSearch

@@ -6,6 +6,9 @@ import _ from 'lodash';
 import Aux from '../../../hoc';
 import cmConfig from '../../../CommonConfig';
 import axios from '../../../axiosInst';
+import DeptInfo from '../../Dumb/DeptInfo/DeptInfo';
+
+import MarkerAvatar from '../../../assets/images/dept/sodo.png';
 
 const Option = Select.Option;
 const FormItem = Form.Item;
@@ -61,6 +64,17 @@ class ViewReport extends Component {
                 <Row className="show-grid">
                     <Col xs={12} sm={12}>
                         <legend>View Marker Report</legend>
+                    </Col>
+                </Row>
+                <Row className="show-grid">
+                    <Col xs={12} sm={12}>
+                        <DeptInfo 
+                            title="Marker"
+                            avatar={MarkerAvatar}
+                            head = "Mr Tuan"
+                            email = "nguyentuan@ducthanh3.com.vn"
+                            mobile = ""
+                        />
                     </Col>
                 </Row>
                 <Row className="show-grid">

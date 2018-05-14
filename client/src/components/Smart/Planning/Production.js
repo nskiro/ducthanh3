@@ -9,7 +9,9 @@ import JqxCheckBox from '../../../jqwidgets-react/react_jqxcheckbox';
 import cmConfig from '../../../CommonConfig';
 import Aux from '../../../hoc';
 import axios from '../../../axiosInst';
+import DeptInfo from '../../Dumb/DeptInfo/DeptInfo';
 
+import PlanningAvatar from '../../../assets/images/dept/kehoach.png';
 let sources = {
     datatype: 'array',
     localdata: [],
@@ -436,6 +438,17 @@ class Production extends Component {
                 <Row className="show-grid">
                     <Col xs={12} sm={12}>
                         <legend>View Production Planning</legend>
+                    </Col>
+                </Row>
+                <Row className="show-grid">
+                    <Col xs={12} sm={12}>
+                        <DeptInfo 
+                            title="Planning"
+                            avatar={PlanningAvatar}
+                            head = "Ms Thanh"
+                            email = "nguyenthanh@ducthanh3.com.vn"
+                            mobile = "01.208.308.959"
+                        />
                     </Col>
                 </Row>
                 <Row className="show-grid">
