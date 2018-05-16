@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Row, Col } from 'react-bootstrap';
-import { Form, Select, message } from 'antd';
+import { Form, Radio , message, Select } from 'antd';
 import _ from 'lodash';
 
 import Aux from '../../../hoc';
@@ -9,6 +9,7 @@ import axios from '../../../axiosInst';
 import DeptInfo from '../../Dumb/DeptInfo/DeptInfo';
 
 import QaAvatar from '../../../assets/images/dept/qa.png';
+const RadioGroup = Radio.Group;
 const Option = Select.Option;
 const FormItem = Form.Item;
 
@@ -21,17 +22,20 @@ class PdfViewer extends Component {
 class ViewReport extends Component {
     state = {
         dept: '',
+        subDept: '',
         fileDeptList: [],
         selectedFile: null,
         haveSubDept: false
     }
 
-    handleDeptChange = (value) => {
+    handleDeptChange = (event) => {
+        let value = event.target.value;
+        this.setState({dept: value});
         if(value === "QC1" || value === "QC2"){
-            this.setState({dept: value,haveSubDept: true});
+            this.setState({haveSubDept: true});
         }
         else{
-            this.setState({haveSubDept: false});
+            this.setState({haveSubDept: false, subDept: ''});
             axios.get(`/api/qaqc/listfolder/${value}`)
             .then((res) => {
                 if(res.data.length > 0){
@@ -49,7 +53,9 @@ class ViewReport extends Component {
         
     }
 
-    handleSubDeptChange = (value) => {
+    handleSubDeptChange = (event) => {
+        let value = event.target.value;
+        this.setState({subDept: value});
         if(this.state.dept === ''){
             message.warning('Please select department first');
         }
@@ -106,51 +112,38 @@ class ViewReport extends Component {
                 </Row>
                 <Row className="show-grid">
                     <Col xs={12} sm={12}>
-                        <Form layout="inline">
+                        <Form layout="vertical">
                             <FormItem label="Choose department">
-                                <Select
-                                    showSearch
-                                    style={{ width: 200 }}
-                                    placeholder = "Select department"
-                                    optionFilterProp = "children"
-                                    onChange = {this.handleDeptChange}
-                                    filterOption = {(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}>
-                                    <Option value="QC1">QC 1</Option>
-                                    <Option value="QC2">QC 2</Option>
-                                    <Option value="QCF">QC Final</Option>
-                                    <Option value="PRO">Procedure</Option>
-                                    <Option value="FO">Factory Operation</Option>
-                                    <Option value="WR">Weekly Report</Option>
-                                    <Option value="SPEC">Specification</Option>
-                                    <Option value="INS">Inspect Procedure</Option>
-                                </Select>
+                                <RadioGroup onChange={this.handleDeptChange} value={this.state.dept}>
+                                    <Radio value="QC1">QC 1</Radio>
+                                    <Radio value="QC2">QC 2</Radio>
+                                    <Radio value="QCF">QC Final</Radio>
+                                    <Radio value="PRO">Procedure</Radio>
+                                    <Radio value="FO">Factory Operation</Radio>
+                                    <Radio value="WR">Weekly Report</Radio>
+                                    <Radio value="SPEC">Specification</Radio>
+                                    <Radio value="INS">Inspect Procedure</Radio>
+                                </RadioGroup>
                             </FormItem>
                             <FormItem label="Choose sub-department">
-                                <Select
-                                    showSearch
-                                    style={{ width: 200 }}
-                                    placeholder = "Select sub-department"
-                                    optionFilterProp = "children"
-                                    onSelect = {this.handleSubDeptChange}
-                                    disabled = {!this.state.haveSubDept}
-                                    filterOption = {(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}>
-                                    <Option value="EB1">EB 1</Option>
-                                    <Option value="EB2">EB 2</Option>
-                                    <Option value="EB3">EB 3</Option>
-                                    <Option value="EB4">EB 4</Option>
-                                    <Option value="EB5">EB 5</Option>
-                                    <Option value="EB6">EB 6</Option>
-                                </Select>
+                                <RadioGroup onChange={this.handleSubDeptChange} value={this.state.subDept} disabled = {!this.state.haveSubDept}>
+                                    <Radio value="EB1">EB 1</Radio>
+                                    <Radio value="EB2">EB 2</Radio>
+                                    <Radio value="EB3">EB 3</Radio>
+                                    <Radio value="EB4">EB 4</Radio>
+                                    <Radio value="EB5">EB 5</Radio>
+                                    <Radio value="EB6">EB 6</Radio>
+                                </RadioGroup>
                             </FormItem>
                             <FormItem label="Choose report file">
                                 <Select
                                     showSearch
-                                    style={{ width: 350 }}
+                                    style={{ width: 650 }}
                                     placeholder = "Select report file"
-                                    optionFilterProp = "children"
+                                    RadioFilterProp = "children"
                                     onFocus = {this.handleFileFocus}
                                     onSelect = {this.handleFileChange}
-                                    filterOption = {(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}>
+                                    filterRadio = {(input, Radio) => Radio.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}>
                                     {optionReportFile}
                                 </Select>
                             </FormItem>

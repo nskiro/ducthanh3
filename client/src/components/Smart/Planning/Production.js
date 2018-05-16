@@ -104,9 +104,13 @@ let sources = {
 let dataAdapter = new jqx.dataAdapter(sources);
 
 class Production extends Component {
+    state = {
+        dataSource: []
+    }
     componentDidMount(){
         axios.get('/api/planning/production')
         .then((res) => {
+            this.setState({dataSource: res.data});
             sources.localdata = res.data;
             this.refs.gridProductionPlanning.updatebounddata('cells');
         })
@@ -319,6 +323,11 @@ class Production extends Component {
             const checkState = event.args.checked;
             this.setColumnsProperties('phuLieuKhac', checkState);
         });
+
+       /* this.refs.gridProductionPlanning.on('bindingcomplete',(event) => {
+            console.log(event.args);
+            this.refs.gridProductionPlanning.autoresizecolumns();
+        });*/
     }
 
     setColumnsProperties = (colName,value) => {
@@ -339,28 +348,28 @@ class Production extends Component {
             {text:"",datafield: "_id",hidden: true},
             {cellsalign: "center", datafield: "order", text: "Order", width: 120},
             {cellsalign: "center", datafield: "po", text: "PO", width: 68},
-            {cellsalign: "center", datafield: "line", text: "Line", width: 68},
-            {datafield: "sku", hidden: true, text: "SKU"},
+            {cellsalign: "center", datafield: "line", text: "Line", width: 38},
+            {datafield: "sku", hidden: true, text: "SKU", width: 150},
             {datafield: "description", text: "Description", width: 370},
-            {datafield: "destination", hidden: true, text: "Destination"},
-            {datafield: "country", text: "Country", width: 120},
-            {cellsformat: "MM/dd/yyyy", datafield: "poIssued", hidden: true, text: "POIssued"},
-            {cellsformat: "MM/dd", datafield: "shipBy", hidden: true, text: "ShipBy"},
-            {datafield: "hangTheu", hidden: true, text: "HangTheu"},
-            {cellsalign: "right", cellsformat: "n", datafield: "originalQty", text: "OriginalQty"},
-            {cellsalign: "right", cellsformat: "n", datafield: "factoryQty", text: "FactoryQty"},
-            {cellsformat: "MM/dd", datafield: "originalDueDate", hidden: true, text: "OriginalDueDate"},
-            {cellsalign: "center", cellsformat: "MM/dd", datafield: "exFtyDate", text: "ExFTYDate"},
-            {cellsformat: "MM/dd", datafield: "ebExFtyDate", hidden: true, text: "EbExFTYDate"},
-            {datafield: "ebFactoryQty", hidden: true, text: "EbFactoryQty"},
-            {cellsformat: "MM/dd", datafield: "letterReleaseDate", hidden: true, text: "LetterReleaseDate"},
-            {cellsformat: "MM/dd", datafield: "bookingSentDate", hidden: true, text: "BookingSentDate"},
-            {cellsformat: "MM/dd", datafield: "bookingConfirmationDate", hidden: true, text: "BookingConfirmationDate"},
-            {cellsformat: "MM/dd", datafield: "etdFactory", hidden: true, text: "ETDFactory"},
-            {cellsformat: "MM/dd", datafield: "etdVietNam", hidden: true, text: "ETDVietNam"},
-            {cellsformat: "MM/dd", datafield: "bolDate", hidden: true, text: "BOLDate"},
-            {cellsformat: "MM/dd", datafield: "etaDate", hidden: true, text: "ETADate"},
-            {datafield: "xContainer", hidden: true, text: "XContainer"},
+            {datafield: "destination", hidden: true, text: "Destination",width: 120},
+            {datafield: "country", text: "Country", width: 100},
+            {cellsformat: "MM/dd/yyyy", datafield: "poIssued", hidden: true, text: "POIssued",width:80},
+            {cellsformat: "MM/dd", datafield: "shipBy", hidden: true, text: "ShipBy",width:68},
+            {datafield: "hangTheu", hidden: true, text: "HangTheu",width:100},
+            {cellsalign: "right", cellsformat: "n", datafield: "originalQty", text: "OriginalQty",width:68},
+            {cellsalign: "right", cellsformat: "n", datafield: "factoryQty", text: "FactoryQty",width:68},
+            {cellsformat: "MM/dd", datafield: "originalDueDate", hidden: true, text: "OriginalDueDate",width:68},
+            {cellsalign: "center", cellsformat: "MM/dd", datafield: "exFtyDate", text: "ExFTYDate",width:68},
+            {cellsformat: "MM/dd", datafield: "ebExFtyDate", hidden: true, text: "EbExFTYDate",width:68},
+            {datafield: "ebFactoryQty", hidden: true, text: "EbFactoryQty",width:68},
+            {cellsformat: "MM/dd", datafield: "letterReleaseDate", hidden: true, text: "LetterReleaseDate",width:68},
+            {cellsformat: "MM/dd", datafield: "bookingSentDate", hidden: true, text: "BookingSentDate",width:68},
+            {cellsformat: "MM/dd", datafield: "bookingConfirmationDate", hidden: true, text: "BookingConfirmationDate",width:68},
+            {cellsformat: "MM/dd", datafield: "etdFactory", hidden: true, text: "ETDFactory",width:68},
+            {cellsformat: "MM/dd", datafield: "etdVietNam", hidden: true, text: "ETDVietNam",width:68},
+            {cellsformat: "MM/dd", datafield: "bolDate", hidden: true, text: "BOLDate",width:68},
+            {cellsformat: "MM/dd", datafield: "etaDate", hidden: true, text: "ETADate",width:68},
+            {datafield: "xContainer", hidden: true, text: "XContainer",width:48},
             {datafield: "containerNum", hidden: true, text: "ContainerNum"},
             {datafield: "vnInvoice", hidden: true, text: "VnInvoice"},
             {datafield: "serialnumber", hidden: true, text: "SERIALNUMBER"},
@@ -550,10 +559,10 @@ class Production extends Component {
                             columnsresize = {true}
                             filterable = {true}
                             width = {'100%'}
-                            pageable = {true}
+                            height = {600}
+                            pageable = {false}
                             sortable = {true}
                             enabletooltips = {true}
-                            autoheight = {true}
                             filtermode={'excel'}
                             showtoolbar = {true}
                             rendertoolbar = {gridToolbar}

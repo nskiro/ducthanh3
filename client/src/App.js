@@ -7,7 +7,9 @@ import cmConfig from './CommonConfig';
 import LoginPage from './components/Smart/Login/Login';
 import Logout from './components/Smart/Logout/Logout';
 import HomePage from './components/Dumb/Home/Home';
-import Menu from './components/Smart/Menu/Menu';
+import Header from './components/Dumb/Header';
+import ComingSoon from './components/Dumb/ComingSoon';
+
 // Planning
 import UploadPlanningPage from './components/Smart/Planning/UploadFile';
 import ProductionPlanningPage from './components/Smart/Planning/Production';
@@ -42,10 +44,8 @@ class App extends Component {
     if(token && cmConfig.verifyToken(token)){
       routes = (
         <Grid fluid={true}>
-          <Row className="show-grid">
-            <Col sm={12} md={12}>
-              <Menu menutype={localStorage.getItem('dept')} />
-            </Col>
+          <Row className="show-grid" style={{marginBottom: '5px'}}>
+              <Route path='/' component={Header} />
           </Row>
           <Row className="show-grid" style={{padding: "15px", background: "#f8f8f8"}}>
             <Col sm={12} md={12}>
@@ -65,8 +65,9 @@ class App extends Component {
                 <Route path='/planning/upload' component={UploadPlanningPage} exact />
                 <Route path='/planning/production' component={ProductionPlanningPage} exact />
                 <Route path='/logout' component={Logout} exact />
+                <Route path='/404' component={ComingSoon} exact />
                 <Route path='/' component={HomePage} exact />
-                <Redirect to='/' />
+                <Redirect to='/404' />
               </Switch>
             </Col>
           </Row>

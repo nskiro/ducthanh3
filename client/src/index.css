@@ -4,3 +4,7 @@ body {
   font-family: sans-serif;
   background-image: url('./assets/images/bg.png');
 }
+
+.dropdown:hover .dropdown-menu {
+  display: block;
+  }

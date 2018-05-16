@@ -64,7 +64,7 @@ class Menu extends Component {
                 </Navbar.Header>
                 <Navbar.Collapse>
                     {menuType}
-                    { localStorage.getItem('token') !== null ? <Nav pullRight><NavItem componentClass={NavLink} to="/logout" href="/system/logout"><FontAwesome name="sign-out-alt" /> Log Out</NavItem></Nav> : null }
+                    { localStorage.getItem('token') !== null ? <Nav pullRight><NavItem componentClass={NavLink} to="/logout" href="/logout"><FontAwesome name="sign-out-alt" /> Log Out</NavItem></Nav> : null }
                 </Navbar.Collapse>
             </Navbar>
         );
