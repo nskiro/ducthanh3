@@ -30,15 +30,6 @@ const MenuMarkup = ({ mobileVersion, activeLinkKey, onLinkClick, className }) =>
     <Menu.Item key='/imex'>
       <Link onClick={onLinkClick} to='/imex'>Import-Export</Link>
     </Menu.Item>
-    <Menu.Item key='/administration'>
-      <Link onClick={onLinkClick} to='/administration'>Administration</Link>
-    </Menu.Item>
-    <Menu.Item key='/accounting'>
-      <Link onClick={onLinkClick} to='/accounting'>Accounting</Link>
-    </Menu.Item>
-    <Menu.Item key='/compliance'>
-      <Link onClick={onLinkClick} to='/compliance'>Compliance</Link>
-    </Menu.Item>
     <SubMenu title={<span>Pre-Production</span>}>
       <SubMenu title={<span>Fabric</span>}>
         <Menu.Item key='/fabricWarehouse'>
@@ -83,6 +74,15 @@ const MenuMarkup = ({ mobileVersion, activeLinkKey, onLinkClick, className }) =>
           <Link onClick={onLinkClick} to='/productWarehouse'>Product Warehouse</Link>
       </Menu.Item>
     </SubMenu>
+    <Menu.Item key='/administration'>
+      <Link onClick={onLinkClick} to='/administration'>Administration</Link>
+    </Menu.Item>
+    <Menu.Item key='/accounting'>
+      <Link onClick={onLinkClick} to='/accounting'>Accounting</Link>
+    </Menu.Item>
+    <Menu.Item key='/compliance'>
+      <Link onClick={onLinkClick} to='/compliance'>Compliance</Link>
+    </Menu.Item>
     <Menu.Item key='/logout' style={{position: 'absolute', right: '20px'}}>
         <Link onClick={onLinkClick} to='/logout'><FontAwesome name="sign-out-alt" /> Logout</Link>
     </Menu.Item>
