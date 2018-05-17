@@ -50,7 +50,6 @@ class ViewReport extends Component {
                 console.log(err);
             });
         }
-        
     }
 
     handleSubDeptChange = (event) => {

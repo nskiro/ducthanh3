@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { FormGroup, InputGroup, FormControl, Alert } from 'react-bootstrap';
+import { FormGroup, InputGroup, FormControl, Alert, Row, Col } from 'react-bootstrap';
 import FontAwesome  from 'react-fontawesome';
 
 import * as actions from '../../../store/action/index';
-import Logo from '../../../assets/images/Ergobaby-logo.png';
+import EBLogo from '../../../assets/images/ergobaby-logo-square.png';
+import DTLogo from '../../../assets/images/DT-Logo.png';
 
 import './Login.css';
 
@@ -42,7 +43,15 @@ class Login extends Component {
         return(
             <div className="login">
                 {authRedirect}
-                <img src={Logo} alt="Ergo Baby" />
+                <Row>
+                    <Col xs={6} sm={6}>
+                        <img src={DTLogo} alt="Ergo Baby" style={{maxHeight: '145px', display: 'block', margin: 'auto'}} />
+                    </Col>
+                    <Col xs={6} sm={6}>
+                        <img src={EBLogo} alt="Ergo Baby" style={{maxHeight: '145px', display: 'block', margin: 'auto'}} />
+                    </Col>
+                </Row>
+                
                 <form id="loginForm" className="login-form" onSubmit={this.handleFormSubmit}>
                     {errMsg}
                     <FormGroup>
@@ -62,7 +71,7 @@ class Login extends Component {
                         </InputGroup>
                     </FormGroup>
                     <button type='submit' id="btnLogin" name="btnLogin" className="btn btn-primary fa-lg" tabIndex="3">
-                        <i className="fas fa-lock-open"></i> Login
+                        <FontAwesome name='lock-open' /> Login
                     </button>
                 </form>
             </div>

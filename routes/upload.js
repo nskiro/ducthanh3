@@ -22,7 +22,7 @@ router.post('/planning',(req, res, next) => {
                     break;
             }
         else{
-            const workbook = XLSX.readFile(filePath);
+            /*const workbook = XLSX.readFile(filePath);
             const first_worksheet = workbook.Sheets[workbook.SheetNames[0]];
             const data = XLSX.utils.sheet_to_json(first_worksheet);
             const newData = data.map((obj) => {
@@ -35,7 +35,8 @@ router.post('/planning',(req, res, next) => {
                         res.status(200).send("File was uploaded and inserted to database successfully");
                     });
                     break;
-            }
+            }*/
+            res.status(200).send("File was uploaded successfully");
         }
     });
 });

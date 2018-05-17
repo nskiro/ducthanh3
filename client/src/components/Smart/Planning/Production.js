@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { Row, Col } from 'react-bootstrap';
+import { Select, message, Form } from 'antd';
+import _ from 'lodash';
 
 import JqxExpander from '../../../jqwidgets-react/react_jqxexpander';
 import JqxGrid , { jqx } from '../../../jqwidgets-react/react_jqxgrid';
@@ -12,6 +14,9 @@ import axios from '../../../axiosInst';
 import DeptInfo from '../../Dumb/DeptInfo/DeptInfo';
 
 import PlanningAvatar from '../../../assets/images/dept/kehoach.png';
+
+const Option = Select.Option;
+const FormItem = Form.Item;
 let sources = {
     datatype: 'array',
     localdata: [],
@@ -103,16 +108,105 @@ let sources = {
 
 let dataAdapter = new jqx.dataAdapter(sources);
 
+let columns = [
+    {text:"",datafield: "_id",hidden: true},
+    {cellsalign: "center", datafield: "order", text: "Order", width: 120},
+    {cellsalign: "center", datafield: "po", text: "PO", width: 68},
+    {cellsalign: "center", datafield: "line", text: "Line", width: 38},
+    {datafield: "sku", hidden: true, text: "SKU", width: 150},
+    {datafield: "description", text: "Description", width: 370},
+    {datafield: "destination", hidden: true, text: "Destination",width: 120},
+    {datafield: "country", text: "Country", width: 100},
+    {cellsformat: "MM/dd/yyyy", datafield: "poIssued", hidden: true, text: "POIssued",width:80},
+    {cellsformat: "MM/dd", datafield: "shipBy", hidden: true, text: "ShipBy",width:68},
+    {datafield: "hangTheu", hidden: true, text: "HangTheu",width:100},
+    {cellsalign: "right", cellsformat: "n", datafield: "originalQty", text: "OriginalQty",width:68},
+    {cellsalign: "right", cellsformat: "n", datafield: "factoryQty", text: "FactoryQty",width:68},
+    {cellsformat: "MM/dd", datafield: "originalDueDate", hidden: true, text: "OriginalDueDate",width:68},
+    {cellsalign: "center", cellsformat: "MM/dd", datafield: "exFtyDate", text: "ExFTYDate",width:68},
+    {cellsformat: "MM/dd", datafield: "ebExFtyDate", hidden: true, text: "EbExFTYDate",width:68},
+    {datafield: "ebFactoryQty", hidden: true, text: "EbFactoryQty",width:68},
+    {cellsformat: "MM/dd", datafield: "letterReleaseDate", hidden: true, text: "LetterReleaseDate",width:68},
+    {cellsformat: "MM/dd", datafield: "bookingSentDate", hidden: true, text: "BookingSentDate",width:68},
+    {cellsformat: "MM/dd", datafield: "bookingConfirmationDate", hidden: true, text: "BookingConfirmationDate",width:68},
+    {cellsformat: "MM/dd", datafield: "etdFactory", hidden: true, text: "ETDFactory",width:68},
+    {cellsformat: "MM/dd", datafield: "etdVietNam", hidden: true, text: "ETDVietNam",width:68},
+    {cellsformat: "MM/dd", datafield: "bolDate", hidden: true, text: "BOLDate",width:68},
+    {cellsformat: "MM/dd", datafield: "etaDate", hidden: true, text: "ETADate",width:68},
+    {datafield: "xContainer", hidden: true, text: "XContainer",width:48},
+    {datafield: "containerNum", hidden: true, text: "ContainerNum"},
+    {datafield: "vnInvoice", hidden: true, text: "VnInvoice"},
+    {datafield: "serialnumber", hidden: true, text: "SERIALNUMBER"},
+    {datafield: "cartons", hidden: true, text: "CARTONS"},
+    {datafield: "factoryNotes", hidden: true, text: "FactoryNotes"},
+    {datafield: "ergobabyNotes", hidden: true, text: "ErgobabyNotes"},
+    {datafield: "productGroup", hidden: true, text: "ProductGroup"},
+    {datafield: "type", hidden: true, text: "TYPE"},
+    {datafield: "factory", hidden: true, text: "Factory"},
+    {datafield: "packingInstruction", hidden: true, text: "PackingInstruction"},
+    {datafield: "totalFabricStatus", hidden: true, text: "TotalFabricStatus"},
+    {datafield: "vaiChinh", hidden: true, text: "VaiChinh"},
+    {cellsalign: "right", datafield: "dmVaiChinh", hidden: true, text: "DMVaiChinh"},
+    {cellsalign: "right", datafield: "slVaiChinh", hidden: true, text: "SLVaiChinh"},
+    {datafield: "ttVaiChinh", hidden: true, text: "TTVaiChinh"},
+    {datafield: "vaiLot", hidden: true, text: "VaiLot"},
+    {cellsalign: "right", datafield: "dmVaiLot", hidden: true, text: "DMVaiLot"},
+    {cellsalign: "right", datafield: "slVaiLot", hidden: true, text: "SLVaiLot"},
+    {datafield: "ttVaiLot", hidden: true, text: "TTVaiLot"},
+    {datafield: "vaiVien", hidden: true, text: "VaiVien"},
+    {cellsalign: "right", datafield: "dmVaiVien", hidden: true, text: "DMVaiVien"},
+    {cellsalign: "right", datafield: "slVaiVien", hidden: true, text: "SLVaiVien"},
+    {datafield: "ttVaiVien", hidden: true, text: "TTVaiVien"},
+    {datafield: "luoiNho", hidden: true, text: "LuoiNho"},
+    {cellsalign: "right", datafield: "dmLuoiNho", hidden: true, text: "DMLuoiNho"},
+    {cellsalign: "right", datafield: "slLuoiNho", hidden: true, text: "SLLuoiNho"},
+    {datafield: "ttLuoiNho", hidden: true, text: "TTLuoiNho"},
+    {datafield: "luoiLon", hidden: true, text: "LuoiLon"},
+    {cellsalign: "right", datafield: "dmLuoiLon", hidden: true, text: "DMLuoiLon"},
+    {cellsalign: "right", datafield: "slLuoiLon", hidden: true, text: "SLLuoiLon"},
+    {datafield: "ttLuoiLon", hidden: true, text: "TTLuoiLon"},
+    {datafield: "vaiLot1", hidden: true, text: "VaiLot1"},
+    {cellsalign: "right", datafield: "dmVaiLot1", hidden: true, text: "DMVaiLot1"},
+    {cellsalign: "right", datafield: "slVaiLot1", hidden: true, text: "SLVaiLot1"},
+    {datafield: "ttVaiLot1", hidden: true, text: "TTVaiLot1"},
+    {datafield: "vaiLot2", hidden: true, text: "VaiLot2"},
+    {cellsalign: "right", datafield: "dmVaiLot2", hidden: true, text: "DMVaiLot2"},
+    {cellsalign: "right", datafield: "slVaiLot2", hidden: true, text: "SLVaiLot2"},
+    {datafield: "ttVaiLot2", hidden: true, text: "TTVaiLot2"},
+    {datafield: "vaiLot3", hidden: true, text: "VaiLot3"},
+    {cellsalign: "right", datafield: "dmVaiLot3", hidden: true, text: "DMVaiLot3"},
+    {cellsalign: "right", datafield: "slVaiLot3", hidden: true, text: "SLVaiLot3"},
+    {datafield: "ttVaiLot3", hidden: true, text: "TTVaiLot3"},
+    {datafield: "vaiLot4", hidden: true, text: "VaiLot4"},
+    {cellsalign: "right", datafield: "dmVaiLot4", hidden: true, text: "DMVaiLot4"},
+    {cellsalign: "right", datafield: "slVaiLot4", hidden: true, text: "SLVaiLot4"},
+    {datafield: "ttVaiLot4", hidden: true, text: "TTVaiLot4"},
+    {datafield: "vaiLot5", hidden: true, text: "VaiLot5"},
+    {cellsalign: "right", datafield: "dmVaiLot5", hidden: true, text: "DMVaiLot5"},
+    {cellsalign: "right", datafield: "slVaiLot5", hidden: true, text: "SLVaiLot5"},
+    {datafield: "ttVaiLot5", hidden: true, text: "TTVaiLot5"},
+    {datafield: "buckle", hidden: true, text: "Buckle"},
+    {datafield: "nhan", hidden: true, text: "Nhan"},
+    {datafield: "hop", hidden: true, text: "Hop"},
+    {datafield: "nut", hidden: true, text: "Nut"},
+    {datafield: "phuLieuKhac", hidden: true, text: "PhuLieuKhac"}
+];
+
 class Production extends Component {
     state = {
-        dataSource: []
+        dataSource: [],
+        files: []
     }
     componentDidMount(){
         axios.get('/api/planning/production')
         .then((res) => {
-            this.setState({dataSource: res.data});
-            sources.localdata = res.data;
-            this.refs.gridProductionPlanning.updatebounddata('cells');
+            if(res.data.length > 0){
+                message.success('Files found. Please select report file');
+                this.setState({files: res.data});
+            }
+            else{
+                message.warning('No files found');
+            }
         })
         .catch((err)=> {
 
@@ -342,91 +436,25 @@ class Production extends Component {
         
     }
 
+    handleFileChange = (value) => {
+        axios.get(`/api/planning/production/${value}`)
+        .then((res) => {
+            this.setState({dataSource: res.data});
+            sources.localdata = res.data;
+            this.refs.gridProductionPlanning.updatebounddata('cells');
+        })
+        .catch((err)=> {
+
+        });
+    }
+
     render(){
-        
-        let columns = [
-            {text:"",datafield: "_id",hidden: true},
-            {cellsalign: "center", datafield: "order", text: "Order", width: 120},
-            {cellsalign: "center", datafield: "po", text: "PO", width: 68},
-            {cellsalign: "center", datafield: "line", text: "Line", width: 38},
-            {datafield: "sku", hidden: true, text: "SKU", width: 150},
-            {datafield: "description", text: "Description", width: 370},
-            {datafield: "destination", hidden: true, text: "Destination",width: 120},
-            {datafield: "country", text: "Country", width: 100},
-            {cellsformat: "MM/dd/yyyy", datafield: "poIssued", hidden: true, text: "POIssued",width:80},
-            {cellsformat: "MM/dd", datafield: "shipBy", hidden: true, text: "ShipBy",width:68},
-            {datafield: "hangTheu", hidden: true, text: "HangTheu",width:100},
-            {cellsalign: "right", cellsformat: "n", datafield: "originalQty", text: "OriginalQty",width:68},
-            {cellsalign: "right", cellsformat: "n", datafield: "factoryQty", text: "FactoryQty",width:68},
-            {cellsformat: "MM/dd", datafield: "originalDueDate", hidden: true, text: "OriginalDueDate",width:68},
-            {cellsalign: "center", cellsformat: "MM/dd", datafield: "exFtyDate", text: "ExFTYDate",width:68},
-            {cellsformat: "MM/dd", datafield: "ebExFtyDate", hidden: true, text: "EbExFTYDate",width:68},
-            {datafield: "ebFactoryQty", hidden: true, text: "EbFactoryQty",width:68},
-            {cellsformat: "MM/dd", datafield: "letterReleaseDate", hidden: true, text: "LetterReleaseDate",width:68},
-            {cellsformat: "MM/dd", datafield: "bookingSentDate", hidden: true, text: "BookingSentDate",width:68},
-            {cellsformat: "MM/dd", datafield: "bookingConfirmationDate", hidden: true, text: "BookingConfirmationDate",width:68},
-            {cellsformat: "MM/dd", datafield: "etdFactory", hidden: true, text: "ETDFactory",width:68},
-            {cellsformat: "MM/dd", datafield: "etdVietNam", hidden: true, text: "ETDVietNam",width:68},
-            {cellsformat: "MM/dd", datafield: "bolDate", hidden: true, text: "BOLDate",width:68},
-            {cellsformat: "MM/dd", datafield: "etaDate", hidden: true, text: "ETADate",width:68},
-            {datafield: "xContainer", hidden: true, text: "XContainer",width:48},
-            {datafield: "containerNum", hidden: true, text: "ContainerNum"},
-            {datafield: "vnInvoice", hidden: true, text: "VnInvoice"},
-            {datafield: "serialnumber", hidden: true, text: "SERIALNUMBER"},
-            {datafield: "cartons", hidden: true, text: "CARTONS"},
-            {datafield: "factoryNotes", hidden: true, text: "FactoryNotes"},
-            {datafield: "ergobabyNotes", hidden: true, text: "ErgobabyNotes"},
-            {datafield: "productGroup", hidden: true, text: "ProductGroup"},
-            {datafield: "type", hidden: true, text: "TYPE"},
-            {datafield: "factory", hidden: true, text: "Factory"},
-            {datafield: "packingInstruction", hidden: true, text: "PackingInstruction"},
-            {datafield: "totalFabricStatus", hidden: true, text: "TotalFabricStatus"},
-            {datafield: "vaiChinh", hidden: true, text: "VaiChinh"},
-            {cellsalign: "right", datafield: "dmVaiChinh", hidden: true, text: "DMVaiChinh"},
-            {cellsalign: "right", datafield: "slVaiChinh", hidden: true, text: "SLVaiChinh"},
-            {datafield: "ttVaiChinh", hidden: true, text: "TTVaiChinh"},
-            {datafield: "vaiLot", hidden: true, text: "VaiLot"},
-            {cellsalign: "right", datafield: "dmVaiLot", hidden: true, text: "DMVaiLot"},
-            {cellsalign: "right", datafield: "slVaiLot", hidden: true, text: "SLVaiLot"},
-            {datafield: "ttVaiLot", hidden: true, text: "TTVaiLot"},
-            {datafield: "vaiVien", hidden: true, text: "VaiVien"},
-            {cellsalign: "right", datafield: "dmVaiVien", hidden: true, text: "DMVaiVien"},
-            {cellsalign: "right", datafield: "slVaiVien", hidden: true, text: "SLVaiVien"},
-            {datafield: "ttVaiVien", hidden: true, text: "TTVaiVien"},
-            {datafield: "luoiNho", hidden: true, text: "LuoiNho"},
-            {cellsalign: "right", datafield: "dmLuoiNho", hidden: true, text: "DMLuoiNho"},
-            {cellsalign: "right", datafield: "slLuoiNho", hidden: true, text: "SLLuoiNho"},
-            {datafield: "ttLuoiNho", hidden: true, text: "TTLuoiNho"},
-            {datafield: "luoiLon", hidden: true, text: "LuoiLon"},
-            {cellsalign: "right", datafield: "dmLuoiLon", hidden: true, text: "DMLuoiLon"},
-            {cellsalign: "right", datafield: "slLuoiLon", hidden: true, text: "SLLuoiLon"},
-            {datafield: "ttLuoiLon", hidden: true, text: "TTLuoiLon"},
-            {datafield: "vaiLot1", hidden: true, text: "VaiLot1"},
-            {cellsalign: "right", datafield: "dmVaiLot1", hidden: true, text: "DMVaiLot1"},
-            {cellsalign: "right", datafield: "slVaiLot1", hidden: true, text: "SLVaiLot1"},
-            {datafield: "ttVaiLot1", hidden: true, text: "TTVaiLot1"},
-            {datafield: "vaiLot2", hidden: true, text: "VaiLot2"},
-            {cellsalign: "right", datafield: "dmVaiLot2", hidden: true, text: "DMVaiLot2"},
-            {cellsalign: "right", datafield: "slVaiLot2", hidden: true, text: "SLVaiLot2"},
-            {datafield: "ttVaiLot2", hidden: true, text: "TTVaiLot2"},
-            {datafield: "vaiLot3", hidden: true, text: "VaiLot3"},
-            {cellsalign: "right", datafield: "dmVaiLot3", hidden: true, text: "DMVaiLot3"},
-            {cellsalign: "right", datafield: "slVaiLot3", hidden: true, text: "SLVaiLot3"},
-            {datafield: "ttVaiLot3", hidden: true, text: "TTVaiLot3"},
-            {datafield: "vaiLot4", hidden: true, text: "VaiLot4"},
-            {cellsalign: "right", datafield: "dmVaiLot4", hidden: true, text: "DMVaiLot4"},
-            {cellsalign: "right", datafield: "slVaiLot4", hidden: true, text: "SLVaiLot4"},
-            {datafield: "ttVaiLot4", hidden: true, text: "TTVaiLot4"},
-            {datafield: "vaiLot5", hidden: true, text: "VaiLot5"},
-            {cellsalign: "right", datafield: "dmVaiLot5", hidden: true, text: "DMVaiLot5"},
-            {cellsalign: "right", datafield: "slVaiLot5", hidden: true, text: "SLVaiLot5"},
-            {datafield: "ttVaiLot5", hidden: true, text: "TTVaiLot5"},
-            {datafield: "buckle", hidden: true, text: "Buckle"},
-            {datafield: "nhan", hidden: true, text: "Nhan"},
-            {datafield: "hop", hidden: true, text: "Hop"},
-            {datafield: "nut", hidden: true, text: "Nut"},
-            {datafield: "phuLieuKhac", hidden: true, text: "PhuLieuKhac"}
-        ];
+        let optionProductionFile = null;
+        if(this.state.files.length > 0){
+            optionProductionFile = this.state.files.map((rec) => {
+                return <Option value={rec.name} key={rec.name}>{rec.name}</Option>;
+            });
+        }
 
         const gridToolbar = (toolbar) => {
             let container = document.createElement('div');
@@ -460,6 +488,19 @@ class Production extends Component {
                         />
                     </Col>
                 </Row>
+                <Form>
+                    <FormItem label="Choose file">
+                        <Select
+                            showSearch
+                            style={{ width: 650 }}
+                            placeholder = "Select production planning file"
+                            RadioFilterProp = "children"
+                            onSelect = {this.handleFileChange}
+                            filterRadio = {(input, Radio) => Radio.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}>
+                            {optionProductionFile}
+                        </Select>
+                    </FormItem>
+                </Form>
                 <Row className="show-grid">
                     <Col xs={12} sm={12}>
                         <JqxExpander theme={cmConfig.theme}  expanded={false}>

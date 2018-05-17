@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Row, Col } from 'react-bootstrap';
-import { Form, Select, message } from 'antd';
+import { Form, Select, message, Radio } from 'antd';
 import _ from 'lodash';
 
 import Aux from '../../../hoc';
@@ -9,6 +9,8 @@ import axios from '../../../axiosInst';
 import DeptInfo from '../../Dumb/DeptInfo/DeptInfo';
 
 import SampleAvatar from '../../../assets/images/dept/maymau.png';
+
+const RadioGroup = Radio.Group;
 const Option = Select.Option;
 const FormItem = Form.Item;
 
@@ -25,7 +27,9 @@ class ViewReport extends Component {
         selectedFile: null
     }
 
-    handleDeptChange = (value) => {
+    handleDeptChange = (event) => {
+        let value = event.target.value;
+        this.setState({dept: value});
         axios.get(`/api/sample/listfolder/${value}`)
             .then((res) => {
                 if(res.data.length > 0){
@@ -78,18 +82,12 @@ class ViewReport extends Component {
                 </Row>
                 <Row className="show-grid">
                     <Col xs={12} sm={12}>
-                        <Form layout="inline">
+                        <Form layout="vertical">
                             <FormItem label="Choose department">
-                                <Select
-                                    showSearch
-                                    style={{ width: 200 }}
-                                    placeholder = "Select department"
-                                    optionFilterProp = "children"
-                                    onChange = {this.handleDeptChange}
-                                    filterOption = {(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}>
-                                    <Option value="EB">Ergo Baby</Option>
-                                    <Option value="JA">JAANUU</Option>
-                                </Select>
+                                <RadioGroup onChange={this.handleDeptChange} value={this.state.dept}>
+                                    <Radio value="EB">Ergo Baby</Radio>
+                                    <Radio value="JA">JAANUU</Radio>
+                                </RadioGroup>
                             </FormItem>
                             <FormItem label="Choose report file">
                                 <Select
