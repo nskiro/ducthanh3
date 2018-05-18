@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
+import _ from 'lodash';
 import { Row, Col } from 'react-bootstrap';
-import { Select, message, Form } from 'antd';
+import { Select, message, Form, Checkbox } from 'antd';
+import DataGrid from 'react-table';
+import "react-table/react-table.css";
 
-import cmConfig from '../../../CommonConfig';
 import Aux from '../../../hoc';
 import axios from '../../../axiosInst';
 import DeptInfo from '../../Dumb/DeptInfo/DeptInfo';
@@ -16,7 +17,20 @@ const FormItem = Form.Item;
 class Production extends Component {
     state = {
         dataSource: [],
-        files: []
+        files: [],
+        columns: [
+            {
+                Header: 'Order',
+                accessor: 'order'
+            },{
+                Header: 'PO',
+                accessor: 'po'
+            },{
+                Header: 'SKU',
+                accessor: 'sku',
+                show: false
+            }
+        ]
     }
     componentDidMount(){
         axios.get('/api/planning/production')
@@ -44,7 +58,20 @@ class Production extends Component {
         });
     }
 
+    onCheckedChange = (e) => {
+        const value = e.target.value;
+        let temp = [...this.state.columns];
+
+        _.forEach(temp, function(obj) {
+            if(obj.accessor === value)
+                obj.show = e.target.checked;
+        });
+
+        this.setState({columns: temp});
+    }
+
     render(){
+        const { dataSource, columns } = this.state;
         let optionProductionFile = null;
         if(this.state.files.length > 0){
             optionProductionFile = this.state.files.map((rec) => {
@@ -70,7 +97,8 @@ class Production extends Component {
                         />
                     </Col>
                 </Row>
-                <Form>
+                <Form layout="inline">
+                <Checkbox value="sku" onChange={this.onCheckedChange}>SKU</Checkbox>
                     <FormItem label="Choose file">
                         <Select
                             showSearch
@@ -89,6 +117,10 @@ class Production extends Component {
                 </Row>
                 <Row style={{marginTop: '5px'}}>
                     <Col xs={12} sm={12}>
+                        <DataGrid
+                            data = {dataSource}
+                            columns = {columns}
+                        />
                     </Col>
                 </Row>
             </Aux>
