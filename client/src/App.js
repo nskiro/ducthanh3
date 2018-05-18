@@ -71,6 +71,11 @@ class App extends Component {
               </Switch>
             </Col>
           </Row>
+          <Row>
+            <Col span={12}>
+              <footer style={{textAlign: 'center', color: '#767676'}}>Copyright © Duc Thanh Garment Import - Export Co., LTD 2018</footer>
+            </Col>
+          </Row>
         </Grid>
       );
     }

@@ -3,6 +3,7 @@ import _ from 'lodash';
 import { Row, Col } from 'react-bootstrap';
 import { Select, message, Form, Checkbox,Collapse } from 'antd';
 import DataGrid from 'react-data-grid';
+import { Toolbar, Data, Filters } from 'react-data-grid-addons';
 
 import Aux from '../../../hoc';
 import axios from '../../../axiosInst';
@@ -13,92 +14,96 @@ import PlanningAvatar from '../../../assets/images/dept/kehoach.png';
 const Option = Select.Option;
 const FormItem = Form.Item;
 const Panel = Collapse.Panel;
+const Selectors = Data.Selectors;
+const MultiSelectFilter = Filters.MultiSelectFilter;
+const AutoCompleteFilter = Filters.AutoCompleteFilter;
 
 class Production extends Component {
     state = {
-        dataSource: [],
+        rows: [],
+        filters: {},
         files: [],
         columns: [
-            {key: 'poIssued', name: 'PO Issued', resizable: true, visible: false},
-            {key: 'shipBy', name: 'Ship By', resizable: true, visible: false},
-            {key: 'order', name: 'Order', resizable: true, visible: true,width: 150},
-            {key: 'po', name: 'PO', resizable: true, visible: true},
-            {key: 'line', name: 'Line', resizable: true, visible: true},
-            {key: 'destination', name: 'Destination', resizable: true, visible: false},
-            {key: 'sku', name: 'SKU', resizable: true, visible: false},
-            {key: 'description', name: 'Description', resizable: true, visible: true},
-            {key: 'hangTheu', name: 'Hang Theu', resizable: true, visible: false},
-            {key: 'orderQty', name: 'Order Qty', resizable: true, visible: false},
-            {key: 'factoryQty', name: 'Factory Qty', resizable: true, visible: false},
-            {key: 'ebFactoryQty', name: 'Eb Factory Qty', resizable: true, visible: false},
-            {key: 'originalDueDate', name: 'Original Due Date', resizable: true, visible: false},
-            {key: 'exFtyDate', name: 'Ex FTY Date', resizable: true, visible: false},
-            {key: 'ebExFtyDate', name: 'Eb Ex FTY Date', resizable: true, visible: false},
-            {key: 'letterReleaseDate', name: 'Letter Release Date', resizable: true, visible: false},
-            {key: 'bookingSentDate', name: 'Booking Sent Date', resizable: true, visible: false},
-            {key: 'bookingConfirmationDate', name: 'Booking Confirmation Date', resizable: true, visible: false},
-            {key: 'etdFactory', name: 'ETD Factory', resizable: true, visible: false},
-            {key: 'etdVietNam', name: 'ETD Viet Nam', resizable: true, visible: false},
-            {key: 'bolDate', name: 'BOL Date', resizable: true, visible: false},
-            {key: 'etaDate', name: 'ETA Date', resizable: true, visible: false},
-            {key: 'xContainer', name: 'X Container', resizable: true, visible: false},
-            {key: 'containerNum', name: 'Container Num', resizable: true, visible: false},
-            {key: 'vnInvoice', name: 'Vn Invoice', resizable: true, visible: false},
-            {key: 'serialnumber', name: 'SERIALNUMBER', resizable: true, visible: false},
-            {key: 'cartons', name: 'CARTONS', resizable: true, visible: false},
-            {key: 'factoryNotes', name: 'Factory Notes', resizable: true, visible: false},
-            {key: 'ergobabyNotes', name: 'Ergobaby Notes', resizable: true, visible: false},
-            {key: 'productGroup', name: 'Product Group', resizable: true, visible: false},
-            {key: 'type', name: 'TYPE', resizable: true, visible: false},
-            {key: 'country', name: 'Country', resizable: true, visible: true},
-            {key: 'factory', name: 'Factory', resizable: true, visible: false},
-            {key: 'packingInstruction', name: 'Packing Instruction', resizable: true, visible: false},
-            {key: 'totalFabricStatus', name: 'Total Fabric Status', resizable: true, visible: false},
-            {key: 'vaiChinh', name: 'Vai Chinh', resizable: true, visible: false},
-            {key: 'dmVaiChinh', name: 'DM Vai Chinh', resizable: true, visible: false},
-            {key: 'slVaiChinh', name: 'SL Vai Chinh', resizable: true, visible: false},
-            {key: 'ttVaiChinh', name: 'TT Vai Chinh', resizable: true, visible: false},
-            {key: 'vaiVien', name: 'Vai Vien', resizable: true, visible: false},
-            {key: 'dmVaiVien', name: 'DM Vai Vien', resizable: true, visible: false},
-            {key: 'slVaiVien', name: 'SL Vai Vien', resizable: true, visible: false},
-            {key: 'ttVaiVien', name: 'TT Vai Vien', resizable: true, visible: false},
-            {key: 'luoiNho', name: 'Luoi Nho', resizable: true, visible: false},
-            {key: 'dmLuoiNho', name: 'DM Luoi Nho', resizable: true, visible: false},
-            {key: 'slLuoiNho', name: 'SL Luoi Nho', resizable: true, visible: false},
-            {key: 'ttLuoiNho', name: 'TT Luoi Nho', resizable: true, visible: false},
-            {key: 'luoiLon', name: 'Luoi Lon', resizable: true, visible: false},
-            {key: 'dmLuoiLon', name: 'DM Luoi Lon', resizable: true, visible: false},
-            {key: 'slLuoiLon', name: 'SL Luoi Lon', resizable: true, visible: false},
-            {key: 'ttLuoiLon', name: 'TT Luoi Lon', resizable: true, visible: false},
-            {key: 'vaiLot1', name: 'Vai Lot 1', resizable: true, visible: false},
-            {key: 'dmVaiLot1', name: 'DM Vai Lot 1', resizable: true, visible: false},
-            {key: 'slVaiLot1', name: 'SL Vai Lot 1', resizable: true, visible: false},
-            {key: 'ttVaiLot1', name: 'TT Vai Lot 1', resizable: true, visible: false},
-            {key: 'vaiLot2', name: 'Vai Lot 2', resizable: true, visible: false},
-            {key: 'dmVaiLot2', name: 'DM Vai Lot 2', resizable: true, visible: false},
-            {key: 'slVaiLot2', name: 'SL Vai Lot 2', resizable: true, visible: false},
-            {key: 'ttVaiLot2', name: 'TT Vai Lot 2', resizable: true, visible: false},
-            {key: 'vaiLot3', name: 'Vai Lot 3', resizable: true, visible: false},
-            {key: 'dmVaiLot3', name: 'DM Vai Lot 3', resizable: true, visible: false},
-            {key: 'slVaiLot3', name: 'SL Vai Lot 3', resizable: true, visible: false},
-            {key: 'ttVaiLot3', name: 'TT Vai Lot 3', resizable: true, visible: false},
-            {key: 'vaiLot4', name: 'Vai Lot 4', resizable: true, visible: false},
-            {key: 'dmVaiLot4', name: 'DM Vai Lot 4', resizable: true, visible: false},
-            {key: 'slVaiLot4', name: 'SL Vai Lot 4', resizable: true, visible: false},
-            {key: 'ttVaiLot4', name: 'TT Vai Lot 4', resizable: true, visible: false},
-            {key: 'vaiLot5', name: 'Vai Lot 5', resizable: true, visible: false},
-            {key: 'dmVaiLot5', name: 'DM Vai Lot 5', resizable: true, visible: false},
-            {key: 'slVaiLot5', name: 'SL Vai Lot 5', resizable: true, visible: false},
-            {key: 'ttVaiLot5', name: 'TT Vai Lot 5', resizable: true, visible: false},
-            {key: 'vaiLot6', name: 'Vai Lot 6', resizable: true, visible: false},
-            {key: 'dmVaiLot6', name: 'DM Vai Lot 6', resizable: true, visible: false},
-            {key: 'slVaiLot6', name: 'SL Vai Lot 6', resizable: true, visible: false},
-            {key: 'ttVaiLot6', name: 'TT Vai Lot 6', resizable: true, visible: false},
-            {key: 'buckle', name: 'Buckle', resizable: true, visible: false},
-            {key: 'nhan', name: 'Nhan', resizable: true, visible: false},
-            {key: 'hop', name: 'Hop', resizable: true, visible: false},
-            {key: 'nut', name: 'Nut', resizable: true, visible: false},
-            {key: 'phuLieuKhac', name: 'Phu Lieu Khac', resizable: true, visible: false}
+            {key: 'poIssued', name: 'PO Issued', filterable: true, filterRenderer: MultiSelectFilter,  resizable: true, visible: false},
+            {key: 'shipBy', name: 'Ship By', filterable: true, filterRenderer: MultiSelectFilter,  resizable: true, visible: false},
+            {key: 'order', name: 'Order', filterable: true, filterRenderer: MultiSelectFilter,  resizable: true, visible: true,width: 150},
+            {key: 'po', name: 'PO', filterable: true, filterRenderer: MultiSelectFilter,  resizable: true, visible: true},
+            {key: 'line', name: 'Line', filterable: true, filterRenderer: MultiSelectFilter,  resizable: true, visible: true},
+            {key: 'destination', name: 'Destination', filterable: true, filterRenderer: MultiSelectFilter,  resizable: true, visible: false},
+            {key: 'sku', name: 'SKU', filterable: true, filterRenderer: MultiSelectFilter,  resizable: true, visible: false},
+            {key: 'description', name: 'Description', filterable: true, filterRenderer: MultiSelectFilter,  resizable: true, visible: true},
+            {key: 'hangTheu', name: 'Hang Theu', filterable: true, filterRenderer: MultiSelectFilter,  resizable: true, visible: false},
+            {key: 'originalQty', name: 'Original Qty', filterable: true, filterRenderer: MultiSelectFilter,  resizable: true, visible: true},
+            {key: 'factoryQty', name: 'Factory Qty', filterable: true, filterRenderer: MultiSelectFilter,  resizable: true, visible: true},
+            {key: 'ebFactoryQty', name: 'Eb Factory Qty', filterable: true, filterRenderer: MultiSelectFilter,  resizable: true, visible: true},
+            {key: 'originalDueDate', name: 'Original Due Date', filterable: true, filterRenderer: MultiSelectFilter,  resizable: true, visible: false},
+            {key: 'exFtyDate', name: 'Ex FTY Date', filterable: true, filterRenderer: MultiSelectFilter,  resizable: true, visible: false},
+            {key: 'ebExFtyDate', name: 'Eb Ex FTY Date', filterable: true, filterRenderer: MultiSelectFilter,  resizable: true, visible: false},
+            {key: 'letterReleaseDate', name: 'Letter Release Date', filterable: true, filterRenderer: MultiSelectFilter,  resizable: true, visible: false},
+            {key: 'bookingSentDate', name: 'Booking Sent Date', filterable: true, filterRenderer: MultiSelectFilter,  resizable: true, visible: false},
+            {key: 'bookingConfirmationDate', name: 'Booking Confirmation Date', filterable: true, filterRenderer: MultiSelectFilter,  resizable: true, visible: false},
+            {key: 'etdFactory', name: 'ETD Factory', filterable: true, filterRenderer: MultiSelectFilter,  resizable: true, visible: false},
+            {key: 'etdVietNam', name: 'ETD Viet Nam', filterable: true, filterRenderer: MultiSelectFilter,  resizable: true, visible: false},
+            {key: 'bolDate', name: 'BOL Date', filterable: true, filterRenderer: MultiSelectFilter,  resizable: true, visible: false},
+            {key: 'etaDate', name: 'ETA Date', filterable: true, filterRenderer: MultiSelectFilter,  resizable: true, visible: false},
+            {key: 'xContainer', name: 'X Container', filterable: true, filterRenderer: MultiSelectFilter,  resizable: true, visible: false},
+            {key: 'containerNum', name: 'Container Num', filterable: true, filterRenderer: MultiSelectFilter,  resizable: true, visible: false},
+            {key: 'vnInvoice', name: 'Vn Invoice', filterable: true, filterRenderer: MultiSelectFilter,  resizable: true, visible: false},
+            {key: 'serialnumber', name: 'SERIALNUMBER', filterable: true, filterRenderer: MultiSelectFilter,  resizable: true, visible: false},
+            {key: 'cartons', name: 'CARTONS', filterable: true, filterRenderer: MultiSelectFilter,  resizable: true, visible: false},
+            {key: 'productGroup', name: 'Product Group', filterable: true, filterRenderer: MultiSelectFilter,  resizable: true, visible: false},
+            {key: 'type', name: 'TYPE', filterable: true, filterRenderer: MultiSelectFilter,  resizable: true, visible: false},
+            {key: 'country', name: 'Country', filterable: true, filterRenderer: MultiSelectFilter,  resizable: true, visible: true},
+            {key: 'factory', name: 'Factory', filterable: true, filterRenderer: MultiSelectFilter,  resizable: true, visible: false},
+            {key: 'packingInstruction', name: 'Packing Instruction', filterable: true, filterRenderer: MultiSelectFilter,  resizable: true, visible: false},
+            {key: 'totalFabricStatus', name: 'Total Fabric Status', filterable: true, filterRenderer: MultiSelectFilter,  resizable: true, visible: false},
+            {key: 'vaiChinh', name: 'Vai Chinh', filterable: true, resizable: true, visible: false},
+            {key: 'dmVaiChinh', name: 'DM Vai Chinh', filterable: true, resizable: true, visible: false},
+            {key: 'slVaiChinh', name: 'SL Vai Chinh', filterable: true, resizable: true, visible: false},
+            {key: 'ttVaiChinh', name: 'TT Vai Chinh', filterable: true, resizable: true, visible: false},
+            {key: 'vaiVien', name: 'Vai Vien', filterable: true, resizable: true, visible: false},
+            {key: 'dmVaiVien', name: 'DM Vai Vien', filterable: true, resizable: true, visible: false},
+            {key: 'slVaiVien', name: 'SL Vai Vien', filterable: true, resizable: true, visible: false},
+            {key: 'ttVaiVien', name: 'TT Vai Vien', filterable: true, resizable: true, visible: false},
+            {key: 'luoiNho', name: 'Luoi Nho', filterable: true, resizable: true, visible: false},
+            {key: 'dmLuoiNho', name: 'DM Luoi Nho', filterable: true, resizable: true, visible: false},
+            {key: 'slLuoiNho', name: 'SL Luoi Nho', filterable: true, resizable: true, visible: false},
+            {key: 'ttLuoiNho', name: 'TT Luoi Nho', filterable: true, resizable: true, visible: false},
+            {key: 'luoiLon', name: 'Luoi Lon', filterable: true, resizable: true, visible: false},
+            {key: 'dmLuoiLon', name: 'DM Luoi Lon', filterable: true, resizable: true, visible: false},
+            {key: 'slLuoiLon', name: 'SL Luoi Lon', filterable: true, resizable: true, visible: false},
+            {key: 'ttLuoiLon', name: 'TT Luoi Lon', filterable: true, resizable: true, visible: false},
+            {key: 'vaiLot1', name: 'Vai Lot 1', filterable: true, resizable: true, visible: false},
+            {key: 'dmVaiLot1', name: 'DM Vai Lot 1', filterable: true, resizable: true, visible: false},
+            {key: 'slVaiLot1', name: 'SL Vai Lot 1', filterable: true, resizable: true, visible: false},
+            {key: 'ttVaiLot1', name: 'TT Vai Lot 1', filterable: true, resizable: true, visible: false},
+            {key: 'vaiLot2', name: 'Vai Lot 2', filterable: true, resizable: true, visible: false},
+            {key: 'dmVaiLot2', name: 'DM Vai Lot 2', filterable: true, resizable: true, visible: false},
+            {key: 'slVaiLot2', name: 'SL Vai Lot 2', filterable: true, resizable: true, visible: false},
+            {key: 'ttVaiLot2', name: 'TT Vai Lot 2', filterable: true, resizable: true, visible: false},
+            {key: 'vaiLot3', name: 'Vai Lot 3', filterable: true, resizable: true, visible: false},
+            {key: 'dmVaiLot3', name: 'DM Vai Lot 3', filterable: true, resizable: true, visible: false},
+            {key: 'slVaiLot3', name: 'SL Vai Lot 3', filterable: true, resizable: true, visible: false},
+            {key: 'ttVaiLot3', name: 'TT Vai Lot 3', filterable: true, resizable: true, visible: false},
+            {key: 'vaiLot4', name: 'Vai Lot 4', filterable: true, resizable: true, visible: false},
+            {key: 'dmVaiLot4', name: 'DM Vai Lot 4', filterable: true, resizable: true, visible: false},
+            {key: 'slVaiLot4', name: 'SL Vai Lot 4', filterable: true, resizable: true, visible: false},
+            {key: 'ttVaiLot4', name: 'TT Vai Lot 4', filterable: true, resizable: true, visible: false},
+            {key: 'vaiLot5', name: 'Vai Lot 5', filterable: true, resizable: true, visible: false},
+            {key: 'dmVaiLot5', name: 'DM Vai Lot 5', filterable: true, resizable: true, visible: false},
+            {key: 'slVaiLot5', name: 'SL Vai Lot 5', filterable: true, resizable: true, visible: false},
+            {key: 'ttVaiLot5', name: 'TT Vai Lot 5', filterable: true, resizable: true, visible: false},
+            {key: 'vaiLot6', name: 'Vai Lot 6', filterable: true, resizable: true, visible: false},
+            {key: 'dmVaiLot6', name: 'DM Vai Lot 6', filterable: true, resizable: true, visible: false},
+            {key: 'slVaiLot6', name: 'SL Vai Lot 6', filterable: true, resizable: true, visible: false},
+            {key: 'ttVaiLot6', name: 'TT Vai Lot 6', filterable: true, resizable: true, visible: false},
+            {key: 'buckle', name: 'Buckle', filterable: true, resizable: true, visible: false},
+            {key: 'nhan', name: 'Nhan', filterable: true, resizable: true, visible: false},
+            {key: 'hop', name: 'Hop', filterable: true, resizable: true, visible: false},
+            {key: 'nut', name: 'Nut', filterable: true, resizable: true, visible: false},
+            {key: 'phuLieuKhac', name: 'Phu Lieu Khac', filterable: true, resizable: true, visible: false},
+            {key: 'factoryNotes', name: 'Factory Notes', filterable: true, resizable: true, visible: false},
+            {key: 'ergobabyNotes', name: 'Ergobaby Notes', filterable: true, resizable: true, visible: false}
         ]
     }
     componentDidMount(){
@@ -120,7 +125,7 @@ class Production extends Component {
     handleFileChange = (value) => {
         axios.get(`/api/planning/production/${value}`)
         .then((res) => {
-            this.setState({dataSource: res.data});
+            this.setState({rows: res.data});
         })
         .catch((err)=> {
 
@@ -137,19 +142,177 @@ class Production extends Component {
         this.setState({columns: temp});
     }
 
-    rowGetter = (i) => {
-        return this.state.dataSource[i];
+    rowGetter = (index) => {
+        return Selectors.getRows(this.state)[index];
+    };
+    
+    rowsCount = () => {
+        return Selectors.getRows(this.state).length;
+    };
+    
+    handleFilterChange = (filter) => {
+        let newFilters = Object.assign({}, this.state.filters);
+        if (filter.filterTerm) {
+          newFilters[filter.column.key] = filter;
+        } else {
+          delete newFilters[filter.column.key];
+        }
+        this.setState({ filters: newFilters });
+    };
+    
+    getValidFilterValues = (columnId) => {
+        let values = this.state.rows.map(r => r[columnId]);
+        return values.filter((item, i, a) => { return i === a.indexOf(item); });
+    };
+    
+    handleOnClearFilters = () => {
+        this.setState({ filters: {} });
     };
 
     render(){
-        const {dataSource, columns} = this.state;
+        const {rows, columns} = this.state;
+
         const visibleColumns = _.filter(columns, (o)=>{
             return o.visible;
         });
 
-        const arrCol = _.compact(['POIssued','ShipBy','Order','PO','Line','Destination','SKU','Description','Hang Theu','Qty','','','OriginalDueDate','ExFTYDate','','LetterReleaseDate','BookingSentDate','BookingConfirmationDate','ETDFactory','ETDVietNam','BOLDate','ETADate','XContainer','ContainerNum','VnInvoice','SERIALNUMBER','CARTONS','Notes','','ProductGroup','TYPE','Country','Factory','PackingInstruction','TotalFabricStatus','VaiChinh','DMVaiChinh','SLVaiChinh','TTVaiChinh','VaiVien','DMVaiVien','SLVaiVien','TTVaiVien','LuoiNho','DMLuoiNho','SLLuoiNho','TTLuoiNho','LuoiLon','DMLuoiLon','SLLuoiLon','TTLuoiLon','VaiLot1','DMVaiLot1','SLVaiLot1','TTVaiLot1','VaiLot2','DMVaiLot2','SLVaiLot2','TTVaiLot2','VaiLot3','DMVaiLot3','SLVaiLot3','TTVaiLot3','VaiLot4','DMVaiLot4','SLVaiLot4','TTVaiLot4','VaiLot5','DMVaiLot5','SLVaiLot5','TTVaiLot5','VaiLot6','DMVaiLot6','SLVaiLot6','TTVaiLot6','Buckle','Nhan','Hop','Nut','PhuLieuKhac']);
-        const newArrCol = arrCol.map((rec) => {
-            return <Col xs={6} sm={3}><Checkbox value={_.camelCase(rec)} onChange={this.onCheckedChange}>{_.startCase(rec)}</Checkbox></Col>;
+        const arrCol = [{
+            key: 'POIssued',
+            type: 'general'
+          },{
+            key: 'ShipBy',
+            type: 'general'
+          },{
+            key: 'Destination',
+            type: 'general'
+          },{
+            key: 'SKU',
+            type: 'general'
+          },{
+            key: 'Hang Theu',
+            type: 'general'
+          },{
+            key: 'OriginalDueDate',
+            type: 'general'
+          },{
+            key: 'ExFTYDate',
+            type: 'general'
+          },{
+            key: 'Notes',
+            type: 'general'
+          },{
+            key: 'ProductGroup',
+            type: 'general'
+          },{
+            key: 'TYPE',
+            type: 'general'
+          },{
+            key: 'Factory',
+            type: 'general'
+          },{
+            key: 'PackingInstruction',
+            type: 'general'
+          },{
+            key: 'LetterReleaseDate',
+            type: 'shippingStatus'
+          },{
+            key: 'BookingSentDate',
+            type: 'shippingStatus'
+          },{
+            key: 'BookingConfirmationDate',
+            type: 'shippingStatus'
+          },{
+            key: 'ETDFactory',
+            type: 'shippingStatus'
+          },{
+            key: 'ETDVietNam',
+            type: 'shippingStatus'
+          },{
+            key: 'BOLDate',
+            type: 'shippingStatus'
+          },{
+            key: 'ETADate',
+            type: 'shippingStatus'
+          },{
+            key: 'XContainer',
+            type: 'shippingStatus'
+          },{
+            key: 'ContainerNum',
+            type: 'shippingStatus'
+          },{
+            key: 'VnInvoice',
+            type: 'shippingStatus'
+          },{
+            key: 'SERIALNUMBER',
+            type: 'shippingStatus'
+          },{
+            key: 'CARTONS',
+            type: 'shippingStatus'
+          },{
+            key: 'TotalFabricStatus',
+            type: 'fabric'
+          },{
+            key: 'VaiChinh',
+            type: 'fabric'
+          },{
+            key: 'VaiVien',
+            type: 'fabric'
+          },{
+            key: 'LuoiNho',
+            type: 'fabric'
+          },{
+            key: 'LuoiLon',
+            type: 'fabric'
+          },{
+            key: 'VaiLot1',
+            type: 'fabric'
+          },{
+            key: 'VaiLot2',
+            type: 'fabric'
+          },{
+            key: 'VaiLot3',
+            type: 'fabric'
+          },{
+            key: 'VaiLot4',
+            type: 'fabric'
+          },{
+            key: 'VaiLot5',
+            type: 'fabric'
+          },{
+            key: 'VaiLot6',
+            type: 'fabric'
+          },{
+            key: 'Buckle',
+            type: 'trim'
+          },{
+            key: 'Nhan',
+            type: 'trim'
+          },{
+            key: 'Hop',
+            type: 'trim'
+          },{
+            key: 'Nut',
+            type: 'trim'
+          },{
+            key: 'PhuLieuKhac',
+            type: 'trim'
+          }];
+        const arrCheckbox = arrCol.map((rec) => {
+            let textColor = '';
+            switch(rec.type){
+                case 'shippingStatus':
+                    textColor = 'blue';
+                    break;
+                case 'fabric':
+                    textColor = 'red';
+                    break;
+                case 'trim':
+                    textColor = 'green';
+                    break;
+                default:
+                    textColor = 'black';
+            }
+            return <Col xs={6} sm={3}><Checkbox value={_.camelCase(rec.key)} onChange={this.onCheckedChange}><span style={{color: textColor}}>{_.startCase(rec.key)}</span></Checkbox></Col>;
         });
 
         let optionProductionFile = null;
@@ -195,7 +358,7 @@ class Production extends Component {
                         <Collapse defaultActiveKey={['1']}>
                             <Panel header="Select column(s) to show" key="1">
                                 <Row>
-                                    {newArrCol}
+                                    {arrCheckbox}
                                 </Row>
                             </Panel>
                         </Collapse>
@@ -206,8 +369,13 @@ class Production extends Component {
                         <DataGrid
                             columns={visibleColumns}
                             rowGetter={this.rowGetter}
-                            rowsCount={dataSource.length}
-                            minHeight={500}
+                            enableCellSelect={true}
+                            rowsCount={this.rowsCount()}
+                            minHeight={600}
+                            toolbar={<Toolbar enableFilter={true}/>}
+                            onAddFilter={this.handleFilterChange}
+                            getValidFilterValues={this.getValidFilterValues}
+                            onClearFilters={this.handleOnClearFilters}
                             resizeable />
                     </Col>
                 </Row>
