@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
+import _ from 'lodash';
 import { Row, Col } from 'react-bootstrap';
-import { Select, message, Form } from 'antd';
+import { Select, message, Form, Checkbox } from 'antd';
+import DataGrid from 'react-data-grid';
 
-import cmConfig from '../../../CommonConfig';
 import Aux from '../../../hoc';
 import axios from '../../../axiosInst';
 import DeptInfo from '../../Dumb/DeptInfo/DeptInfo';
@@ -16,7 +16,13 @@ const FormItem = Form.Item;
 class Production extends Component {
     state = {
         dataSource: [],
-        files: []
+        files: [],
+        columns: [
+            {key: 'order', name: 'Order', visible: true},
+            {key: 'po', name: 'PO', visible: true},
+            {key: 'line', name: 'Line', visible: true},
+            {key: 'sku', name: 'SKU', visible: false}
+        ]
     }
     componentDidMount(){
         axios.get('/api/planning/production')
@@ -44,7 +50,26 @@ class Production extends Component {
         });
     }
 
+    onCheckedChange = (e) => {
+        const value = e.target.value;
+        let temp = [...this.state.columns];
+        _.forEach(temp, (obj) => {
+            if(obj.key === value)
+                obj.visible = e.target.checked;
+        });
+        this.setState({columns: temp});
+    }
+
+    rowGetter = (i) => {
+        return this.state.dataSource[i];
+    };
+
     render(){
+        const {dataSource, columns} = this.state;
+        const visibleColumns = _.filter(columns, (o)=>{
+            return o.visible;
+        });
+        
         let optionProductionFile = null;
         if(this.state.files.length > 0){
             optionProductionFile = this.state.files.map((rec) => {
@@ -71,6 +96,7 @@ class Production extends Component {
                     </Col>
                 </Row>
                 <Form>
+                    <Checkbox value="sku" onChange={this.onCheckedChange}>SKU</Checkbox>
                     <FormItem label="Choose file">
                         <Select
                             showSearch
@@ -89,6 +115,11 @@ class Production extends Component {
                 </Row>
                 <Row style={{marginTop: '5px'}}>
                     <Col xs={12} sm={12}>
+                        <DataGrid
+                            columns={visibleColumns}
+                            rowGetter={this.rowGetter}
+                            rowsCount={dataSource.length}
+                            minHeight={500} />
                     </Col>
                 </Row>
             </Aux>
