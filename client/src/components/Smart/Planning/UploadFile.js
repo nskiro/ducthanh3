@@ -12,7 +12,6 @@ class UploadFile extends Component {
     render(){
         const uploadProps = {
             name: 'planningFile',
-            accept: '.xlsx',
             multiple: false,
             action: `${cmConfig.baseURL}api/upload/planning`,
             headers: {

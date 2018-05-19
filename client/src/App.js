@@ -13,6 +13,7 @@ import ComingSoon from './components/Dumb/ComingSoon';
 // Planning
 import UploadPlanningPage from './components/Smart/Planning/UploadFile';
 import ProductionPlanningPage from './components/Smart/Planning/Production';
+import BookingChartPage from './components/Smart/Planning/Booking';
 //QA
 import UploadQaPage from './components/Smart/Qa/UploadFile';
 import ViewQaReport from './components/Smart/Qa/ViewReport';
@@ -64,6 +65,7 @@ class App extends Component {
                 <Route path='/qaqc/upload' component={UploadQaPage} exact />
                 <Route path='/planning/upload' component={UploadPlanningPage} exact />
                 <Route path='/planning/production' component={ProductionPlanningPage} exact />
+                <Route path='/planning/booking' component={BookingChartPage} exact />
                 <Route path='/logout' component={Logout} exact />
                 <Route path='/404' component={ComingSoon} exact />
                 <Route path='/' component={HomePage} exact />
