@@ -50,7 +50,7 @@ app.use('/user', userRouter);
 // route middleware to verify a token
 app.use((req, res, next) => {
   console.log(req.path);
-  if(req.path.match(/\/file\//)){
+  if(req.path.match(/\/file\//) || !req.path.match(/\/api\//)){
     next();
   }
   else{
