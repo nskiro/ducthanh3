@@ -4,9 +4,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const logger = require('morgan');
-const session = require('express-session');
 const fileUpload = require('express-fileupload');
-const frameguard = require('frameguard')
 const jwt = require('./helper');
 const db = require('./db');
 // main route
@@ -25,18 +23,12 @@ const app = express();
 // CORS setup
 app.use(cors());
 
-// session setup
-app.use(session({
-  secret: 'ducthanh3',
-  resave: true,
-  saveUninitialized: false
-}));
-
 // file upload setup
 app.use(fileUpload());
 
 app.set('views', path.join(__dirname, 'client/build'));
-app.set('view engine', 'jade');
+app.engine('html', require('ejs').renderFile);
+app.set('view engine', 'html');
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -44,7 +36,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'upload')));
 app.use(express.static(path.join(__dirname, 'client/build')));
-
+ 
 app.use('/user', userRouter);
 
 // route middleware to verify a token
