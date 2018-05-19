@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Row, Col } from 'react-bootstrap';
-import { Form, Select, message, Input } from 'antd';
+import { Form, Select, message} from 'antd';
 import _ from 'lodash';
 
 import Aux from '../../../hoc';
@@ -11,7 +11,6 @@ import DeptInfo from '../../Dumb/DeptInfo/DeptInfo';
 import PlanningAvatar from '../../../assets/images/dept/kehoach.png';
 const Option = Select.Option;
 const FormItem = Form.Item;
-const Search = Input.Search;
 
 class PdfViewer extends Component {
     render() {
@@ -22,7 +21,6 @@ class PdfViewer extends Component {
 class ViewReport extends Component {
     state = {
         fileList: [],
-        filteredFileList: [],
         selectedFile: null
     }
 
@@ -50,24 +48,10 @@ class ViewReport extends Component {
         this.setState({selectedFile: value});
     }
 
-    handleFilterFile = (value) => {
-        let tempArr = [...this.state.fileList];
-        if(value){
-            tempArr = _.filter(this.state.fileList,(rec)=>{
-                return rec.name.includes(value);
-            });
-            this.setState({filteredFileList: tempArr});
-        }
-        else{
-            this.setState({filteredFileList: []});
-        }
-    }
-
     render(){
         let optionReportFile = null;
-        let fileList = this.state.filteredFileList.length > 0 ? this.state.filteredFileList : this.state.fileList;
-        if(fileList.length > 0){
-            optionReportFile = fileList.map((rec) => {
+        if(this.state.fileList.length > 0){
+            optionReportFile = this.state.fileList.map((rec) => {
                 return <Option value={rec.path} key={rec.name}>{rec.name}</Option>;
             });
         }
@@ -93,15 +77,9 @@ class ViewReport extends Component {
                 <Row className="show-grid">
                     <Col xs={12} sm={12}>
                         <Form layout="inline">
-                            <FormItem label="Search file">
-                                <Search
-                                    placeholder="Enter file name"
-                                    onSearch={this.handleFilterFile}
-                                    enterButton
-                                />
-                            </FormItem>
                             <FormItem label="Choose report file">
                                 <Select
+                                    ref={node => this.selectFile = node}
                                     showSearch
                                     style={{ width: 350 }}
                                     placeholder = "Select report file"
