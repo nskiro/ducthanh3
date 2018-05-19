@@ -76,7 +76,7 @@ class ViewReport extends Component {
             <Aux>
                 <Row className="show-grid">
                     <Col xs={12} sm={12}>
-                        <legend>View Embroidery Report</legend>
+                        <legend>View Booking Chart</legend>
                     </Col>
                 </Row>
                 <Row className="show-grid">

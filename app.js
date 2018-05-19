@@ -53,7 +53,6 @@ app.use((req, res, next) => {
     if (!jwt.verifyToken(token)) {
       return res.status(401).send('Failed to authenticate token.');    
     } else {
-      // if everything is good, save to request for use in other routes 
       next();
     }
   }
