@@ -40,9 +40,9 @@ class UploadFile extends Component {
                     <Col xs={12} sm={4}>
                         <p>***Note: Please change file name prefix to match types below:</p>
                         <ul>
-                            <li>P - Production Planning</li>
-                            <li>S - Shipping Schedule</li>
-                            <li>B - Booking Chart</li>
+                            <li>P-[Custom file name] (Production Planning)</li>
+                            <li>S-[Custom file name] (Shipping Schedule)</li>
+                            <li>B-[Custom file name] (Booking Chart)</li>
                         </ul>
                     </Col>
                     <Col xs={12} sm={4}>
