@@ -26,6 +26,12 @@ const MenuMarkup = ({ mobileVersion, activeLinkKey, onLinkClick, className }) =>
       <Menu.Item key='/marker/upload'>
         <Link onClick={onLinkClick} to='/marker/upload'>Marker</Link>
       </Menu.Item>
+      <Menu.Item key='/cutting/upload'>
+        <Link onClick={onLinkClick} to='/cutting/upload'>Cutting</Link>
+      </Menu.Item>
+      <Menu.Item key='/numbering/upload'>
+        <Link onClick={onLinkClick} to='/numbering/upload'>Numbering</Link>
+      </Menu.Item>
       <Menu.Item key='/production/upload'>
         <Link onClick={onLinkClick} to='/production/upload'>Production</Link>
       </Menu.Item>

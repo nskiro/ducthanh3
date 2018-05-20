@@ -25,6 +25,12 @@ import ViewMarkerReport from './components/Smart/Marker/ViewReport';
 // Sample
 import UploadSamplePage from './components/Smart/Sample/UploadFile';
 import ViewSampleReport from './components/Smart/Sample/ViewReport';
+// Cutting
+import UploadCuttingPage from './components/Smart/Cutting/UploadFile';
+import ViewCuttingReport from './components/Smart/Cutting/ViewReport';
+// Numbering
+import UploadNumberingPage from './components/Smart/Numbering/UploadFile';
+import ViewNumberingReport from './components/Smart/Numbering/ViewReport';
 // Production
 import UploadProductionPage from './components/Smart/Production/UploadFile';
 import ViewProductionReport from './components/Smart/Production/ViewReport';
@@ -61,6 +67,10 @@ class App extends Component {
                 <Route path='/embroidery/upload' component={UploadEmbroideryPage} exact />
                 <Route path='/sample/viewreport' component={ViewSampleReport} exact />
                 <Route path='/sample/upload' component={UploadSamplePage} exact />
+                <Route path='/cutting/viewreport' component={ViewCuttingReport} exact />
+                <Route path='/cutting/upload' component={UploadCuttingPage} exact />
+                <Route path='/numbering/viewreport' component={ViewNumberingReport} exact />
+                <Route path='/numbering/upload' component={UploadNumberingPage} exact />
                 <Route path='/marker/viewreport' component={ViewMarkerReport} exact />
                 <Route path='/marker/upload' component={UploadMarkerPage} exact />
                 <Route path='/qaqc/viewreport' component={ViewQaReport} exact />

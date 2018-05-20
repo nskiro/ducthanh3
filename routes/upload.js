@@ -114,6 +114,50 @@ router.post('/sample',(req,res,next)=>{
     });
 });
 
+router.post('/cutting',(req,res,next)=>{
+    if (!req.files)
+        return res.status(500).send('No files were uploaded');
+    const sampleFile = req.files.sampleFile;
+    const fileNameArr = sampleFile.name.split("-");
+    sampleFile.mv(`./upload/file/cutting/${fileNameArr[0]}/${sampleFile.name}`, function(err) {
+        if (err)
+            switch(typeof err){
+                case 'object':
+                    res.status(500).send(err.code);
+                    break;
+                default:
+                    res.status(500).send(err);
+                    break;
+            }
+        else{
+            //const headerArr = ['POIssued','ShipBy','Order','PO','Line','Destination','SKU','Description','HangTheu','OrderQty','FactoryQty','OriginalDueDate','ExFTYDate','EbExFTYDate','EbFactoryQty','LetterReleaseDate','BookingSentDate','BookingConfirmationDate','ETDFactory','ETDVietNam','BOLDate','ETADate','XContainer','ContainerNum','VnInvoice','SERIALNUMBER','CARTONS','FactoryNotes','ErgobabyNotes','ProductGroup','TYPE','Country','Factory','PackingInstruction','TotalFabricStatus','VaiChinh','DMVaiChinh','SLVaiChinh','TTVaiChinh','VaiLot','DMVaiLot','SLVaiLot','TTVaiLot','VaiVien','DMVaiVien','SLVaiVien','TTVaiVien','LuoiNho','DMLuoiNho','SLLuoiNho','TTLuoiNho','LuoiLon','DMLuoiLon','SLLuoiLon','TTLuoiLon','VaiLot1','DMVaiLot1','SLVaiLot1','TTVaiLot1','VaiLot2','DMVaiLot2','SLVaiLot2','TTVaiLot2','VaiLot3','DMVaiLot3','SLVaiLot3','TTVaiLot3','VaiLot4','DMVaiLot4','SLVaiLot4','TTVaiLot4','VaiLot5','DMVaiLot5','SLVaiLot5','TTVaiLot5','Buckle','Nhan','Hop','Nut','PhuLieuKhac'];
+            res.status(200).send("File was uploaded successfully");
+        }
+    });
+});
+
+router.post('/numbering',(req,res,next)=>{
+    if (!req.files)
+        return res.status(500).send('No files were uploaded');
+    const sampleFile = req.files.sampleFile;
+    const fileNameArr = sampleFile.name.split("-");
+    sampleFile.mv(`./upload/file/numbering/${fileNameArr[0]}/${sampleFile.name}`, function(err) {
+        if (err)
+            switch(typeof err){
+                case 'object':
+                    res.status(500).send(err.code);
+                    break;
+                default:
+                    res.status(500).send(err);
+                    break;
+            }
+        else{
+            //const headerArr = ['POIssued','ShipBy','Order','PO','Line','Destination','SKU','Description','HangTheu','OrderQty','FactoryQty','OriginalDueDate','ExFTYDate','EbExFTYDate','EbFactoryQty','LetterReleaseDate','BookingSentDate','BookingConfirmationDate','ETDFactory','ETDVietNam','BOLDate','ETADate','XContainer','ContainerNum','VnInvoice','SERIALNUMBER','CARTONS','FactoryNotes','ErgobabyNotes','ProductGroup','TYPE','Country','Factory','PackingInstruction','TotalFabricStatus','VaiChinh','DMVaiChinh','SLVaiChinh','TTVaiChinh','VaiLot','DMVaiLot','SLVaiLot','TTVaiLot','VaiVien','DMVaiVien','SLVaiVien','TTVaiVien','LuoiNho','DMLuoiNho','SLLuoiNho','TTLuoiNho','LuoiLon','DMLuoiLon','SLLuoiLon','TTLuoiLon','VaiLot1','DMVaiLot1','SLVaiLot1','TTVaiLot1','VaiLot2','DMVaiLot2','SLVaiLot2','TTVaiLot2','VaiLot3','DMVaiLot3','SLVaiLot3','TTVaiLot3','VaiLot4','DMVaiLot4','SLVaiLot4','TTVaiLot4','VaiLot5','DMVaiLot5','SLVaiLot5','TTVaiLot5','Buckle','Nhan','Hop','Nut','PhuLieuKhac'];
+            res.status(200).send("File was uploaded successfully");
+        }
+    });
+});
+
 router.post('/production',(req,res,next)=>{
     if (!req.files)
         return res.status(500).send('No files were uploaded');
