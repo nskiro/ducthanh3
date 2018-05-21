@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Row, Col } from 'react-bootstrap';
-import { Form, Select, message, Radio } from 'antd';
+import { Form, Select, message } from 'antd';
 import _ from 'lodash';
 
 import Aux from '../../../hoc';
@@ -9,8 +9,6 @@ import axios from '../../../axiosInst';
 import DeptInfo from '../../Dumb/DeptInfo/DeptInfo';
 
 import CuttingAvatar from '../../../assets/images/avatar-placeholder.png';
-
-const RadioGroup = Radio.Group;
 const Option = Select.Option;
 const FormItem = Form.Item;
 
@@ -22,27 +20,24 @@ class PdfViewer extends Component {
 
 class ViewReport extends Component {
     state = {
-        dept: '',
         fileDeptList: [],
         selectedFile: null
     }
 
-    handleDeptChange = (event) => {
-        let value = event.target.value;
-        this.setState({dept: value});
-        axios.get(`/api/cutting/listfolder/${value}`)
-            .then((res) => {
-                if(res.data.length > 0){
-                    message.success('Files found. Please select report file');
-                }
-                else{
-                    message.warning('No files found');
-                }
-                this.setState({fileDeptList: res.data});
-            })
-            .catch((err) => {
-                console.log(err);
-            });
+    componentDidMount(){
+        axios.get(`/api/cutting/listfolder`)
+        .then((res) => {
+            if(res.data.length > 0){
+                message.success('Files found. Please select report file');
+            }
+            else{
+                message.warning('No files found');
+            }
+            this.setState({fileDeptList: res.data});
+        })
+        .catch((err) => {
+            console.log(err);
+        });
     }
 
     handleFileFocus = (value) => {
@@ -73,21 +68,14 @@ class ViewReport extends Component {
                         <DeptInfo 
                             title="Cutting"
                             avatar={CuttingAvatar}
-                            head = "Mr Tuan"
-                            email = "nguyentuan@ducthanh3.com.vn"
-                            mobile = ""
+                            head = "Mr Phuong"
+                            email = "vanphuong@ducthanh3.com.vn"
                         />
                     </Col>
                 </Row>
                 <Row className="show-grid">
                     <Col xs={12} sm={12}>
-                        <Form layout="vertical">
-                            <FormItem label="Choose department">
-                                <RadioGroup onChange={this.handleDeptChange} value={this.state.dept}>
-                                    <Radio value="EB">Ergo Baby</Radio>
-                                    <Radio value="JA">JAANUU</Radio>
-                                </RadioGroup>
-                            </FormItem>
+                        <Form layout="inline">
                             <FormItem label="Choose report file">
                                 <Select
                                     showSearch

@@ -31,7 +31,7 @@ class ViewReport extends Component {
     handleDeptChange = (event) => {
         let value = event.target.value;
         this.setState({dept: value});
-        if(value === "QC1" || value === "QC2"){
+        if(value === "QC1"){
             this.setState({haveSubDept: true});
         }
         else{
@@ -40,11 +40,11 @@ class ViewReport extends Component {
             .then((res) => {
                 if(res.data.length > 0){
                     message.success('Files found. Please select report file');
-                    this.setState({fileDeptList: res.data});
                 }
                 else{
                     message.warning('No files found');
                 }
+                this.setState({fileDeptList: res.data});
             })
             .catch((err) => {
                 console.log(err);
@@ -63,11 +63,11 @@ class ViewReport extends Component {
             .then((res) => {
                 if(res.data.length > 0){
                     message.success('Files found. Please select report file');
-                    this.setState({fileDeptList: res.data});
                 }
                 else{
                     message.warning('No files found');
                 }
+                this.setState({fileDeptList: res.data});
             })
             .catch((err) => {
                 console.log(err);

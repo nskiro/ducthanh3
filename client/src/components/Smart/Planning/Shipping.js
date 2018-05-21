@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 import { Row, Col } from 'react-bootstrap';
 import { Form, Select, message} from 'antd';
 import _ from 'lodash';
@@ -28,11 +27,11 @@ class ViewReport extends Component {
         .then((res) => {
             if(res.data.length > 0){
                 message.success('Files found. Please select report file');
-                this.setState({fileList: res.data});
             }
             else{
                 message.warning('No files found');
             }
+            this.setState({fileList: res.data});
         })
         .catch((err) => {
             console.log(err);

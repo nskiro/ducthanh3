@@ -34,11 +34,11 @@ class ViewReport extends Component {
         .then((res) => {
             if(res.data.length > 0){
                 message.success('Files found. Please select report file');
-                this.setState({fileDeptList: res.data});
             }
             else{
                 message.warning('No files found');
             }
+            this.setState({fileDeptList: res.data});
         })
         .catch((err) => {
             console.log(err);
@@ -57,7 +57,7 @@ class ViewReport extends Component {
         let optionReportFile = null;
         if(this.state.fileDeptList.length > 0){
             optionReportFile = this.state.fileDeptList.map((rec) => {
-                return <Option value={rec.path} key={rec.name}>{rec.name}</Option>;
+                return <Option value={rec.path} key={rec.name}>{rec.name.split('-')[1]}</Option>;
             });
         }
         
@@ -87,9 +87,9 @@ class ViewReport extends Component {
                                     <Radio value="EB1">EB 1-2</Radio>
                                     <Radio value="EB2">EB 3-4</Radio>
                                     <Radio value="EB3">EB 5-6</Radio>
-                                    <Radio value="EB4">EB 7-8</Radio>
-                                    <Radio value="EB5">EB 9-10</Radio>
-                                    <Radio value="EB6">EB 11</Radio>
+                                    <Radio value="EB4">EB 7</Radio>
+                                    <Radio value="EB5">EB 8-9</Radio>
+                                    <Radio value="EB6">EB 10-11</Radio>
                                 </RadioGroup>
                             </FormItem>
                             <FormItem label="Choose report file">

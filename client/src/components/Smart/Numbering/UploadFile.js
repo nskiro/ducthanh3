@@ -11,7 +11,7 @@ const Dragger = Upload.Dragger;
 class UploadFile extends Component {
     render(){
         const uploadProps = {
-            name: 'markerFile',
+            name: 'numberingFile',
             accept: '.pdf',
             multiple: false,
             action: `${cmConfig.baseURL}api/upload/numbering`,
@@ -37,14 +37,7 @@ class UploadFile extends Component {
                     </Col>
                 </Row>
                 <Row className="show-grid">
-                    <Col xs={12} sm={4}>
-                        <p>***Note: Please change file name prefix to match types below:</p>
-                        <ul>
-                            <li>EB-</li>
-                            <li>JA-</li>
-                        </ul>
-                    </Col>
-                    <Col xs={12} sm={4}>
+                    <Col xs={12} sm={4} smOffset={4}>
                         <Dragger {...uploadProps}>
                             <p className="ant-upload-drag-icon">
                                 <FontAwesome name="upload" />

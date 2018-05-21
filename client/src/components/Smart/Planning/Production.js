@@ -110,11 +110,11 @@ class Production extends Component {
         .then((res) => {
             if(res.data.length > 0){
                 message.success('Files found. Please select report file');
-                this.setState({files: res.data});
             }
             else{
                 message.warning('No files found');
             }
+            this.setState({files: res.data});
         })
         .catch((err)=> {
 

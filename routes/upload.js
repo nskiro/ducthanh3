@@ -47,7 +47,7 @@ router.post('/qa',(req,res,next)=>{
     const sampleFile = req.files.qaFile;
     const fileNameArr = sampleFile.name.split("-");
     let filePath = '';
-    if(fileNameArr[0] === 'QC1' || fileNameArr[0] === 'QC2'){
+    if(fileNameArr[0] === 'QC1'){
         filePath = `./upload/file/qaqc/${fileNameArr[0]}/${fileNameArr[1]}/${sampleFile.name}`;
     }
     else{
@@ -117,9 +117,8 @@ router.post('/sample',(req,res,next)=>{
 router.post('/cutting',(req,res,next)=>{
     if (!req.files)
         return res.status(500).send('No files were uploaded');
-    const sampleFile = req.files.sampleFile;
-    const fileNameArr = sampleFile.name.split("-");
-    sampleFile.mv(`./upload/file/cutting/${fileNameArr[0]}/${sampleFile.name}`, function(err) {
+    const sampleFile = req.files.cuttingFile;
+    sampleFile.mv(`./upload/file/cutting/${sampleFile.name}`, function(err) {
         if (err)
             switch(typeof err){
                 case 'object':
@@ -139,9 +138,8 @@ router.post('/cutting',(req,res,next)=>{
 router.post('/numbering',(req,res,next)=>{
     if (!req.files)
         return res.status(500).send('No files were uploaded');
-    const sampleFile = req.files.sampleFile;
-    const fileNameArr = sampleFile.name.split("-");
-    sampleFile.mv(`./upload/file/numbering/${fileNameArr[0]}/${sampleFile.name}`, function(err) {
+    const sampleFile = req.files.numberingFile;
+    sampleFile.mv(`./upload/file/numbering/${sampleFile.name}`, function(err) {
         if (err)
             switch(typeof err){
                 case 'object':
@@ -205,7 +203,8 @@ router.post('/packaging',(req,res,next)=>{
     if (!req.files)
         return res.status(500).send('No files were uploaded');
     const sampleFile = req.files.packagingFile;
-    sampleFile.mv(`./upload/file/packaging/${sampleFile.name}`, function(err) {
+    const arrFileName = sampleFile.split('-');
+    sampleFile.mv(`./upload/file/packaging/${arrFileName[0]}/${sampleFile.name}`, function(err) {
         if (err)
             switch(typeof err){
                 case 'object':
