@@ -1,0 +1,297 @@
+import React, { Component } from 'react';
+import { Grid, Row, Col } from 'react-bootstrap';
+import { Input, Button, Icon, Form, Modal, Collapse } from 'antd';
+import PropTypes from 'prop-types';
+
+import ReactDataGrid from 'react-data-grid';
+import update from 'immutability-helper';
+
+//import moment from 'moment';
+import axios from '../../../../../axiosInst';
+//css
+import './views.css';
+
+const FormItem = Form.Item;
+const Panel = Collapse.Panel;
+
+
+const customPanelStyle = {
+    background: '#f7f7f7',
+    borderRadius: 4,
+    marginBottom: 24,
+    border: 0,
+    overflow: 'hidden',
+};
+
+class ProviderForm extends Component {
+    constructor(props) {
+        super(props);
+        this.setDataForm = this.setDataForm.bind(this);
+
+        this.state = {
+            provider_code: '',
+            provider_name: ''
+        }
+
+    }
+
+    setDataForm = (data) => {
+        this.setState({ provider_code: 'lalalalalaalla' });
+        // this.props.provider_code=data.provider_code;
+        // console.log('dkjabsdjabhjfabsfb');
+    }
+
+    onChangeProviderCode = (v) => {
+        this.setState({ provider_code: v });
+    }
+
+
+    render() {
+        const { visible, onCancel, onCreate, form } = this.props;
+        const { getFieldDecorator } = form;
+        let pro = this.state.provider_code;
+        return (
+            <Modal
+                title="Thêm mới nhà cung cấp"
+                visible={visible}
+                onOk={onCreate}
+                maskClosable={false}
+                onCancel={onCancel}
+            >
+                <Form >
+                    <Grid>
+                        <Row className="show-grid">
+                            < Col md={5} sm={8} xs={5} >
+                                <FormItem label={'Mã nhà cung cấp'}>
+                                    {getFieldDecorator('provider_code', { initialValue: this.props.data.provider_code }, {
+                                        rules: [{
+                                            required: true, message: 'Vui lòng nhập mã nhà cung cấp!'
+                                        }],
+                                    })
+                                        (<Input name='provider_code' onChange={this.onChangeProviderCode} placeholder="Mã nhà cung cấp" />)}
+                                </FormItem>
+                            </Col>
+                        </Row>
+                        <Row>
+                            < Col md={5} sm={8} xs={5} >
+                                <FormItem label={'Tên nhà cung cấp'}>
+                                    {getFieldDecorator('provider_name', { rules: [{ required: true, message: 'Vui lòng nhập tên nhà cung cấp!', }], })
+                                        (<Input name='provider_name' placeholder="Tên nhà cung cấp" />)}
+                                </FormItem>
+                            </Col >
+                        </Row >
+                    </Grid>
+                </Form>
+            </Modal>
+        );
+    }
+}
+;
+
+ProviderForm.propTypes = {
+    setDataForm: PropTypes.func,
+    data: PropTypes.object
+};
+ProviderForm.defaultProps = {
+
+};
+
+class WarehouseFabricProvider extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            expand: false,
+            modalvisible: false,
+            //  rows:[],
+            provider_code: '',
+            provider_name: '',
+            data_providers: [],
+
+            selected_provider: { 'provider_code': '', 'provider_name': '' }
+        };
+
+    }
+
+    handleSearch = (e) => {
+        e.preventDefault();
+        this.props.form.validateFields((err, values) => {
+            // console.log('Received values of form: ', values);
+            if (values.provider_code) {
+                this.loadSearchProviders(values);
+            } else {
+                this.loadSearchProviders({});
+            }
+        });
+    }
+
+    handleReset = () => {
+        this.props.form.resetFields();
+        this.loadSearchProviders({});
+    }
+
+    toggle = () => {
+        const { expand } = this.state;
+        this.setState({ expand: !expand });
+    }
+
+    //Modal
+    showModal = (e) => {
+        //  console.log(mod.target.value);
+        if (e) {
+            let mod = e.target.value;
+            if (mod === 'new') {
+                this.setState({
+                    modalvisible: true,
+                    selected_provider: { 'provider_code': '', 'provider_name': '' }
+                });
+
+            } else if (mod === 'edit') {
+
+                let provider = this.state.selected_provider;
+                if (provider.provider_code) {
+                    this.setState({
+                        modalvisible: true
+                    });
+                }
+
+            }
+        }
+    }
+    handleCancel = (e) => {
+        this.setState({
+            modalvisible: false,
+        });
+    }
+
+    handleCreate = (e) => {
+        const form = this.formRef.props.form;
+        form.validateFields((err, values) => {
+            if (err) {
+                return;
+            }
+            // console.log('Received values of form a: ', values);
+            //call goi service add
+            let data = {
+                provider_code: values.provider_code,
+                provider_name: values.provider_name,
+                datecreate: new Date(),
+                usercreate: '',
+                dateupdate: null,
+                userupdate: '',
+            }
+
+            axios.post('api/fabric/provider/add', data)
+                .then((res) => {
+                    console.log(res.data);
+                    this.loadProviders();
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+            form.resetFields();
+            this.setState({ modalvisible: false });
+
+        });
+    }
+
+    saveFormRef = (formRef) => {
+        this.formRef = formRef;
+    }
+    //end modal
+
+    rowGetter = (i) => {
+        return this.state.data_providers[i];
+    };
+
+    loadSearchProviders = (v) => {
+        axios.get('api/fabric/provider/get', { params: v })
+            .then((res) => {
+                let data = res.data;
+                // update data
+                this.setState({ data_providers: data });
+            })
+            .catch((err) => {
+                console.log(err);
+                this.setState({ data_providers: [] });
+            });
+    }
+
+    componentDidMount = () => {
+        this.loadSearchProviders({});
+    }
+
+    onRowProviderClick = (e) => {
+        let index = e;
+        if (index >= 0 && index < this.state.data_providers.length) {
+            let provider = this.state.data_providers[index];
+            this.setState({ selected_provider: provider });
+        }
+
+    }
+    render() {
+
+        const WrappedProviderForm = Form.create()(ProviderForm);
+        const { getFieldDecorator } = this.props.form;
+        const columns = [
+            // {key: '_id', name: 'id', hidd: false },
+            { key: 'provider_code', name: 'Mã nhà cung cấp' },
+            { key: 'provider_name', name: 'Tên nhà cung cấp' },
+            { key: 'create_date', name: 'Ngày tạo' },
+        ];
+        return (
+            <div>
+                <Collapse className='ant-advanced-search-panel-collapse'>
+                    <Panel header="Tìm kiếm" key="1" >
+                        <Form className="ant-advanced-search-panel " onSubmit={this.handleSearch}>
+                            <Grid>
+                                <Row className="show-grid">
+                                    <Col md={4} sm={6} xs={12} style={{ textAlign: 'left' }}>
+                                        <FormItem label={'Mã nhà cung cấp'}>
+                                            {
+                                                getFieldDecorator('provider_code', {})
+                                                    (<Input placeholder="Nhập mã cung cấp" />)
+                                            }
+                                        </FormItem>
+
+                                    </Col>
+                                    <Col md={4} sm={6} xs={12} style={{ textAlign: 'left' }}>
+                                        <Button type="primary" htmlType="submit">Search</Button>
+                                        <Button style={{ marginLeft: 8 }} onClick={this.handleReset}> Clear </Button>
+                                    </Col>
+                                </Row>
+
+                            </Grid>
+                        </Form>
+                    </Panel>
+                </Collapse>
+                <div className="ant-advanced-toolbar">
+                    <Button type="primary" value='new' className='ant-advanced-toolbar-item' onClick={this.showModal}>Thêm mới</Button>
+                    <Button type="primary" value='edit' className='ant-advanced-toolbar-item' onClick={this.showModal}>Điều chỉnh</Button>
+                    <Button type="primary" className='ant-advanced-toolbar-item'>Refesh Grid</Button>
+                </div>
+                <WrappedProviderForm
+                    wrappedComponentRef={this.saveFormRef}
+                    visible={this.state.modalvisible}
+                    onCancel={this.handleCancel}
+                    onCreate={this.handleCreate}
+                    data={this.state.selected_provider}
+                >
+                </WrappedProviderForm>
+
+                <ReactDataGrid
+                    enableCellSelect={true}
+                    resizable={true}
+                    columns={columns}
+                    rowGetter={this.rowGetter}
+                    rowsCount={this.state.data_providers.length}
+                    minHeight={390}
+                    onRowClick={this.onRowProviderClick}
+                ></ReactDataGrid>
+            </div >
+        );
+    }
+}
+
+
+export default WarehouseFabricProvider;

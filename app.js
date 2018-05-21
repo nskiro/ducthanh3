@@ -20,6 +20,11 @@ const productionRouter = require('./routes/production');
 const embroideryRouter = require('./routes/embroidery');
 const packagingRouter = require('./routes/packaging');
 
+const fabricproviderRouter =  require('./routes/fabraric/fabricprovider');
+const fabricRouter =require('./routes/fabraric/fabric');
+const fabriccolorRouter =require('./routes/fabraric/fabriccolor');
+const fabrictypeRouter =require('./routes/fabraric/fabrictype');
+
 const app = express();
 
 // CORS setup
@@ -46,6 +51,16 @@ app.use(express.static(path.join(__dirname, 'upload')));
 app.use(express.static(path.join(__dirname, 'client/build')));
 
 app.use('/user', userRouter);
+app.use('/api/upload',uploadRouter);
+app.use('/api/qaqc',qaRouter);
+app.use('/api/planning',planningRouter);
+app.use('/api/marker',markerRouter);
+app.use('/api/sample',sampleRouter);
+app.use('/api/production',productionRouter);
+app.use('/api/embroidery',embroideryRouter);
+app.use('/api/packaging',packagingRouter);
+app.use('/api/fabric/provider',fabricproviderRouter);
+app.use('/api/fabric',fabricRouter);
 
 // route middleware to verify a token
 app.use((req, res, next) => {
@@ -67,14 +82,9 @@ app.use((req, res, next) => {
   }
 });
 
-app.use('/api/upload',uploadRouter);
-app.use('/api/qaqc',qaRouter);
-app.use('/api/planning',planningRouter);
-app.use('/api/marker',markerRouter);
-app.use('/api/sample',sampleRouter);
-app.use('/api/production',productionRouter);
-app.use('/api/embroidery',embroideryRouter);
-app.use('/api/packaging',packagingRouter);
+
+//app.use('/api/fabriccolor',fabriccolorRouter);
+//app.use('/api/fabrictype',fabrictypeRouter);
 
 app.get('*', (req,res)=>{
   res.render('index');
