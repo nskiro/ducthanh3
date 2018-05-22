@@ -45,7 +45,7 @@ class ViewReport extends Component {
             message.warning('Please select file to delete!');
         }
         else{
-            const filePath = this.state.selectedFile.split('\\');
+            const filePath = this.state.selectedFile.split('/');
             console.log(filePath);
             axios.get(`/api/planning/deleteFile/${filePath[4]}`)
             .then((res) => {
