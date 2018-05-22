@@ -82,7 +82,7 @@ class ViewReport extends Component {
                 <Row className="show-grid">
                     <Col xs={12} sm={12}>
                         <Form layout="vertical">
-                            <FormItem label="Choose department">
+                            <FormItem label="Choose client">
                                 <RadioGroup onChange={this.handleDeptChange} value={this.state.dept}>
                                     <Radio value="EB">Ergo Baby</Radio>
                                     <Radio value="JA">JAANUU</Radio>
