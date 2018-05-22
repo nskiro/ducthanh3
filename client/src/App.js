@@ -16,6 +16,10 @@ import ProductionPlanningPage from './components/Smart/Planning/Production';
 import BookingChartPage from './components/Smart/Planning/Booking';
 import ShippingSchedulePage from './components/Smart/Planning/Shipping';
 
+//Fabric QC
+import UploadFabricQCPage from './components/Smart/FabricQC/UploadFile';
+import ViewFabricQcReport from './components/Smart/FabricQC/ViewReport';
+
 //QA
 import UploadQaPage from './components/Smart/Qa/UploadFile';
 import ViewQaReport from './components/Smart/Qa/ViewReport';
@@ -67,6 +71,8 @@ class App extends Component {
                 <Route path='/embroidery/upload' component={UploadEmbroideryPage} exact />
                 <Route path='/sample/viewreport' component={ViewSampleReport} exact />
                 <Route path='/sample/upload' component={UploadSamplePage} exact />
+                <Route path='/fabricQc/upload' component={UploadFabricQCPage} exact />
+                <Route path='/fabricQc/viewreport' component={ViewFabricQcReport} exact />
                 <Route path='/cutting/viewreport' component={ViewCuttingReport} exact />
                 <Route path='/cutting/upload' component={UploadCuttingPage} exact />
                 <Route path='/numbering/viewreport' component={ViewNumberingReport} exact />

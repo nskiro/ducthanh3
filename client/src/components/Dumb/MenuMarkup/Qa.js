@@ -26,6 +26,9 @@ const MenuMarkup = ({ mobileVersion, activeLinkKey, onLinkClick, className }) =>
       <Menu.Item key='/marker/upload'>
         <Link onClick={onLinkClick} to='/marker/upload'>Marker</Link>
       </Menu.Item>
+      <Menu.Item key='/fabricQc/upload'>
+        <Link onClick={onLinkClick} to='/fabricQc/upload'>Fabric QC</Link>
+      </Menu.Item>
       <Menu.Item key='/cutting/upload'>
         <Link onClick={onLinkClick} to='/cutting/upload'>Cutting</Link>
       </Menu.Item>
@@ -61,8 +64,8 @@ const MenuMarkup = ({ mobileVersion, activeLinkKey, onLinkClick, className }) =>
         <Menu.Item key='/fabricWarehouse'>
           <Link onClick={onLinkClick} to='/fabricWarehouse'>Warehouse</Link>
         </Menu.Item>
-        <Menu.Item key='/fabricQc'>
-          <Link onClick={onLinkClick} to='/fabricQc'>QC</Link>
+        <Menu.Item key='/fabricQc/viewreport'>
+          <Link onClick={onLinkClick} to='/fabricQc/viewreport'>QC</Link>
         </Menu.Item>
       </SubMenu>
       <Menu.Item key='/sample/viewreport'>
@@ -114,9 +117,17 @@ const MenuMarkup = ({ mobileVersion, activeLinkKey, onLinkClick, className }) =>
     <Menu.Item key='/accounting'>
       <Link onClick={onLinkClick} to='/accounting'>Accounting</Link>
     </Menu.Item>
-    <Menu.Item key='/compliance'>
-      <Link onClick={onLinkClick} to='/compliance'>Compliance</Link>
-    </Menu.Item>
+    <SubMenu title={<span>Compliance</span>}>
+        <Menu.Item key='/compliance/humidity'>
+          <Link onClick={onLinkClick} to='/compliance/humidity'>Humidity Control</Link>
+        </Menu.Item>
+        <Menu.Item key='/compliance/metal'>
+          <Link onClick={onLinkClick} to='/compliance/metal'>Metal Calibration</Link>
+        </Menu.Item>
+        <Menu.Item key='/compliance/viewreport'>
+          <Link onClick={onLinkClick} to='/compliance/viewreport'>General Report</Link>
+        </Menu.Item>
+    </SubMenu>
     <Menu.Item key='/logout' style={{position: 'absolute', right: '20px'}}>
         <Link onClick={onLinkClick} to='/logout'><FontAwesome name="sign-out-alt" /> Logout</Link>
     </Menu.Item>

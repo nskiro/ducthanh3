@@ -221,4 +221,25 @@ router.post('/packaging',(req,res,next)=>{
     });
 });
 
+router.post('/fabricqc',(req,res,next)=>{
+    if (!req.files)
+        return res.status(500).send('No files were uploaded');
+    const sampleFile = req.files.fabricQcFile;
+    const fileNameArr = sampleFile.name.split("-");
+    sampleFile.mv(`./upload/file/fabricqc/${fileNameArr[0]}/${sampleFile.name}`, function(err) {
+        if (err)
+            switch(typeof err){
+                case 'object':
+                    res.status(500).send(err.code);
+                    break;
+                default:
+                    res.status(500).send(err);
+                    break;
+            }
+        else{
+            res.status(200).send("File was uploaded successfully");
+        }
+    });
+});
+
 module.exports = router;

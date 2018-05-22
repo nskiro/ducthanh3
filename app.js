@@ -19,7 +19,7 @@ const numberingRouter = require('./routes/numbering');
 const productionRouter = require('./routes/production');
 const embroideryRouter = require('./routes/embroidery');
 const packagingRouter = require('./routes/packaging');
-
+const fabricqcRouter = require('./routes/fabricqc');
 const app = express();
 
 // CORS setup
@@ -70,6 +70,7 @@ app.use('/api/numbering',numberingRouter);
 app.use('/api/production',productionRouter);
 app.use('/api/embroidery',embroideryRouter);
 app.use('/api/packaging',packagingRouter);
+app.use('/api/fabricqc',fabricqcRouter);
 
 app.get('*', (req,res)=>{
   res.render('index');
