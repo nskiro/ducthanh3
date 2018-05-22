@@ -16,6 +16,12 @@ import ProductionPlanningPage from './components/Smart/Planning/Production';
 import BookingChartPage from './components/Smart/Planning/Booking';
 import ShippingSchedulePage from './components/Smart/Planning/Shipping';
 
+// Compliance
+import UploadCompliancePage from './components/Smart/Compliance/UploadFile';
+import GeneralCompliancePage from './components/Smart/Compliance/General';
+import HumidityPage from './components/Smart/Compliance/Humidity';
+import MetalPage from './components/Smart/Compliance/Metal';
+
 //Fabric QC
 import UploadFabricQCPage from './components/Smart/FabricQC/UploadFile';
 import ViewFabricQcReport from './components/Smart/FabricQC/ViewReport';
@@ -85,6 +91,10 @@ class App extends Component {
                 <Route path='/planning/production' component={ProductionPlanningPage} exact />
                 <Route path='/planning/booking' component={BookingChartPage} exact />
                 <Route path='/planning/shipping' component={ShippingSchedulePage} exact />
+                <Route path='/compliance/upload' component={UploadCompliancePage} exact />
+                <Route path='/compliance/general' component={GeneralCompliancePage} exact />
+                <Route path='/compliance/humidity' component={HumidityPage} exact />
+                <Route path='/compliance/metal' component={MetalPage} exact />
                 <Route path='/logout' component={Logout} exact />
                 <Route path='/404' component={ComingSoon} exact />
                 <Route path='/' component={HomePage} exact />
