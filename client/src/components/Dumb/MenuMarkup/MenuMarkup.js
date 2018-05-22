@@ -70,6 +70,9 @@ const MenuMarkup = ({ mobileVersion, activeLinkKey, onLinkClick, className }) =>
       <Menu.Item key='/qaqc/viewreport'>
           <Link onClick={onLinkClick} to='/qaqc/viewreport'>QA-QC</Link>
       </Menu.Item>
+      <Menu.Item key='/factoryOperation'>
+          <Link onClick={onLinkClick} to='/factoryOperation'>Factory Operation</Link>
+      </Menu.Item>
     </SubMenu>
     <SubMenu title={<span>Post-Production</span>}>
       <Menu.Item key='/aql'>

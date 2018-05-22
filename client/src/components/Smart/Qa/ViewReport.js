@@ -118,7 +118,6 @@ class ViewReport extends Component {
                                     <Radio value="QC2">QC 2</Radio>
                                     <Radio value="QCF">QC Final</Radio>
                                     <Radio value="PRO">Procedure</Radio>
-                                    <Radio value="FO">Factory Operation</Radio>
                                     <Radio value="WR">Weekly Report</Radio>
                                     <Radio value="SPEC">Specification</Radio>
                                     <Radio value="INS">Inspect Procedure</Radio>

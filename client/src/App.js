@@ -16,6 +16,8 @@ import ProductionPlanningPage from './components/Smart/Planning/Production';
 import BookingChartPage from './components/Smart/Planning/Booking';
 import ShippingSchedulePage from './components/Smart/Planning/Shipping';
 
+// Factory Operation
+import ViewFOReport from './components/Smart/FactoryOperation/ViewReport';
 // Im -Ex
 import ViewImexReport from './components/Smart/Imex/ViewReport';
 
@@ -121,6 +123,7 @@ class App extends Component {
                 <Route path='/imex/viewreport' component={ViewImexReport} exact />
                 <Route path='/productWarehouse' component={ViewProductWarehouseReport} exact />
                 <Route path='/accounting' component={ViewAccountingReport} exact />
+                <Route path='/factoryOperation' component={ViewFOReport} exact />
                 <Route path='/logout' component={Logout} exact />
                 <Route path='/404' component={ComingSoon} exact />
                 <Route path='/' component={HomePage} exact />
