@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import { Grid, Row, Col } from 'react-bootstrap';
-import { Input, Button, Icon, Form, Modal, Collapse } from 'antd';
+import { Input, Button, Form, Modal, Collapse } from 'antd';
 import PropTypes from 'prop-types';
 
 import ReactDataGrid from 'react-data-grid';
-import update from 'immutability-helper';
+//import update from 'immutability-helper';
+
+import RowRenderer from './rowrenderer';
+import DateFormatter from './dateformatter';
 
 //import moment from 'moment';
 import axios from '../../../../../axiosInst';
@@ -14,31 +17,17 @@ import './views.css';
 const FormItem = Form.Item;
 const Panel = Collapse.Panel;
 
-
-const customPanelStyle = {
-    background: '#f7f7f7',
-    borderRadius: 4,
-    marginBottom: 24,
-    border: 0,
-    overflow: 'hidden',
-};
-
 class ProviderForm extends Component {
     constructor(props) {
         super(props);
-        this.setDataForm = this.setDataForm.bind(this);
+        // this.setDataForm = this.setDataForm.bind(this);
 
         this.state = {
             provider_code: '',
-            provider_name: ''
+            provider_name: '',
+            _id: ''
         }
 
-    }
-
-    setDataForm = (data) => {
-        this.setState({ provider_code: 'lalalalalaalla' });
-        // this.props.provider_code=data.provider_code;
-        // console.log('dkjabsdjabhjfabsfb');
     }
 
     onChangeProviderCode = (v) => {
@@ -49,7 +38,6 @@ class ProviderForm extends Component {
     render() {
         const { visible, onCancel, onCreate, form } = this.props;
         const { getFieldDecorator } = form;
-        let pro = this.state.provider_code;
         return (
             <Modal
                 title="Thêm mới nhà cung cấp"
@@ -61,12 +49,17 @@ class ProviderForm extends Component {
                 <Form >
                     <Grid>
                         <Row className="show-grid">
+                            <Col>
+                                <FormItem>
+                                    {getFieldDecorator('id', { initialValue: this.props.data._id })
+                                        (<Input name='id' style={{ display: 'none', visible: false }} />)}
+                                </FormItem>
+                            </Col>
+
                             < Col md={5} sm={8} xs={5} >
                                 <FormItem label={'Mã nhà cung cấp'}>
                                     {getFieldDecorator('provider_code', { initialValue: this.props.data.provider_code }, {
-                                        rules: [{
-                                            required: true, message: 'Vui lòng nhập mã nhà cung cấp!'
-                                        }],
+                                        rules: [{ required: true, message: 'Vui lòng nhập mã nhà cung cấp!' }],
                                     })
                                         (<Input name='provider_code' onChange={this.onChangeProviderCode} placeholder="Mã nhà cung cấp" />)}
                                 </FormItem>
@@ -75,7 +68,8 @@ class ProviderForm extends Component {
                         <Row>
                             < Col md={5} sm={8} xs={5} >
                                 <FormItem label={'Tên nhà cung cấp'}>
-                                    {getFieldDecorator('provider_name', { rules: [{ required: true, message: 'Vui lòng nhập tên nhà cung cấp!', }], })
+                                    {getFieldDecorator('provider_name', { initialValue: this.props.data.provider_name },
+                                        { rules: [{ required: true, message: 'Vui lòng nhập tên nhà cung cấp!', }], })
                                         (<Input name='provider_name' placeholder="Tên nhà cung cấp" />)}
                                 </FormItem>
                             </Col >
@@ -89,7 +83,7 @@ class ProviderForm extends Component {
 ;
 
 ProviderForm.propTypes = {
-    setDataForm: PropTypes.func,
+    // setDataForm: PropTypes.func,
     data: PropTypes.object
 };
 ProviderForm.defaultProps = {
@@ -130,6 +124,15 @@ class WarehouseFabricProvider extends Component {
         this.loadSearchProviders({});
     }
 
+    onRefeshGrid = () => {
+        this.handleReset();
+    }
+
+
+    onExportToExel = () => {
+        alert('Cứ từ từ,chuẩn bị export ... loading .... loading...');
+    }
+
     toggle = () => {
         const { expand } = this.state;
         this.setState({ expand: !expand });
@@ -137,7 +140,6 @@ class WarehouseFabricProvider extends Component {
 
     //Modal
     showModal = (e) => {
-        //  console.log(mod.target.value);
         if (e) {
             let mod = e.target.value;
             if (mod === 'new') {
@@ -166,29 +168,41 @@ class WarehouseFabricProvider extends Component {
 
     handleCreate = (e) => {
         const form = this.formRef.props.form;
+
         form.validateFields((err, values) => {
+            console.log(values);
             if (err) {
                 return;
             }
             // console.log('Received values of form a: ', values);
             //call goi service add
             let data = {
+                _id: values.id,
                 provider_code: values.provider_code,
                 provider_name: values.provider_name,
-                datecreate: new Date(),
-                usercreate: '',
-                dateupdate: null,
-                userupdate: '',
-            }
 
-            axios.post('api/fabric/provider/add', data)
-                .then((res) => {
-                    console.log(res.data);
-                    this.loadProviders();
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
+            }
+            if (values.id) {
+                console.log('call update');
+                axios.post(`api/fabric/provider/update/${values.id}`, data)
+                    .then((res) => {
+                        console.log(res.data);
+                        this.loadProviders({});
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
+            } else {
+                console.log('call add');
+                axios.post('api/fabric/provider/add', data)
+                    .then((res) => {
+                        console.log(res.data);
+                        this.loadProviders({});
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
+            }
             form.resetFields();
             this.setState({ modalvisible: false });
 
@@ -237,7 +251,8 @@ class WarehouseFabricProvider extends Component {
             // {key: '_id', name: 'id', hidd: false },
             { key: 'provider_code', name: 'Mã nhà cung cấp' },
             { key: 'provider_name', name: 'Tên nhà cung cấp' },
-            { key: 'create_date', name: 'Ngày tạo' },
+            { key: 'create_date', name: 'Ngày tạo' ,  formatter: DateFormatter},
+            { key: 'update_date', name: 'Ngày cập nhật',formatter: DateFormatter },
         ];
         return (
             <div>
@@ -249,11 +264,9 @@ class WarehouseFabricProvider extends Component {
                                     <Col md={4} sm={6} xs={12} style={{ textAlign: 'left' }}>
                                         <FormItem label={'Mã nhà cung cấp'}>
                                             {
-                                                getFieldDecorator('provider_code', {})
-                                                    (<Input placeholder="Nhập mã cung cấp" />)
+                                                getFieldDecorator('provider_code', {})(<Input placeholder="Nhập mã cung cấp" />)
                                             }
                                         </FormItem>
-
                                     </Col>
                                     <Col md={4} sm={6} xs={12} style={{ textAlign: 'left' }}>
                                         <Button type="primary" htmlType="submit">Search</Button>
@@ -268,7 +281,9 @@ class WarehouseFabricProvider extends Component {
                 <div className="ant-advanced-toolbar">
                     <Button type="primary" value='new' className='ant-advanced-toolbar-item' onClick={this.showModal}>Thêm mới</Button>
                     <Button type="primary" value='edit' className='ant-advanced-toolbar-item' onClick={this.showModal}>Điều chỉnh</Button>
-                    <Button type="primary" className='ant-advanced-toolbar-item'>Refesh Grid</Button>
+                    <Button type="primary" className='ant-advanced-toolbar-item' onClick={this.onRefeshGrid}>Refesh Grid</Button>
+                    <Button type="primary" className='ant-advanced-toolbar-item' onClick={this.onExportToExel}>Export to Excel</Button>
+
                 </div>
                 <WrappedProviderForm
                     wrappedComponentRef={this.saveFormRef}
@@ -287,6 +302,7 @@ class WarehouseFabricProvider extends Component {
                     rowsCount={this.state.data_providers.length}
                     minHeight={390}
                     onRowClick={this.onRowProviderClick}
+                    rowRenderer={RowRenderer}
                 ></ReactDataGrid>
             </div >
         );

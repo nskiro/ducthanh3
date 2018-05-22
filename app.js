@@ -60,6 +60,9 @@ app.use('/api/production',productionRouter);
 app.use('/api/embroidery',embroideryRouter);
 app.use('/api/packaging',packagingRouter);
 app.use('/api/fabric/provider',fabricproviderRouter);
+app.use('/api/fabric/type',fabrictypeRouter);
+app.use('/api/fabric/color',fabriccolorRouter);
+
 app.use('/api/fabric',fabricRouter);
 
 // route middleware to verify a token

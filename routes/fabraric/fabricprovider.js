@@ -6,8 +6,10 @@ const FabricProvider = require('../../Schema/FabricProvider');
 
 router.get('/get', (req, res, next) => {
     console.log(req.query);
-    FabricProvider.find(req.query)      
-        .sort ({'provider_name':'asc'})
+
+  // let reg= new RegExp('^'+name+'$', "i");
+    FabricProvider.find(req.query)
+        .sort({ 'provider_name': 'asc' })
         .exec((err, fabricproviders) => {
             if (err) {
                 return res.status(500).send(err)
@@ -22,11 +24,11 @@ router.post('/add/', (req, res, next) => {
     provider = {
         provider_code: req.body.provider_code,
         provider_name: req.body.provider_name,
-        create_date:new Date(),
-       // datecreate: new Date(),
-       // usercreate: 'default',
-       // dateupdate: new Date(),
-       // userupdate: 'default',
+        create_date: new Date(),
+        // datecreate: new Date(),
+        // usercreate: 'default',
+        // dateupdate: new Date(),
+        // userupdate: 'default',
         mod: 0
     };
 
@@ -39,16 +41,17 @@ router.post('/add/', (req, res, next) => {
     })
 });
 
-router.post('/update/:_id', (req, res, next) => {
-    let id = req.params._id;
-    
+router.post(`/update/:id/`, (req, res, next) => {
+    let id = req.params.id;
+
+    console.log('id = >' + id);
     var data;
     data = {
         provider_code: req.body.provider_code,
         provider_name: req.body.provider_name,
-       // dateupdate: new Date(),
+        update_date: new Date(),
         //userupdate: 'default',
-       // mod: 0
+        // mod: 0
     };
 
     FabricProvider.findByIdAndUpdate(id, data, (err, provider) => {

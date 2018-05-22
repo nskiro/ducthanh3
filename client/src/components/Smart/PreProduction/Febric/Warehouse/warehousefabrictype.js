@@ -1,19 +1,299 @@
 import React, { Component } from 'react';
-//import { Grid, Row, Col } from 'react-bootstrap';
+import { Grid, Row, Col } from 'react-bootstrap';
+import { Input, Button, Form, Modal, Collapse } from 'antd';
+import PropTypes from 'prop-types';
 
-import { Button } from 'antd';
-
-//import ReactDataGrid from 'react-data-grid';
+import ReactDataGrid from 'react-data-grid';
 //import update from 'immutability-helper';
 
-class WarehouseFabricType extends Component {
+import RowRenderer from './rowrenderer';
+import DateFormatter from './dateformatter';
+
+//import moment from 'moment';
+import axios from '../../../../../axiosInst';
+//css
+import './views.css';
+
+
+const FormItem = Form.Item;
+const Panel = Collapse.Panel;
+
+class FabricTypeForm extends Component {
+    constructor(props) {
+        super(props);
+    }
     render() {
-        return (<div>
-            <Button type="primary">Primary1</Button>
-            <Button>Default</Button>
-            <Button type="dashed">Dashed2</Button>
-            <Button type="danger">Danger2</Button>
-        </div>
+        const { visible, onCancel, onCreate, form } = this.props;
+        const { getFieldDecorator } = form;
+        return (
+            <Modal
+                title="Loại vải"
+                visible={visible}
+                onOk={onCreate}
+                maskClosable={false}
+                onCancel={onCancel}
+            >
+                <Form >
+                    <Grid>
+                        <Row className="show-grid">
+                            <Col>
+                                <FormItem>
+                                    {getFieldDecorator('id', { initialValue: this.props.data._id })
+                                        (<Input name='id' style={{ display: 'none', visible: false }} />)}
+                                </FormItem>
+                            </Col>
+
+                            < Col md={5} sm={8} xs={5} >
+                                <FormItem label={'Mã loại vải'}>
+                                    {getFieldDecorator('fabrictype_code', { initialValue: this.props.data.fabrictype_code }, {
+                                        rules: [{ required: true, message: 'Vui lòng nhập mã loại vải!' }],
+                                    })
+                                        (<Input name='fabrictype_code' placeholder="mã loại vải" />)}
+                                </FormItem>
+                            </Col>
+                        </Row>
+                        <Row>
+                            < Col md={5} sm={8} xs={5} >
+                                <FormItem label={'Tên loại vải'}>
+                                    {getFieldDecorator('fabrictype_name', { initialValue: this.props.data.fabrictype_name },
+                                        { rules: [{ required: true, message: 'Vui lòng nhập Tên loại vải!', }], })
+                                        (<Input name='fabrictype_name' placeholder="Tên loại vải" />)}
+                                </FormItem>
+                            </Col >
+                        </Row >
+                    </Grid>
+                </Form>
+            </Modal>
+        );
+    }
+};
+
+FabricTypeForm.propTypes = {
+    data: PropTypes.object
+};
+FabricTypeForm.defaultProps = {
+
+};
+
+class WarehouseFabricType extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            expand: false,
+            modalvisible: false,
+            data_fabrictypes: [],
+            selected_fabrictype: { 'fabrictype_code': '', 'fabrictype_name': '' }
+        };
+
+    }
+
+    handleSearch = (e) => {
+        e.preventDefault();
+        this.props.form.validateFields((err, values) => {
+            console.log('Received values of form: ', values);
+           if (values.fabrictype_name) {
+               this.loadFabricTypes(values);
+           } else {
+               this.loadFabricTypes({});
+           }
+        });
+    }
+
+    handleReset = () => {
+        this.props.form.resetFields();
+        this.loadFabricTypes({});
+    }
+
+    onRefeshGrid = () => {
+        this.handleReset();
+    }
+
+    onExportToExel = () => {
+        alert('Cứ từ từ,chuẩn bị export ... loading .... loading...');
+    }
+
+    toggle = () => {
+        const { expand } = this.state;
+        this.setState({ expand: !expand });
+    }
+
+    //Modal
+    showModal = (e) => {
+        if (e) {
+            let mod = e.target.value;
+            if (mod === 'new') {
+                this.setState({
+                    modalvisible: true,
+                    selected_fabrictype: { 'provider_code': '', 'provider_name': '' }
+                });
+
+            } else if (mod === 'edit') {
+                let fabrictype = this.state.selected_fabrictype;
+                if (fabrictype.fabrictype_code) {
+                    this.setState({
+                        modalvisible: true
+                    });
+                }
+
+            }
+        }
+    }
+    handleCancel = (e) => {
+        this.setState({
+            modalvisible: false,
+        });
+    }
+
+    loadFabricTypes = (v) => {
+        axios.get('api/fabric/type/get', { params: v })
+            .then((res) => {
+                let data = res.data;
+                // update data
+                this.setState({ data_fabrictypes: data });
+            })
+            .catch((err) => {
+                console.log(err);
+                this.setState({ data_fabrictypes: [] });
+            });
+    }
+
+    onRowFabricTypeClick = (e) => {
+        let index = e;
+        if (index >= 0 && index < this.state.data_fabrictypes.length) {
+            let ftype = this.state.data_fabrictypes[index];
+            this.setState({ selected_fabrictype: ftype });
+        }
+
+    }
+
+    componentDidMount = () => {
+        this.loadFabricTypes({});
+    }
+
+    handleCreate = (e) => {
+        const form = this.formRef.props.form;
+
+        form.validateFields((err, values) => {
+            console.log(values);
+            console.log(err);
+            if (err) {
+                return;
+            }
+            // console.log('Received values of form a: ', values);
+            //call goi service add
+            let data = {
+                _id: values.id,
+                fabrictype_code: values.fabrictype_code,
+                fabrictype_name: values.fabrictype_name,
+            }
+
+            if (values.id) {
+                data.dateupdate = new Date();
+            } else {
+                data.datecreate = new Date();
+            }
+
+            // console.log(values);
+            console.log(data);
+
+            if (values.id) {
+                console.log('call update');
+                axios.post(`api/fabric/type/update/${values.id}`, data)
+                    .then((res) => {
+                        console.log(res.data);
+                        this.loadFabricTypes({});
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
+            } else {
+                console.log('call add');
+                axios.post('api/fabric/type/add', data)
+                    .then((res) => {
+                        console.log(res.data);
+                        this.loadFabricTypes({});
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
+            }
+            form.resetFields();
+            this.setState({ modalvisible: false });
+
+        });
+    }
+
+    saveFormRef = (formRef) => {
+        this.formRef = formRef;
+    }
+    //end modal
+
+    rowGetter = (i) => {
+        if (i >= 0 && i < this.state.data_fabrictypes.length) {
+            return this.state.data_fabrictypes[i];
+        }
+        return null;
+    };
+
+    render() {
+        const WrappedFabricTypeForm = Form.create()(FabricTypeForm);
+        const { getFieldDecorator } = this.props.form;
+        const columns = [
+            // {key: '_id', name: 'id', hidd: false },
+            { key: 'fabrictype_code', name: 'Mã loại vải' },
+            { key: 'fabrictype_name', name: 'Tên loại vải' },
+            { key: 'create_date', name: 'Ngày tạo', formatter: DateFormatter },
+            { key: 'update_date', name: 'Ngày cập nhật', formatter: DateFormatter },
+        ];
+        return (
+            <div>
+                <Collapse className='ant-advanced-search-panel-collapse'>
+                    <Panel header="Tìm kiếm" key="1" >
+                        <Form className="ant-advanced-search-panel " onSubmit={this.handleSearch}>
+                            <Grid>
+                                <Row className="show-grid">
+                                    <Col md={4} sm={6} xs={12} style={{ textAlign: 'left' }}>
+                                        <FormItem label={'Tên loại vải'}>
+                                            {
+                                                getFieldDecorator('fabrictype_name', {})(<Input placeholder="Nhập tên loại vải" />)
+                                            }
+                                        </FormItem>
+                                    </Col>
+                                    <Col md={4} sm={6} xs={12} style={{ textAlign: 'left' }}>
+                                        <Button type="primary" htmlType="submit">Search</Button>
+                                        <Button style={{ marginLeft: 8 }} onClick={this.handleReset}> Clear </Button>
+                                    </Col>
+                                </Row>
+
+                            </Grid>
+                        </Form>
+                    </Panel>
+                </Collapse>
+                <div className="ant-advanced-toolbar">
+                    <Button type="primary" value='new' className='ant-advanced-toolbar-item' onClick={this.showModal}>Thêm mới</Button>
+                    <Button type="primary" value='edit' className='ant-advanced-toolbar-item' onClick={this.showModal}>Điều chỉnh</Button>
+                    <Button type="primary" className='ant-advanced-toolbar-item' onClick={this.onRefeshGrid}>Refesh Grid</Button>
+                </div>
+                <WrappedFabricTypeForm
+                    wrappedComponentRef={this.saveFormRef}
+                    visible={this.state.modalvisible}
+                    onCancel={this.handleCancel}
+                    onCreate={this.handleCreate}
+                    data={this.state.selected_fabrictype}
+                >
+                </WrappedFabricTypeForm>
+
+                <ReactDataGrid
+                    enableCellSelect={true}
+                    resizable={true}
+                    columns={columns}
+                    rowGetter={this.rowGetter}
+                    rowsCount={this.state.data_fabrictypes.length}
+                    minHeight={390}
+                    onRowClick={this.onRowFabricTypeClick}
+                    rowRenderer={RowRenderer}
+                ></ReactDataGrid>
+            </div >
         );
     }
 }

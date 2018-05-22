@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 const fabricprovider = new mongoose.Schema({
-    _id: String,
     provider_code: String,
     provider_name: String,
-    create_date: Date
+    create_date: { type: String, default: null } ,
+    update_date: { type: String, default: null }
     /*
     datecreate: Date,
     usercreate:String,
@@ -11,5 +11,7 @@ const fabricprovider = new mongoose.Schema({
     userupdate: String,
     mod: Number*/
 });
-
+fabricprovider.virtual('id').get(function(){
+    return this._id;
+});
 module.exports = mongoose.model('fabricproviders', fabricprovider);

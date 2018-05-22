@@ -32,6 +32,10 @@ import ViewPackagingReport from './components/Smart/Packaging/ViewReport';
 import UploadEmbroideryPage from './components/Smart/Embroidery/UploadFile';
 import ViewEmbroideryReport from './components/Smart/Embroidery/ViewReport';
 
+//warehouse
+import WarehousePage from './components/Smart/PreProduction/Febric/Warehouse/Views'
+
+
 class App extends Component {
   render() {
     let routes = (
@@ -67,6 +71,10 @@ class App extends Component {
                 <Route path='/logout' component={Logout} exact />
                 <Route path='/404' component={ComingSoon} exact />
                 <Route path='/' component={HomePage} exact />
+
+
+                <Route path='/fabricWarehouse' component={WarehousePage} exact />
+
                 <Redirect to='/404' />
               </Switch>
             </Col>
