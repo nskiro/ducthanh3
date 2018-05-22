@@ -51,6 +51,12 @@ import ViewPackagingReport from './components/Smart/Packaging/ViewReport';
 import UploadEmbroideryPage from './components/Smart/Embroidery/UploadFile';
 import ViewEmbroideryReport from './components/Smart/Embroidery/ViewReport';
 
+//Trim
+import UploadTrimPage from './components/Smart/Trim/UploadFile';
+import TrimInputPage from './components/Smart/Trim/Input';
+import TrimQaPage from './components/Smart/Trim/Qa';
+
+
 class App extends Component {
   render() {
     let routes = (
@@ -95,6 +101,9 @@ class App extends Component {
                 <Route path='/compliance/general' component={GeneralCompliancePage} exact />
                 <Route path='/compliance/humidity' component={HumidityPage} exact />
                 <Route path='/compliance/metal' component={MetalPage} exact />
+                <Route path='/trim/upload' component={UploadTrimPage} exact />
+                <Route path='/trim/input' component={TrimInputPage} exact />
+                <Route path='/trim/qa' component={TrimQaPage} exact />
                 <Route path='/logout' component={Logout} exact />
                 <Route path='/404' component={ComingSoon} exact />
                 <Route path='/' component={HomePage} exact />

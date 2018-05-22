@@ -264,4 +264,28 @@ router.post('/compliance',(req, res, next) => {
     });
 });
 
+router.post('/trim',(req, res, next) => {
+    if (!req.files)
+        return res.status(500).send('No files were uploaded');
+    const sampleFile = req.files.trimFile;
+    const fileNameArr = sampleFile.name.split('-');
+    let filePath = `./upload/file/trim/${fileNameArr[0]}/${sampleFile.name}`;
+    if(fileNameArr[0] === 'TQ'){
+        filePath = `./upload/file/trim/${fileNameArr[0]}/${fileNameArr[1]}/${sampleFile.name}`;
+    }
+    sampleFile.mv(filePath, function(err) {
+        if (err)
+            switch(typeof err){
+                case 'object':
+                    res.status(500).send(err.code);
+                    break;
+                default:
+                    res.status(500).send(err);
+                    break;
+            }
+        else{
+            res.status(200).send("File was uploaded successfully");
+        }
+    });
+});
 module.exports = router;

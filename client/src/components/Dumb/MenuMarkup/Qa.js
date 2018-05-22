@@ -47,6 +47,9 @@ const MenuMarkup = ({ mobileVersion, activeLinkKey, onLinkClick, className }) =>
       <Menu.Item key='/compliance/upload'>
         <Link onClick={onLinkClick} to='/compliance/upload'>Compliance</Link>
       </Menu.Item>
+      <Menu.Item key='/trim/upload'>
+        <Link onClick={onLinkClick} to='/trim/upload'>Trim</Link>
+      </Menu.Item>
     </SubMenu>
     <SubMenu title={<span>Planning</span>}>
         <Menu.Item key='/planning/production'>
@@ -87,11 +90,11 @@ const MenuMarkup = ({ mobileVersion, activeLinkKey, onLinkClick, className }) =>
           <Link onClick={onLinkClick} to='/embroidery/viewreport'>Embroidery</Link>
       </Menu.Item>
       <SubMenu title={<span>Trim</span>}>
-        <Menu.Item key='/trimInput'>
-          <Link onClick={onLinkClick} to='/trimInput'>Input</Link>
+        <Menu.Item key='/trim/input'>
+          <Link onClick={onLinkClick} to='/trim/input'>Input</Link>
         </Menu.Item>
-        <Menu.Item key='/trimQa'>
-          <Link onClick={onLinkClick} to='/trimQa'>QA</Link>
+        <Menu.Item key='/trim/qa'>
+          <Link onClick={onLinkClick} to='/trim/qa'>QA</Link>
         </Menu.Item>
       </SubMenu>
     </SubMenu>

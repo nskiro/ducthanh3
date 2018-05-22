@@ -21,6 +21,8 @@ const embroideryRouter = require('./routes/embroidery');
 const packagingRouter = require('./routes/packaging');
 const fabricqcRouter = require('./routes/fabricqc');
 const complianceRouter = require('./routes/compliance');
+const trimRouter = require('./routes/trim');
+
 const app = express();
 
 // CORS setup
@@ -73,6 +75,7 @@ app.use('/api/embroidery',embroideryRouter);
 app.use('/api/packaging',packagingRouter);
 app.use('/api/fabricqc',fabricqcRouter);
 app.use('/api/compliance',complianceRouter);
+app.use('/api/trim',trimRouter);
 
 app.get('*', (req,res)=>{
   res.render('index');

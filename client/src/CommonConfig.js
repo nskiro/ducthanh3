@@ -11,8 +11,8 @@ const commonConfig = {
             return decoded;
         });
     },
-    baseURL: 'http://vps159788.vps.ovh.ca:5000/'
-    //baseURL: 'http://localhost:5000/'
+    //baseURL: 'http://vps159788.vps.ovh.ca:5000/'
+    baseURL: 'http://localhost:5000/'
 }
 
 export default commonConfig;
