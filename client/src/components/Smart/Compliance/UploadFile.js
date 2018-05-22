@@ -39,7 +39,7 @@ class UploadFile extends Component {
                     <Col xs={12} sm={4}>
                         <p>***Note: Please change file name prefix to match types below:</p>
                         <ul>
-                            <li>G-[Custom file name] (General Report)</li>
+                            <li>G-[DT1,DT2,DT3,TT]-[F,D] (General Report)</li>
                             <li>H-[Custom file name] (Humidity Control)</li>
                             <li>M-[Custom file name] (Metal Calibration)</li>
                         </ul>

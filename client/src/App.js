@@ -16,6 +16,15 @@ import ProductionPlanningPage from './components/Smart/Planning/Production';
 import BookingChartPage from './components/Smart/Planning/Booking';
 import ShippingSchedulePage from './components/Smart/Planning/Shipping';
 
+// Im -Ex
+import ViewImexReport from './components/Smart/Imex/ViewReport';
+
+//Product Warehouse
+import ViewProductWarehouseReport from './components/Smart/ProductWareHouse/ViewReport';
+
+//Accounting
+import ViewAccountingReport from './components/Smart/Accounting/ViewReport';
+
 // Compliance
 import UploadCompliancePage from './components/Smart/Compliance/UploadFile';
 import GeneralCompliancePage from './components/Smart/Compliance/General';
@@ -56,6 +65,9 @@ import UploadTrimPage from './components/Smart/Trim/UploadFile';
 import TrimInputPage from './components/Smart/Trim/Input';
 import TrimQaPage from './components/Smart/Trim/Qa';
 
+//Administration
+import UploadAdministrationPage from './components/Smart/Administration/UploadFile';
+import ViewAdministrationReport from './components/Smart/Administration/ViewReport';
 
 class App extends Component {
   render() {
@@ -104,6 +116,11 @@ class App extends Component {
                 <Route path='/trim/upload' component={UploadTrimPage} exact />
                 <Route path='/trim/input' component={TrimInputPage} exact />
                 <Route path='/trim/qa' component={TrimQaPage} exact />
+                <Route path='/administration/upload' component={UploadAdministrationPage} exact />
+                <Route path='/administration/viewreport' component={ViewAdministrationReport} exact />
+                <Route path='/imex/viewreport' component={ViewImexReport} exact />
+                <Route path='/productWarehouse' component={ViewProductWarehouseReport} exact />
+                <Route path='/accounting' component={ViewAccountingReport} exact />
                 <Route path='/logout' component={Logout} exact />
                 <Route path='/404' component={ComingSoon} exact />
                 <Route path='/' component={HomePage} exact />

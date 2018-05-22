@@ -22,7 +22,7 @@ const packagingRouter = require('./routes/packaging');
 const fabricqcRouter = require('./routes/fabricqc');
 const complianceRouter = require('./routes/compliance');
 const trimRouter = require('./routes/trim');
-
+const administrationRouter = require('./routes/administration');
 const app = express();
 
 // CORS setup
@@ -76,7 +76,7 @@ app.use('/api/packaging',packagingRouter);
 app.use('/api/fabricqc',fabricqcRouter);
 app.use('/api/compliance',complianceRouter);
 app.use('/api/trim',trimRouter);
-
+app.use('/api/administration',administrationRouter);
 app.get('*', (req,res)=>{
   res.render('index');
 })

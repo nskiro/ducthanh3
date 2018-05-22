@@ -64,7 +64,7 @@ router.post('/qa',(req,res,next)=>{
                     break;
             }
         else{
-            //const headerArr = ['POIssued','ShipBy','Order','PO','Line','Destination','SKU','Description','HangTheu','OrderQty','FactoryQty','OriginalDueDate','ExFTYDate','EbExFTYDate','EbFactoryQty','LetterReleaseDate','BookingSentDate','BookingConfirmationDate','ETDFactory','ETDVietNam','BOLDate','ETADate','XContainer','ContainerNum','VnInvoice','SERIALNUMBER','CARTONS','FactoryNotes','ErgobabyNotes','ProductGroup','TYPE','Country','Factory','PackingInstruction','TotalFabricStatus','VaiChinh','DMVaiChinh','SLVaiChinh','TTVaiChinh','VaiLot','DMVaiLot','SLVaiLot','TTVaiLot','VaiVien','DMVaiVien','SLVaiVien','TTVaiVien','LuoiNho','DMLuoiNho','SLLuoiNho','TTLuoiNho','LuoiLon','DMLuoiLon','SLLuoiLon','TTLuoiLon','VaiLot1','DMVaiLot1','SLVaiLot1','TTVaiLot1','VaiLot2','DMVaiLot2','SLVaiLot2','TTVaiLot2','VaiLot3','DMVaiLot3','SLVaiLot3','TTVaiLot3','VaiLot4','DMVaiLot4','SLVaiLot4','TTVaiLot4','VaiLot5','DMVaiLot5','SLVaiLot5','TTVaiLot5','Buckle','Nhan','Hop','Nut','PhuLieuKhac'];
+            
             res.status(200).send("File was uploaded successfully");
         }
     });
@@ -86,7 +86,7 @@ router.post('/marker',(req,res,next)=>{
                     break;
             }
         else{
-            //const headerArr = ['POIssued','ShipBy','Order','PO','Line','Destination','SKU','Description','HangTheu','OrderQty','FactoryQty','OriginalDueDate','ExFTYDate','EbExFTYDate','EbFactoryQty','LetterReleaseDate','BookingSentDate','BookingConfirmationDate','ETDFactory','ETDVietNam','BOLDate','ETADate','XContainer','ContainerNum','VnInvoice','SERIALNUMBER','CARTONS','FactoryNotes','ErgobabyNotes','ProductGroup','TYPE','Country','Factory','PackingInstruction','TotalFabricStatus','VaiChinh','DMVaiChinh','SLVaiChinh','TTVaiChinh','VaiLot','DMVaiLot','SLVaiLot','TTVaiLot','VaiVien','DMVaiVien','SLVaiVien','TTVaiVien','LuoiNho','DMLuoiNho','SLLuoiNho','TTLuoiNho','LuoiLon','DMLuoiLon','SLLuoiLon','TTLuoiLon','VaiLot1','DMVaiLot1','SLVaiLot1','TTVaiLot1','VaiLot2','DMVaiLot2','SLVaiLot2','TTVaiLot2','VaiLot3','DMVaiLot3','SLVaiLot3','TTVaiLot3','VaiLot4','DMVaiLot4','SLVaiLot4','TTVaiLot4','VaiLot5','DMVaiLot5','SLVaiLot5','TTVaiLot5','Buckle','Nhan','Hop','Nut','PhuLieuKhac'];
+            
             res.status(200).send("File was uploaded successfully");
         }
     });
@@ -108,7 +108,7 @@ router.post('/sample',(req,res,next)=>{
                     break;
             }
         else{
-            //const headerArr = ['POIssued','ShipBy','Order','PO','Line','Destination','SKU','Description','HangTheu','OrderQty','FactoryQty','OriginalDueDate','ExFTYDate','EbExFTYDate','EbFactoryQty','LetterReleaseDate','BookingSentDate','BookingConfirmationDate','ETDFactory','ETDVietNam','BOLDate','ETADate','XContainer','ContainerNum','VnInvoice','SERIALNUMBER','CARTONS','FactoryNotes','ErgobabyNotes','ProductGroup','TYPE','Country','Factory','PackingInstruction','TotalFabricStatus','VaiChinh','DMVaiChinh','SLVaiChinh','TTVaiChinh','VaiLot','DMVaiLot','SLVaiLot','TTVaiLot','VaiVien','DMVaiVien','SLVaiVien','TTVaiVien','LuoiNho','DMLuoiNho','SLLuoiNho','TTLuoiNho','LuoiLon','DMLuoiLon','SLLuoiLon','TTLuoiLon','VaiLot1','DMVaiLot1','SLVaiLot1','TTVaiLot1','VaiLot2','DMVaiLot2','SLVaiLot2','TTVaiLot2','VaiLot3','DMVaiLot3','SLVaiLot3','TTVaiLot3','VaiLot4','DMVaiLot4','SLVaiLot4','TTVaiLot4','VaiLot5','DMVaiLot5','SLVaiLot5','TTVaiLot5','Buckle','Nhan','Hop','Nut','PhuLieuKhac'];
+            
             res.status(200).send("File was uploaded successfully");
         }
     });
@@ -129,7 +129,7 @@ router.post('/cutting',(req,res,next)=>{
                     break;
             }
         else{
-            //const headerArr = ['POIssued','ShipBy','Order','PO','Line','Destination','SKU','Description','HangTheu','OrderQty','FactoryQty','OriginalDueDate','ExFTYDate','EbExFTYDate','EbFactoryQty','LetterReleaseDate','BookingSentDate','BookingConfirmationDate','ETDFactory','ETDVietNam','BOLDate','ETADate','XContainer','ContainerNum','VnInvoice','SERIALNUMBER','CARTONS','FactoryNotes','ErgobabyNotes','ProductGroup','TYPE','Country','Factory','PackingInstruction','TotalFabricStatus','VaiChinh','DMVaiChinh','SLVaiChinh','TTVaiChinh','VaiLot','DMVaiLot','SLVaiLot','TTVaiLot','VaiVien','DMVaiVien','SLVaiVien','TTVaiVien','LuoiNho','DMLuoiNho','SLLuoiNho','TTLuoiNho','LuoiLon','DMLuoiLon','SLLuoiLon','TTLuoiLon','VaiLot1','DMVaiLot1','SLVaiLot1','TTVaiLot1','VaiLot2','DMVaiLot2','SLVaiLot2','TTVaiLot2','VaiLot3','DMVaiLot3','SLVaiLot3','TTVaiLot3','VaiLot4','DMVaiLot4','SLVaiLot4','TTVaiLot4','VaiLot5','DMVaiLot5','SLVaiLot5','TTVaiLot5','Buckle','Nhan','Hop','Nut','PhuLieuKhac'];
+            
             res.status(200).send("File was uploaded successfully");
         }
     });
@@ -150,7 +150,7 @@ router.post('/numbering',(req,res,next)=>{
                     break;
             }
         else{
-            //const headerArr = ['POIssued','ShipBy','Order','PO','Line','Destination','SKU','Description','HangTheu','OrderQty','FactoryQty','OriginalDueDate','ExFTYDate','EbExFTYDate','EbFactoryQty','LetterReleaseDate','BookingSentDate','BookingConfirmationDate','ETDFactory','ETDVietNam','BOLDate','ETADate','XContainer','ContainerNum','VnInvoice','SERIALNUMBER','CARTONS','FactoryNotes','ErgobabyNotes','ProductGroup','TYPE','Country','Factory','PackingInstruction','TotalFabricStatus','VaiChinh','DMVaiChinh','SLVaiChinh','TTVaiChinh','VaiLot','DMVaiLot','SLVaiLot','TTVaiLot','VaiVien','DMVaiVien','SLVaiVien','TTVaiVien','LuoiNho','DMLuoiNho','SLLuoiNho','TTLuoiNho','LuoiLon','DMLuoiLon','SLLuoiLon','TTLuoiLon','VaiLot1','DMVaiLot1','SLVaiLot1','TTVaiLot1','VaiLot2','DMVaiLot2','SLVaiLot2','TTVaiLot2','VaiLot3','DMVaiLot3','SLVaiLot3','TTVaiLot3','VaiLot4','DMVaiLot4','SLVaiLot4','TTVaiLot4','VaiLot5','DMVaiLot5','SLVaiLot5','TTVaiLot5','Buckle','Nhan','Hop','Nut','PhuLieuKhac'];
+            
             res.status(200).send("File was uploaded successfully");
         }
     });
@@ -172,7 +172,7 @@ router.post('/production',(req,res,next)=>{
                     break;
             }
         else{
-            //const headerArr = ['POIssued','ShipBy','Order','PO','Line','Destination','SKU','Description','HangTheu','OrderQty','FactoryQty','OriginalDueDate','ExFTYDate','EbExFTYDate','EbFactoryQty','LetterReleaseDate','BookingSentDate','BookingConfirmationDate','ETDFactory','ETDVietNam','BOLDate','ETADate','XContainer','ContainerNum','VnInvoice','SERIALNUMBER','CARTONS','FactoryNotes','ErgobabyNotes','ProductGroup','TYPE','Country','Factory','PackingInstruction','TotalFabricStatus','VaiChinh','DMVaiChinh','SLVaiChinh','TTVaiChinh','VaiLot','DMVaiLot','SLVaiLot','TTVaiLot','VaiVien','DMVaiVien','SLVaiVien','TTVaiVien','LuoiNho','DMLuoiNho','SLLuoiNho','TTLuoiNho','LuoiLon','DMLuoiLon','SLLuoiLon','TTLuoiLon','VaiLot1','DMVaiLot1','SLVaiLot1','TTVaiLot1','VaiLot2','DMVaiLot2','SLVaiLot2','TTVaiLot2','VaiLot3','DMVaiLot3','SLVaiLot3','TTVaiLot3','VaiLot4','DMVaiLot4','SLVaiLot4','TTVaiLot4','VaiLot5','DMVaiLot5','SLVaiLot5','TTVaiLot5','Buckle','Nhan','Hop','Nut','PhuLieuKhac'];
+            
             res.status(200).send("File was uploaded successfully");
         }
     });
@@ -193,7 +193,7 @@ router.post('/embroidery',(req,res,next)=>{
                     break;
             }
         else{
-            //const headerArr = ['POIssued','ShipBy','Order','PO','Line','Destination','SKU','Description','HangTheu','OrderQty','FactoryQty','OriginalDueDate','ExFTYDate','EbExFTYDate','EbFactoryQty','LetterReleaseDate','BookingSentDate','BookingConfirmationDate','ETDFactory','ETDVietNam','BOLDate','ETADate','XContainer','ContainerNum','VnInvoice','SERIALNUMBER','CARTONS','FactoryNotes','ErgobabyNotes','ProductGroup','TYPE','Country','Factory','PackingInstruction','TotalFabricStatus','VaiChinh','DMVaiChinh','SLVaiChinh','TTVaiChinh','VaiLot','DMVaiLot','SLVaiLot','TTVaiLot','VaiVien','DMVaiVien','SLVaiVien','TTVaiVien','LuoiNho','DMLuoiNho','SLLuoiNho','TTLuoiNho','LuoiLon','DMLuoiLon','SLLuoiLon','TTLuoiLon','VaiLot1','DMVaiLot1','SLVaiLot1','TTVaiLot1','VaiLot2','DMVaiLot2','SLVaiLot2','TTVaiLot2','VaiLot3','DMVaiLot3','SLVaiLot3','TTVaiLot3','VaiLot4','DMVaiLot4','SLVaiLot4','TTVaiLot4','VaiLot5','DMVaiLot5','SLVaiLot5','TTVaiLot5','Buckle','Nhan','Hop','Nut','PhuLieuKhac'];
+            
             res.status(200).send("File was uploaded successfully");
         }
     });
@@ -215,7 +215,7 @@ router.post('/packaging',(req,res,next)=>{
                     break;
             }
         else{
-            //const headerArr = ['POIssued','ShipBy','Order','PO','Line','Destination','SKU','Description','HangTheu','OrderQty','FactoryQty','OriginalDueDate','ExFTYDate','EbExFTYDate','EbFactoryQty','LetterReleaseDate','BookingSentDate','BookingConfirmationDate','ETDFactory','ETDVietNam','BOLDate','ETADate','XContainer','ContainerNum','VnInvoice','SERIALNUMBER','CARTONS','FactoryNotes','ErgobabyNotes','ProductGroup','TYPE','Country','Factory','PackingInstruction','TotalFabricStatus','VaiChinh','DMVaiChinh','SLVaiChinh','TTVaiChinh','VaiLot','DMVaiLot','SLVaiLot','TTVaiLot','VaiVien','DMVaiVien','SLVaiVien','TTVaiVien','LuoiNho','DMLuoiNho','SLLuoiNho','TTLuoiNho','LuoiLon','DMLuoiLon','SLLuoiLon','TTLuoiLon','VaiLot1','DMVaiLot1','SLVaiLot1','TTVaiLot1','VaiLot2','DMVaiLot2','SLVaiLot2','TTVaiLot2','VaiLot3','DMVaiLot3','SLVaiLot3','TTVaiLot3','VaiLot4','DMVaiLot4','SLVaiLot4','TTVaiLot4','VaiLot5','DMVaiLot5','SLVaiLot5','TTVaiLot5','Buckle','Nhan','Hop','Nut','PhuLieuKhac'];
+            
             res.status(200).send("File was uploaded successfully");
         }
     });
@@ -247,7 +247,11 @@ router.post('/compliance',(req, res, next) => {
         return res.status(500).send('No files were uploaded');
     const sampleFile = req.files.planningFile;
     const fileNameArr = sampleFile.name.split('-');
-    const filePath = `./upload/file/compliance/${fileNameArr[0]}/${sampleFile.name}`;
+    let filePath = `./upload/file/compliance/${fileNameArr[0]}/${sampleFile.name}`;
+    if(fileNameArr[0] === 'G'){
+        //compliance/G/DT1/F
+        filePath = `./upload/file/compliance/${fileNameArr[0]}/${fileNameArr[1]}/${fileNameArr[2]}/${sampleFile.name}`;
+    }
     sampleFile.mv(filePath, function(err) {
         if (err)
             switch(typeof err){
@@ -284,6 +288,28 @@ router.post('/trim',(req, res, next) => {
                     break;
             }
         else{
+            res.status(200).send("File was uploaded successfully");
+        }
+    });
+});
+
+router.post('/administration',(req,res,next)=>{
+    if (!req.files)
+        return res.status(500).send('No files were uploaded');
+    const sampleFile = req.files.administrationFile;
+    const fileNameArr = sampleFile.name.split('-');
+    sampleFile.mv(`./upload/file/administration/${fileNameArr[0]}/${sampleFile.name}`, function(err) {
+        if (err)
+            switch(typeof err){
+                case 'object':
+                    res.status(500).send(err.code);
+                    break;
+                default:
+                    res.status(500).send(err);
+                    break;
+            }
+        else{
+            
             res.status(200).send("File was uploaded successfully");
         }
     });

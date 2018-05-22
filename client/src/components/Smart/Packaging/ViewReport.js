@@ -8,7 +8,7 @@ import cmConfig from '../../../CommonConfig';
 import axios from '../../../axiosInst';
 import DeptInfo from '../../Dumb/DeptInfo/DeptInfo';
 
-import PackagingAvatar from '../../../assets/images/dept/final.png';
+import PackagingAvatar from '../../../assets/images/dept/Packing.jpg';
 
 const RadioGroup = Radio.Group;
 const Option = Select.Option;

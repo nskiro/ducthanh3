@@ -8,7 +8,7 @@ import cmConfig from '../../../CommonConfig';
 import axios from '../../../axiosInst';
 import DeptInfo from '../../Dumb/DeptInfo/DeptInfo';
 
-import ComplianceAvatar from '../../../assets/images/avatar-placeholder.png';
+import ComplianceAvatar from '../../../assets/images/dept/compliance.jpg';
 
 const Option = Select.Option;
 const FormItem = Form.Item;
@@ -71,6 +71,7 @@ class ViewReport extends Component {
                             avatar={ComplianceAvatar}
                             head = "Ms Thuy"
                             email = "thanhthuy@ducthanh3.com.vn"
+                            mobile = "0939327732"
                         />
                     </Col>
                 </Row>

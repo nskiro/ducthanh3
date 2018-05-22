@@ -8,7 +8,7 @@ import cmConfig from '../../../CommonConfig';
 import axios from '../../../axiosInst';
 import DeptInfo from '../../Dumb/DeptInfo/DeptInfo';
 
-import CuttingAvatar from '../../../assets/images/avatar-placeholder.png';
+import CuttingAvatar from '../../../assets/images/dept/tocat.jpg';
 const Option = Select.Option;
 const FormItem = Form.Item;
 

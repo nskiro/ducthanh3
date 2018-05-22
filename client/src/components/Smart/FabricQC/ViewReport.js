@@ -8,7 +8,7 @@ import cmConfig from '../../../CommonConfig';
 import axios from '../../../axiosInst';
 import DeptInfo from '../../Dumb/DeptInfo/DeptInfo';
 
-import FabricQcAvatar from '../../../assets/images/dept/kiemvai.png';
+import FabricQcAvatar from '../../../assets/images/dept/kiemvai.jpg';
 
 const RadioGroup = Radio.Group;
 const Option = Select.Option;
@@ -73,9 +73,9 @@ class ViewReport extends Component {
                         <DeptInfo 
                             title="Fabric QC"
                             avatar={FabricQcAvatar}
-                            head = "Mr Giau"
-                            email = "nguyentuan@ducthanh3.com.vn"
-                            mobile = ""
+                            head = "Mr Giau Le"
+                            email = "legiau@ducthanh3.com.vn"
+                            mobile = "0902550757"
                         />
                     </Col>
                 </Row>

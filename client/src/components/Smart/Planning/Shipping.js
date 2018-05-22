@@ -89,9 +89,9 @@ class ViewReport extends Component {
                         <DeptInfo 
                             title="Planning"
                             avatar={PlanningAvatar}
-                            head = "Ms Thanh"
+                            head = "Ms. Thanh Nguyen"
                             email = "nguyenthanh@ducthanh3.com.vn"
-                            mobile = "01.208.308.959"
+                            mobile = "01208308959"
                         />
                     </Col>
                 </Row>

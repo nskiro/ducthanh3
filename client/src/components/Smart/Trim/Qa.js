@@ -73,9 +73,10 @@ class ViewReport extends Component {
                         <DeptInfo 
                             title="Trim"
                             avatar={TrimAvatar}
-                            head = "Ms Dinh"
+                            head = "Ms Dinh Huynh"
                             email = "huynhdinh@ducthanhti.com.vn"
-                        />
+                            mobile = "0918238456"
+                        />  
                     </Col>
                 </Row>
                 <Row className="show-grid">

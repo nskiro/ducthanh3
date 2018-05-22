@@ -8,7 +8,7 @@ import cmConfig from '../../../CommonConfig';
 import axios from '../../../axiosInst';
 import DeptInfo from '../../Dumb/DeptInfo/DeptInfo';
 
-import QaAvatar from '../../../assets/images/dept/qa.png';
+import QaAvatar from '../../../assets/images/dept/QC QA.jpg';
 const RadioGroup = Radio.Group;
 const Option = Select.Option;
 const FormItem = Form.Item;
@@ -103,7 +103,7 @@ class ViewReport extends Component {
                         <DeptInfo 
                             title="QA"
                             avatar={QaAvatar}
-                            head = "Mr. Phan Phong"
+                            head = "Mr. Phong Phan"
                             email = "phanphong@ducthanh3.com.vn"
                             mobile = "0974986555"
                         />

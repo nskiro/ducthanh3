@@ -16,40 +16,42 @@ const MenuMarkup = ({ mobileVersion, activeLinkKey, onLinkClick, className }) =>
     <Menu.Item key='/'>
       <Link onClick={onLinkClick} to='/'><img src={Logo} style={{padding: 0,margin: 0, maxHeight: '43px'}} alt="Ergo Baby" /></Link>
     </Menu.Item>
-    <SubMenu title={<span>Upload</span>}>
-      <Menu.Item key='/qaqc/upload'>
-        <Link onClick={onLinkClick} to='/qaqc/upload'>QA - QC</Link>
-      </Menu.Item>
-      <Menu.Item key='/sample/upload'>
-        <Link onClick={onLinkClick} to='/sample/upload'>Sample</Link>
-      </Menu.Item>
-      <Menu.Item key='/marker/upload'>
-        <Link onClick={onLinkClick} to='/marker/upload'>Marker</Link>
-      </Menu.Item>
-      <Menu.Item key='/fabricQc/upload'>
-        <Link onClick={onLinkClick} to='/fabricQc/upload'>Fabric QC</Link>
-      </Menu.Item>
-      <Menu.Item key='/cutting/upload'>
-        <Link onClick={onLinkClick} to='/cutting/upload'>Cutting</Link>
-      </Menu.Item>
-      <Menu.Item key='/numbering/upload'>
-        <Link onClick={onLinkClick} to='/numbering/upload'>Numbering</Link>
-      </Menu.Item>
+    <SubMenu title={<span>Upload</span>}>  
+      <SubMenu title={<span>Pre-Production</span>}>
+        <Menu.Item key='/sample/upload'>
+          <Link onClick={onLinkClick} to='/sample/upload'>Sample</Link>
+        </Menu.Item>
+        <Menu.Item key='/marker/upload'>
+          <Link onClick={onLinkClick} to='/marker/upload'>Marker</Link>
+        </Menu.Item>
+        <Menu.Item key='/fabricQc/upload'>
+          <Link onClick={onLinkClick} to='/fabricQc/upload'>Fabric QC</Link>
+        </Menu.Item>
+        <Menu.Item key='/cutting/upload'>
+          <Link onClick={onLinkClick} to='/cutting/upload'>Cutting</Link>
+        </Menu.Item>
+        <Menu.Item key='/numbering/upload'>
+          <Link onClick={onLinkClick} to='/numbering/upload'>Numbering</Link>
+        </Menu.Item>
+        <Menu.Item key='/trim/upload'>
+          <Link onClick={onLinkClick} to='/trim/upload'>Trim</Link>
+        </Menu.Item>
+        <Menu.Item key='/embroidery/upload'>
+          <Link onClick={onLinkClick} to='/embroidery/upload'>Embroidery</Link>
+        </Menu.Item>
+      </SubMenu>
       <Menu.Item key='/production/upload'>
         <Link onClick={onLinkClick} to='/production/upload'>Production</Link>
       </Menu.Item>
-      <Menu.Item key='/embroidery/upload'>
-        <Link onClick={onLinkClick} to='/embroidery/upload'>Embroidery</Link>
-      </Menu.Item>
-      <Menu.Item key='/packaging/upload'>
-        <Link onClick={onLinkClick} to='/packaging/upload'>Packaging</Link>
-      </Menu.Item>
-      <Menu.Item key='/compliance/upload'>
-        <Link onClick={onLinkClick} to='/compliance/upload'>Compliance</Link>
-      </Menu.Item>
-      <Menu.Item key='/trim/upload'>
-        <Link onClick={onLinkClick} to='/trim/upload'>Trim</Link>
-      </Menu.Item>
+      <SubMenu title={<span>Post-Production</span>}>
+        <Menu.Item key='/qaqc/upload'>
+          <Link onClick={onLinkClick} to='/qaqc/upload'>QA - QC</Link>
+        </Menu.Item>
+        
+        <Menu.Item key='/packaging/upload'>
+          <Link onClick={onLinkClick} to='/packaging/upload'>Packaging</Link>
+        </Menu.Item>
+      </SubMenu>
     </SubMenu>
     <SubMenu title={<span>Planning</span>}>
         <Menu.Item key='/planning/production'>
@@ -117,8 +119,8 @@ const MenuMarkup = ({ mobileVersion, activeLinkKey, onLinkClick, className }) =>
           <Link onClick={onLinkClick} to='/productWarehouse'>Product Warehouse</Link>
       </Menu.Item>
     </SubMenu>
-    <Menu.Item key='/administration'>
-      <Link onClick={onLinkClick} to='/administration'>Administration</Link>
+    <Menu.Item key='/administration/viewreport'>
+      <Link onClick={onLinkClick} to='/administration/viewreport'>Administration</Link>
     </Menu.Item>
     <Menu.Item key='/accounting'>
       <Link onClick={onLinkClick} to='/accounting'>Accounting</Link>

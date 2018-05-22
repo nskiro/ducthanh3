@@ -8,7 +8,7 @@ import cmConfig from '../../../CommonConfig';
 import axios from '../../../axiosInst';
 import DeptInfo from '../../Dumb/DeptInfo/DeptInfo';
 
-import ProductionAvatar from '../../../assets/images/dept/quandoc.png';
+import ProductionAvatar from '../../../assets/images/dept/Production.jpg';
 
 const RadioGroup = Radio.Group;
 const Option = Select.Option;
@@ -75,7 +75,7 @@ class ViewReport extends Component {
                             avatar={ProductionAvatar}
                             head = "Ms. Thanh Truc"
                             email = "thanhtruc@ducthanh3.com.vn"
-                            mobile = ""
+                            mobile = "01225003245"
                         />
                     </Col>
                 </Row>

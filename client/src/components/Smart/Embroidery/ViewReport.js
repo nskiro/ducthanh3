@@ -8,7 +8,7 @@ import cmConfig from '../../../CommonConfig';
 import axios from '../../../axiosInst';
 import DeptInfo from '../../Dumb/DeptInfo/DeptInfo';
 
-import EmbroideryAvatar from '../../../assets/images/dept/phoihang.png';
+import EmbroideryAvatar from '../../../assets/images/dept/Numbering.jpg';
 const Option = Select.Option;
 const FormItem = Form.Item;
 
@@ -68,8 +68,9 @@ class ViewReport extends Component {
                         <DeptInfo 
                             title="Embroidery"
                             avatar={EmbroideryAvatar}
-                            head = "Mr Huynh Ty"
+                            head = "Mr Ty Huynh"
                             email = "huynhty@ducthanh3.com.vn"
+                            mobile = "01238793519"
                         />
                     </Col>
                 </Row>

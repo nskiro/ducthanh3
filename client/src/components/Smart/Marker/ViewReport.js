@@ -73,9 +73,9 @@ class ViewReport extends Component {
                         <DeptInfo 
                             title="Marker"
                             avatar={MarkerAvatar}
-                            head = "Mr Tuan"
+                            head = "Mr Tuan Nguyen"
                             email = "nguyentuan@ducthanh3.com.vn"
-                            mobile = ""
+                            mobile = "0912375195"
                         />
                     </Col>
                 </Row>

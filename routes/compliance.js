@@ -2,8 +2,9 @@ const express = require('express');
 const dirTree = require('directory-tree');
 const router = express.Router();
 
-router.get('/general',(req, res, next) => {
-    const tree = dirTree(`./upload/file/compliance/G`);
+router.get('/general/:folderName',(req, res, next) => {
+    const folderArr = req.params.folderName.split('-');
+    const tree = dirTree(`./upload/file/compliance/G/${folderArr[0]}/${folderArr[1]}`);
     res.status(200).send(tree.children);
 });
 

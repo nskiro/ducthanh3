@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Row, Col } from 'react-bootstrap';
-import { Form, Select, message } from 'antd';
+import { Form, Select, message, Radio } from 'antd';
 import _ from 'lodash';
 
 import Aux from '../../../hoc';
@@ -8,11 +8,11 @@ import cmConfig from '../../../CommonConfig';
 import axios from '../../../axiosInst';
 import DeptInfo from '../../Dumb/DeptInfo/DeptInfo';
 
-import ComplianceAvatar from '../../../assets/images/avatar-placeholder.png';
+import ComplianceAvatar from '../../../assets/images/dept/compliance.jpg';
 
 const Option = Select.Option;
 const FormItem = Form.Item;
-
+const RadioGroup = Radio.Group;
 class PdfViewer extends Component {
     render() {
         return <embed src={this.props.pdfUrl} width={'100%'} height={'800'} />;
@@ -22,23 +22,9 @@ class PdfViewer extends Component {
 class ViewReport extends Component {
     state = {
         fileDeptList: [],
+        factory: '',
+        fileType: '',
         selectedFile: null
-    }
-
-    componentDidMount(){
-        axios.get(`/api/compliance/general`)
-        .then((res) => {
-            if(res.data.length > 0){
-                message.success('Files found. Please select report file');
-            }
-            else{
-                message.warning('No files found');
-            }
-            this.setState({fileDeptList: res.data});
-        })
-        .catch((err) => {
-            console.log(err);
-        });
     }
 
     handleFileFocus = (value) => {
@@ -47,6 +33,34 @@ class ViewReport extends Component {
     
     handleFileChange = (value) => {
         this.setState({selectedFile: value});
+    }
+
+    handleFactoryChange = (event) => {
+        let value = event.target.value;
+        this.setState({factory: value});
+    }
+
+    handleTypeChange = (event) => {
+        let value = event.target.value;
+        this.setState({fileType: value});
+        if(this.state.factory === ''){
+            message.warning('Please select factory first');
+        }
+        else{
+            axios.get(`/api/compliance/general/${this.state.factory}-${value}`)
+            .then((res) => {
+                if(res.data.length > 0){
+                    message.success('Files found. Please select report file');
+                }
+                else{
+                    message.warning('No files found');
+                }
+                this.setState({fileDeptList: res.data});
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+        }
     }
 
     render(){
@@ -71,12 +85,27 @@ class ViewReport extends Component {
                             avatar={ComplianceAvatar}
                             head = "Ms Thuy"
                             email = "thanhthuy@ducthanh3.com.vn"
+                            mobile = "0939327732"
                         />
-                    </Col>
+                    </Col> 
                 </Row>
                 <Row className="show-grid">
                     <Col xs={12} sm={12}>
-                        <Form layout="inline">
+                        <Form layout="vertical">
+                            <FormItem label="Choose factory">
+                                <RadioGroup onChange={this.handleFactoryChange} value={this.state.factory}>
+                                    <Radio value="DT1">Đức Thành 1</Radio>
+                                    <Radio value="DT2">Đức Thành 2</Radio>
+                                    <Radio value="DT3">Đức Thành 3</Radio>
+                                    <Radio value="TT">Thành Trực</Radio>
+                                </RadioGroup>
+                            </FormItem>
+                            <FormItem label="Choose report type">
+                                <RadioGroup onChange={this.handleTypeChange} value={this.state.fileType}>
+                                    <Radio value="F">Factory Tour</Radio>
+                                    <Radio value="D">Document</Radio>
+                                </RadioGroup>
+                            </FormItem>
                             <FormItem label="Choose report file">
                                 <Select
                                     showSearch

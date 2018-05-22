@@ -27,8 +27,8 @@ const MenuMarkup = ({ mobileVersion, activeLinkKey, onLinkClick, className }) =>
           <Link onClick={onLinkClick} to='/planning/shipping'>Shipping</Link>
         </Menu.Item>
       </SubMenu>
-    <Menu.Item key='/imex'>
-      <Link onClick={onLinkClick} to='/imex'>Import-Export</Link>
+    <Menu.Item key='/imex/viewreport'>
+      <Link onClick={onLinkClick} to='/imex/viewreport'>Import-Export</Link>
     </Menu.Item>
     <SubMenu title={<span>Pre-Production</span>}>
       <SubMenu title={<span>Fabric</span>}>
@@ -82,8 +82,8 @@ const MenuMarkup = ({ mobileVersion, activeLinkKey, onLinkClick, className }) =>
           <Link onClick={onLinkClick} to='/productWarehouse'>Product Warehouse</Link>
       </Menu.Item>
     </SubMenu>
-    <Menu.Item key='/administration'>
-      <Link onClick={onLinkClick} to='/administration'>Administration</Link>
+    <Menu.Item key='/administration/viewreport'>
+      <Link onClick={onLinkClick} to='/administration/viewreport'>Administration</Link>
     </Menu.Item>
     <Menu.Item key='/accounting'>
       <Link onClick={onLinkClick} to='/accounting'>Accounting</Link>
@@ -95,8 +95,8 @@ const MenuMarkup = ({ mobileVersion, activeLinkKey, onLinkClick, className }) =>
         <Menu.Item key='/compliance/metal'>
           <Link onClick={onLinkClick} to='/compliance/metal'>Metal Calibration</Link>
         </Menu.Item>
-        <Menu.Item key='/compliance/viewreport'>
-          <Link onClick={onLinkClick} to='/compliance/viewreport'>General Report</Link>
+        <Menu.Item key='/compliance/general'>
+          <Link onClick={onLinkClick} to='/compliance/general'>General Report</Link>
         </Menu.Item>
     </SubMenu>
     <Menu.Item key='/logout' style={{position: 'absolute', right: '20px'}}>
