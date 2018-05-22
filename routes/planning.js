@@ -1,4 +1,5 @@
 const express = require('express');
+const fs = require('fs');
 const dirTree = require('directory-tree');
 const router = express.Router();
 const _ = require('lodash');
@@ -27,6 +28,25 @@ router.get('/booking',(req,res,next) => {
 router.get('/shipping',(req,res,next) => {
     const tree = dirTree(`./upload/file/plan/S`);
     res.status(200).send(tree.children);
+});
+
+router.get('/deleteFile/:fileName', (req,res,next) => {
+    const fileType = req.params.fileName.split('-');
+    let filePath = './upload/file/plan/'
+    switch(fileType[0]){
+        case 'B':
+            filePath += 'B/';
+            break;
+        case 'S':
+            filePath += 'S/';
+            break;
+    }
+    fs.unlink(filePath + req.params.fileName, (err) => {
+        if (err) {
+            return res.status(500).send(err);
+        }
+        res.status(200).send('File was deleted');
+    });
 });
 
 module.exports = router;

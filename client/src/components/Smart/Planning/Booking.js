@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Row, Col } from 'react-bootstrap';
-import { Form, Select, message} from 'antd';
+import { Form, Select, message, Button} from 'antd';
 import _ from 'lodash';
 
 import Aux from '../../../hoc';
@@ -40,6 +40,28 @@ class ViewReport extends Component {
         });
     }
 
+    handleFileDelete = () => {
+        if(this.state.selectedFile === null){
+            message.warning('Please select file to delete!');
+        }
+        else{
+            const filePath = this.state.selectedFile.split('\\');
+            console.log(filePath);
+            axios.get(`/api/planning/deleteFile/${filePath[4]}`)
+            .then((res) => {
+                let temp = [...this.state.fileList];
+                const indx = _.findIndex(temp, (o) =>{
+                    return o.name === filePath[4];
+                  });
+                _.pullAt(temp,indx);
+                message.success(res.data);
+                this.setState({selectedFile: null, fileList: temp});
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+        }
+    }
     handleFileFocus = (value) => {
         this.setState({selectedFile: null});
     }
@@ -90,6 +112,7 @@ class ViewReport extends Component {
                                     {optionReportFile}
                                 </Select>
                             </FormItem>
+                            { localStorage.dept === 'Planning' ? <FormItem><Button type="danger" shape="circle" icon="delete" onClick={this.handleFileDelete} /></FormItem> : null }
                         </Form>
                     </Col>
                 </Row>
