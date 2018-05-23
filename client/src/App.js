@@ -16,6 +16,9 @@ import ProductionPlanningPage from './components/Smart/Planning/Production';
 import BookingChartPage from './components/Smart/Planning/Booking';
 import ShippingSchedulePage from './components/Smart/Planning/Shipping';
 
+//FRI-AQL
+import ViewAQLReport from './components/Smart/FriAql/ViewReport';
+
 // Factory Operation
 import ViewFOReport from './components/Smart/FactoryOperation/ViewReport';
 // Im -Ex
@@ -124,6 +127,7 @@ class App extends Component {
                 <Route path='/productWarehouse' component={ViewProductWarehouseReport} exact />
                 <Route path='/accounting' component={ViewAccountingReport} exact />
                 <Route path='/factoryOperation' component={ViewFOReport} exact />
+                <Route path='/aql' component={ViewAQLReport} exact />
                 <Route path='/logout' component={Logout} exact />
                 <Route path='/404' component={ComingSoon} exact />
                 <Route path='/' component={HomePage} exact />

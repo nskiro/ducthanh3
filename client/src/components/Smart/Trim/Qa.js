@@ -84,7 +84,7 @@ class ViewReport extends Component {
                         <Form layout="vertical">
                             <FormItem label="Choose report type">
                                 <RadioGroup onChange={this.handleDeptChange} value={this.state.dept}>
-                                    <Radio value="WT">Warehouse Test</Radio>
+                                    <Radio value="WH">Warehouse Test</Radio>
                                     <Radio value="DR">Daily Report</Radio>
                                 </RadioGroup>
                             </FormItem>

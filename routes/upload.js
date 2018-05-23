@@ -203,7 +203,7 @@ router.post('/packaging',(req,res,next)=>{
     if (!req.files)
         return res.status(500).send('No files were uploaded');
     const sampleFile = req.files.packagingFile;
-    const arrFileName = sampleFile.split('-');
+    const arrFileName = sampleFile.name.split('-');
     sampleFile.mv(`./upload/file/packaging/${arrFileName[0]}/${sampleFile.name}`, function(err) {
         if (err)
             switch(typeof err){
