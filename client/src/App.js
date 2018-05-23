@@ -70,6 +70,10 @@ import UploadTrimPage from './components/Smart/Trim/UploadFile';
 import TrimInputPage from './components/Smart/Trim/Input';
 import TrimQaPage from './components/Smart/Trim/Qa';
 
+//AQL
+import UploadAqlPage from './components/Smart/Aql/UploadFile';
+import ViewAqlReport from './components/Smart/Aql/ViewReport';
+
 //Administration
 import UploadAdministrationPage from './components/Smart/Administration/UploadFile';
 import ViewAdministrationReport from './components/Smart/Administration/ViewReport';
@@ -110,6 +114,8 @@ class App extends Component {
                 <Route path='/marker/upload' component={UploadMarkerPage} exact />
                 <Route path='/qaqc/viewreport' component={ViewQaReport} exact />
                 <Route path='/qaqc/upload' component={UploadQaPage} exact />
+                <Route path='/aql/upload' component={UploadAqlPage} exact />
+                <Route path='/aql/viewreport' component={ViewAqlReport} exact />
                 <Route path='/planning/upload' component={UploadPlanningPage} exact />
                 <Route path='/planning/production' component={ProductionPlanningPage} exact />
                 <Route path='/planning/booking' component={BookingChartPage} exact />
@@ -127,7 +133,6 @@ class App extends Component {
                 <Route path='/productWarehouse' component={ViewProductWarehouseReport} exact />
                 <Route path='/accounting' component={ViewAccountingReport} exact />
                 <Route path='/factoryOperation' component={ViewFOReport} exact />
-                <Route path='/aql' component={ViewAQLReport} exact />
                 <Route path='/logout' component={Logout} exact />
                 <Route path='/404' component={ComingSoon} exact />
                 <Route path='/' component={HomePage} exact />

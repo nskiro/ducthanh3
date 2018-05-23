@@ -8,8 +8,8 @@ router.get('/general/:folderName',(req, res, next) => {
     res.status(200).send(tree.children);
 });
 
-router.get('/humidity',(req, res, next) => {
-    const tree = dirTree(`./upload/file/compliance/H`);
+router.get('/humidity/:folderName',(req, res, next) => {
+    const tree = dirTree(`./upload/file/compliance/H/${req.params.folderName}`);
     res.status(200).send(tree.children);
 });
 

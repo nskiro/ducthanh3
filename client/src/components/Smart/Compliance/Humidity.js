@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Row, Col } from 'react-bootstrap';
-import { Form, Select, message } from 'antd';
+import { Form, Select, message, Radio } from 'antd';
 import _ from 'lodash';
 
 import Aux from '../../../hoc';
@@ -10,6 +10,7 @@ import DeptInfo from '../../Dumb/DeptInfo/DeptInfo';
 
 import ComplianceAvatar from '../../../assets/images/dept/compliance.jpg';
 
+const RadioGroup = Radio.Group;
 const Option = Select.Option;
 const FormItem = Form.Item;
 
@@ -21,24 +22,27 @@ class PdfViewer extends Component {
 
 class ViewReport extends Component {
     state = {
+        dept: '',
         fileDeptList: [],
         selectedFile: null
     }
 
-    componentDidMount(){
-        axios.get(`/api/compliance/humidity`)
-        .then((res) => {
-            if(res.data.length > 0){
-                message.success('Files found. Please select report file');
-            }
-            else{
-                message.warning('No files found');
-            }
-            this.setState({fileDeptList: res.data});
-        })
-        .catch((err) => {
-            console.log(err);
-        });
+    handleDeptChange = (event) => {
+        let value = event.target.value;
+        this.setState({dept: value});
+        axios.get(`/api/compliance/humidity/${value}`)
+            .then((res) => {
+                if(res.data.length > 0){
+                    message.success('Files found. Please select report file');
+                }
+                else{
+                    message.warning('No files found');
+                }
+                this.setState({fileDeptList: res.data});
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     }
 
     handleFileFocus = (value) => {
@@ -77,7 +81,13 @@ class ViewReport extends Component {
                 </Row>
                 <Row className="show-grid">
                     <Col xs={12} sm={12}>
-                        <Form layout="inline">
+                        <Form layout="vertical">
+                            <FormItem label="Choose report type">
+                                <RadioGroup onChange={this.handleDeptChange} value={this.state.dept}>
+                                    <Radio value="F">Factory</Radio>
+                                    <Radio value="P">Product</Radio>
+                                </RadioGroup>
+                            </FormItem>
                             <FormItem label="Choose report file">
                                 <Select
                                     showSearch

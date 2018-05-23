@@ -8,7 +8,7 @@ import cmConfig from '../../../CommonConfig';
 import axios from '../../../axiosInst';
 import DeptInfo from '../../Dumb/DeptInfo/DeptInfo';
 
-import TrimAvatar from '../../../assets/images/avatar-placeholder.png';
+import QaAvatar from '../../../assets/images/dept/QC QA.jpg';
 
 const RadioGroup = Radio.Group;
 const Option = Select.Option;
@@ -71,11 +71,11 @@ class ViewReport extends Component {
                 <Row className="show-grid">
                     <Col xs={12} sm={12}>
                         <DeptInfo 
-                            title="Trim"
-                            avatar={TrimAvatar}
-                            head = "Ms Dinh Huynh"
-                            email = "huynhdinh@ducthanhti.com.vn"
-                            mobile = "0918238456"
+                            title="Trim QA"
+                            avatar={QaAvatar}
+                            head = "Mr. Phong Phan"
+                            email = "phanphong@ducthanh3.com.vn"
+                            mobile = "0974986555"
                         />  
                     </Col>
                 </Row>

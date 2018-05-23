@@ -51,6 +51,9 @@ const MenuMarkup = ({ mobileVersion, activeLinkKey, onLinkClick, className }) =>
         <Menu.Item key='/packaging/upload'>
           <Link onClick={onLinkClick} to='/packaging/upload'>Packaging</Link>
         </Menu.Item>
+        <Menu.Item key='/aql/upload'>
+          <Link onClick={onLinkClick} to='/aql/upload'>FRI-AQL</Link>
+        </Menu.Item>
       </SubMenu>
     </SubMenu>
     <SubMenu title={<span>Planning</span>}>
@@ -107,10 +110,13 @@ const MenuMarkup = ({ mobileVersion, activeLinkKey, onLinkClick, className }) =>
       <Menu.Item key='/qaqc/viewreport'>
           <Link onClick={onLinkClick} to='/qaqc/viewreport'>QA-QC</Link>
       </Menu.Item>
+      <Menu.Item key='/factoryOperation'>
+          <Link onClick={onLinkClick} to='/factoryOperation'>Factory Operation</Link>
+      </Menu.Item>
     </SubMenu>
     <SubMenu title={<span>Post-Production</span>}>
-      <Menu.Item key='/aql'>
-          <Link onClick={onLinkClick} to='/aql'>FRI-AQL</Link>
+      <Menu.Item key='/aql/viewreport'>
+          <Link onClick={onLinkClick} to='/aql/viewreport'>FRI-AQL</Link>
       </Menu.Item>
       <Menu.Item key='/packaging/viewreport'>
           <Link onClick={onLinkClick} to='/packaging/viewreport'>Packaging</Link>
