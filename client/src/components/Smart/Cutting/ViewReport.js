@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Row, Col } from 'react-bootstrap';
-import { Form, Select, message } from 'antd';
+import { Form, Select, message, Alert } from 'antd';
 import _ from 'lodash';
 
 import Aux from '../../../hoc';
@@ -65,12 +65,44 @@ class ViewReport extends Component {
                 </Row>
                 <Row className="show-grid">
                     <Col xs={12} sm={12}>
-                        <DeptInfo 
-                            title="Cutting"
-                            avatar={CuttingAvatar}
-                            head = "Mr Phuong"
-                            email = "vanphuong@ducthanh3.com.vn"
-                        />
+                        <Row className="show-grid">
+                            <Col xs={12} sm={2}>
+                                <img src={CuttingAvatar} alt="Avatar" style={{maxWidth: "100%"}} />
+                            </Col>
+                            <Col xs={12} sm={4}>
+                                <Row className="show-grid">
+                                    <Col xs={12} sm={12}>
+                                        <Alert
+                                            message={`Cutting Contact Info`}
+                                            description={
+                                                <span>
+                                                    <Row className="show-grid"><Col xs={12} sm={12}>Head of department: <b>Mr Phuong</b></Col></Row>
+                                                    <Row className="show-grid"><Col xs={12} sm={12}>Email: <a href="mailto:vanphuong@ducthanh3.com.vn">vanphuong@ducthanh3.com.vn</a></Col></Row>
+                                                    <Row className="show-grid"><Col xs={12} sm={12}>Mobile: 0123954756</Col></Row>
+                                                </span>
+                                            }
+                                            type="info"
+                                            showIcon
+                                        />
+                                    </Col>
+                                </Row>
+                                <Row className="show-grid" style={{marginTop: '5px'}}>
+                                    <Col xs={12} sm={12}>
+                                        <Alert
+                                            description={
+                                                <span>
+                                                    <Row className="show-grid"><Col xs={12} sm={12}>Vice Head of department: <b>Ms Thuy An</b></Col></Row>
+                                                    <Row className="show-grid"><Col xs={12} sm={12}>Email: <a href="mailto:thuyan@ducthanh3.com.vn">thuyan@ducthanh3.com.vn</a></Col></Row>
+                                                    <Row className="show-grid"><Col xs={12} sm={12}>Mobile: 0978576982</Col></Row>
+                                                </span>
+                                            }
+                                            type="info"
+                                            showIcon
+                                        />
+                                    </Col>
+                                </Row>
+                            </Col>
+                        </Row>
                     </Col>
                 </Row>
                 <Row className="show-grid">

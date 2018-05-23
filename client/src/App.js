@@ -78,6 +78,10 @@ import ViewAqlReport from './components/Smart/Aql/ViewReport';
 import UploadAdministrationPage from './components/Smart/Administration/UploadFile';
 import ViewAdministrationReport from './components/Smart/Administration/ViewReport';
 
+//Sewing Plan
+import UploadSewingPlanPage from './components/Smart/SewingPlan/UploadFile';
+import ViewSewingPlanReport from './components/Smart/SewingPlan/ViewReport';
+
 class App extends Component {
   render() {
     let routes = (
@@ -127,6 +131,8 @@ class App extends Component {
                 <Route path='/trim/upload' component={UploadTrimPage} exact />
                 <Route path='/trim/input' component={TrimInputPage} exact />
                 <Route path='/trim/qa' component={TrimQaPage} exact />
+                <Route path='/sewingplan/upload' component={UploadSewingPlanPage} exact />
+                <Route path='/sewingplan/viewreport' component={ViewSewingPlanReport} exact />
                 <Route path='/administration/upload' component={UploadAdministrationPage} exact />
                 <Route path='/administration/viewreport' component={ViewAdministrationReport} exact />
                 <Route path='/imex/viewreport' component={ViewImexReport} exact />

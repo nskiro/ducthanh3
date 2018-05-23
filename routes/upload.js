@@ -335,4 +335,25 @@ router.post('/aql',(req,res,next)=>{
         }
     });
 });
+
+router.post('/sewingplan',(req,res,next)=>{
+    if (!req.files)
+        return res.status(500).send('No files were uploaded');
+    const sampleFile = req.files.sewingplanFile;
+    sampleFile.mv(`./upload/file/sewingplan/${sampleFile.name}`, function(err) {
+        if (err)
+            switch(typeof err){
+                case 'object':
+                    res.status(500).send(err.code);
+                    break;
+                default:
+                    res.status(500).send(err);
+                    break;
+            }
+        else{
+            
+            res.status(200).send("File was uploaded successfully");
+        }
+    });
+});
 module.exports = router;

@@ -40,6 +40,9 @@ const MenuMarkup = ({ mobileVersion, activeLinkKey, onLinkClick, className }) =>
           <Link onClick={onLinkClick} to='/embroidery/upload'>Embroidery</Link>
         </Menu.Item>
       </SubMenu>
+      <Menu.Item key='/sewingplan/upload'>
+        <Link onClick={onLinkClick} to='/sewingplan/upload'>Sewing Plan</Link>
+      </Menu.Item>
       <Menu.Item key='/production/upload'>
         <Link onClick={onLinkClick} to='/production/upload'>Production</Link>
       </Menu.Item>
@@ -67,8 +70,8 @@ const MenuMarkup = ({ mobileVersion, activeLinkKey, onLinkClick, className }) =>
           <Link onClick={onLinkClick} to='/planning/shipping'>Shipping</Link>
         </Menu.Item>
       </SubMenu>
-    <Menu.Item key='/imex'>
-      <Link onClick={onLinkClick} to='/imex'>Import-Export</Link>
+    <Menu.Item key='/imex/viewreport'>
+      <Link onClick={onLinkClick} to='/imex/viewreport'>Import-Export</Link>
     </Menu.Item>
     <SubMenu title={<span>Pre-Production</span>}>
       <SubMenu title={<span>Fabric</span>}>
@@ -104,6 +107,9 @@ const MenuMarkup = ({ mobileVersion, activeLinkKey, onLinkClick, className }) =>
       </SubMenu>
     </SubMenu>
     <SubMenu title={<span>Production</span>}>
+      <Menu.Item key='/sewingplan/viewreport'>
+          <Link onClick={onLinkClick} to='/sewingplan/viewreport'>Sewing Plan</Link>
+      </Menu.Item>
       <Menu.Item key='/production/viewreport'>
           <Link onClick={onLinkClick} to='/production/viewreport'>Sewing</Link>
       </Menu.Item>

@@ -87,9 +87,9 @@ class ViewReport extends Component {
                                     <Radio value="EB1">EB 1-2</Radio>
                                     <Radio value="EB2">EB 3-4</Radio>
                                     <Radio value="EB3">EB 5-6</Radio>
-                                    <Radio value="EB4">EB 7</Radio>
-                                    <Radio value="EB5">EB 8-9</Radio>
-                                    <Radio value="EB6">EB 10-11</Radio>
+                                    <Radio value="EB4">EB 8-9</Radio>
+                                    <Radio value="EB5">EB 10-11</Radio>
+                                    <Radio value="EB6">EB 7</Radio>
                                 </RadioGroup>
                             </FormItem>
                             <FormItem label="Choose report file">
