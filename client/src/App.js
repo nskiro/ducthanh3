@@ -16,9 +16,6 @@ import ProductionPlanningPage from './components/Smart/Planning/Production';
 import BookingChartPage from './components/Smart/Planning/Booking';
 import ShippingSchedulePage from './components/Smart/Planning/Shipping';
 
-//FRI-AQL
-import ViewAQLReport from './components/Smart/FriAql/ViewReport';
-
 // Factory Operation
 import ViewFOReport from './components/Smart/FactoryOperation/ViewReport';
 // Im -Ex

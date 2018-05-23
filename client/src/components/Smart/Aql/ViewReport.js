@@ -26,7 +26,7 @@ class ViewReport extends Component {
     }
 
     componentDidMount(){
-        axios.get(`/api/numbering/listfolder`)
+        axios.get(`/api/aql/listfolder`)
         .then((res) => {
             if(res.data.length > 0){
                 message.success('Files found. Please select report file');
