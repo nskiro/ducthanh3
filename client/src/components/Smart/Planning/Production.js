@@ -55,7 +55,7 @@ class Production extends Component {
             {key: 'country', name: 'Country', filterable: true, filterRenderer: MultiSelectFilter, width: 91, visible: true},
             {key: 'factory', name: 'Factory', filterable: true, width: 60, visible: false},
             {key: 'packingInstruction', name: 'Packing Instruction', filterable: true, width: 140, visible: false},
-            {key: 'totalFabricStatus', name: 'Total Fabric Status', filterable: true, width: 400, visible: false},
+            {key: 'totalFabricStatus', name: 'Total Fabric Status', filterable: true, width: 400, visible: false, cellClass: 'no-overflow'},
             {key: 'vaiChinh', name: 'Vai Chinh', filterable: true, width: 270, visible: false},
             {key: 'dmVaiChinh', name: 'DM Vai Chinh', filterable: true, width: 100, visible: false},
             {key: 'slVaiChinh', name: 'SL Vai Chinh', filterable: true, width: 91, visible: false},
@@ -384,6 +384,7 @@ class Production extends Component {
                             enableCellSelect={true}
                             rowsCount={this.rowsCount()}
                             minHeight={600}
+                            rowHeight={50}
                             toolbar={<Toolbar enableFilter={true}/>}
                             onAddFilter={this.handleFilterChange}
                             getValidFilterValues={this.getValidFilterValues}

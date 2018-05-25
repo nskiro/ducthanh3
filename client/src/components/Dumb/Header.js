@@ -2,6 +2,7 @@ import React from 'react';
 import { withRouter } from 'react-router';
 
 import MenuMarkup from './MenuMarkup/MenuMarkup';
+import MenuMarkup2 from './MenuMarkup/MenuMarkup2';
 import PlanningMenu from './MenuMarkup/Planning';
 import QaMenu from './MenuMarkup/Qa';
 import ResponsiveNav from '../Smart/ResponsiveNav/ResponsiveNav';
@@ -15,8 +16,11 @@ const Header = ({ location }) => {
     case 'Qa':
       menuType = QaMenu;
       break;
-    default:
+    case 'Leader':
       menuType = MenuMarkup;
+      break;
+    default:
+      menuType = MenuMarkup2;
       break;
   };
   return (
@@ -29,3 +33,4 @@ const Header = ({ location }) => {
 };
 
 export default withRouter(Header);
+
