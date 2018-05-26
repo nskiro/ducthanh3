@@ -18,7 +18,7 @@ router.get('/production/:fileName',(req,res,next) => {
         return _.mapKeys(obj, (v, k) => _.camelCase(k));
     });
     res.status(200).send(_.remove(newData,(obj)=>{
-        return obj.sku !== "";
+        return obj.hasOwnProperty('sku') && obj.sku !== "";
     }));
 });
 
