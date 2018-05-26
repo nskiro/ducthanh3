@@ -15,7 +15,7 @@ import UploadPlanningPage from './components/Smart/Planning/UploadFile';
 import ProductionPlanningPage from './components/Smart/Planning/Production';
 import BookingChartPage from './components/Smart/Planning/Booking';
 import ShippingSchedulePage from './components/Smart/Planning/Shipping';
-
+import EmbroideryPlanningPage from './components/Smart/Planning/EmbroideryPlanning';
 // Factory Operation
 import ViewFOReport from './components/Smart/FactoryOperation/ViewReport';
 // Im -Ex
@@ -121,6 +121,7 @@ class App extends Component {
                 <Route path='/planning/production' component={ProductionPlanningPage} exact />
                 <Route path='/planning/booking' component={BookingChartPage} exact />
                 <Route path='/planning/shipping' component={ShippingSchedulePage} exact />
+                <Route path='/planning/embroidery' component={EmbroideryPlanningPage} exact />
                 <Route path='/compliance/upload' component={UploadCompliancePage} exact />
                 <Route path='/compliance/general' component={GeneralCompliancePage} exact />
                 <Route path='/compliance/humidity' component={HumidityPage} exact />

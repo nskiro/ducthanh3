@@ -10,9 +10,9 @@ import ResponsiveNav from '../Smart/ResponsiveNav/ResponsiveNav';
 const Header = ({ location }) => {
   let menuType = null;
   switch(localStorage.getItem('dept')){
-    case 'Planning':
+    /*case 'Planning':
       menuType = PlanningMenu;
-      break;
+      break;*/
     case 'Qa':
       menuType = QaMenu;
       break;

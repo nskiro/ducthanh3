@@ -30,6 +30,11 @@ router.get('/shipping',(req,res,next) => {
     res.status(200).send(tree.children);
 });
 
+router.get('/embroidery',(req,res,next) => {
+    const tree = dirTree(`./upload/file/plan/E`);
+    res.status(200).send(tree.children);
+});
+
 router.get('/deleteFile/:fileName', (req,res,next) => {
     const fileType = req.params.fileName.split('-');
     let filePath = './upload/file/plan/'

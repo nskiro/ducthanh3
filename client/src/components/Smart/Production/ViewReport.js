@@ -84,11 +84,11 @@ class ViewReport extends Component {
                         <Form layout="vertical">
                             <FormItem label="Choose sub-department">
                                 <RadioGroup onChange={this.handleDeptChange} value={this.state.dept}>
-                                    <Radio value="EB1">EB 1-2</Radio>
-                                    <Radio value="EB2">EB 3-4</Radio>
-                                    <Radio value="EB3">EB 5-6</Radio>
-                                    <Radio value="EB4">EB 8-9</Radio>
-                                    <Radio value="EB5">EB 10-11</Radio>
+                                    <Radio value="EB1">EB 1-2 (Group 1)</Radio>
+                                    <Radio value="EB2">EB 3-4 (Group 2)</Radio>
+                                    <Radio value="EB3">EB 5-6 (Group 3)</Radio>
+                                    <Radio value="EB4">EB 8-9 (Group 4)</Radio>
+                                    <Radio value="EB5">EB 10-11 (Group 5)</Radio>
                                     <Radio value="EB6">EB 7</Radio>
                                 </RadioGroup>
                             </FormItem>

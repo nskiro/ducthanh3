@@ -27,6 +27,9 @@ const MenuMarkup = ({ mobileVersion, activeLinkKey, onLinkClick, className }) =>
     <Menu.Item key='/planning/shipping'>
       <Link onClick={onLinkClick} to='/planning/shipping'>Shipping</Link>
     </Menu.Item>
+    <Menu.Item key='/planning/embroidery'>
+      <Link onClick={onLinkClick} to='/planning/embroidery'>Embroidery</Link>
+    </Menu.Item>
     <Menu.Item key='/logout' style={{position: 'absolute', right: '20px'}}>
         <Link onClick={onLinkClick} to='/logout'><FontAwesome name="sign-out-alt" /> Logout</Link>
     </Menu.Item>

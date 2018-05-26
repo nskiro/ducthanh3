@@ -42,6 +42,7 @@ class UploadFile extends Component {
                             <li>P-[Custom file name] (Production Planning)</li>
                             <li>S-[Custom file name] (Shipping Schedule)</li>
                             <li>B-[Custom file name] (Booking Chart)</li>
+                            <li>E-[Custom file name] (Embroidery Management)</li>
                         </ul>
                     </Col>
                     <Col xs={12} sm={4}>
