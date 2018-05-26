@@ -3,7 +3,6 @@ import { withRouter } from 'react-router';
 
 import MenuMarkup from './MenuMarkup/MenuMarkup';
 import MenuMarkup2 from './MenuMarkup/MenuMarkup2';
-import PlanningMenu from './MenuMarkup/Planning';
 import QaMenu from './MenuMarkup/Qa';
 import ResponsiveNav from '../Smart/ResponsiveNav/ResponsiveNav';
 

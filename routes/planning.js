@@ -17,7 +17,9 @@ router.get('/production/:fileName',(req,res,next) => {
     const newData = data.map((obj) => {
         return _.mapKeys(obj, (v, k) => _.camelCase(k));
     });
-    res.status(200).send(newData);
+    res.status(200).send(_.remove(newData,(obj)=>{
+        return obj.sku !== "";
+    }));
 });
 
 router.get('/booking',(req,res,next) => {
