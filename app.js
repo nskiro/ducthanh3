@@ -25,6 +25,7 @@ const trimRouter = require('./routes/trim');
 const administrationRouter = require('./routes/administration');
 const aqlRouter = require('./routes/aql');
 const sewingPlanRouter = require('./routes/sewingplan');
+const imexRouter = require('./routes/imex');
 const app = express();
 
 // CORS setup
@@ -81,6 +82,7 @@ app.use('/api/trim',trimRouter);
 app.use('/api/administration',administrationRouter);
 app.use('/api/aql',aqlRouter);
 app.use('/api/sewingplan',sewingPlanRouter);
+app.use('/api/imex',imexRouter);
 app.get('*', (req,res)=>{
   res.render('index');
 })

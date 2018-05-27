@@ -20,6 +20,7 @@ import EmbroideryPlanningPage from './components/Smart/Planning/EmbroideryPlanni
 import ViewFOReport from './components/Smart/FactoryOperation/ViewReport';
 // Im -Ex
 import ViewImexReport from './components/Smart/Imex/ViewReport';
+import UploadImexPage from './components/Smart/Imex/UploadFile';
 
 //Product Warehouse
 import ViewProductWarehouseReport from './components/Smart/ProductWareHouse/ViewReport';
@@ -134,6 +135,7 @@ class App extends Component {
                 <Route path='/administration/upload' component={UploadAdministrationPage} exact />
                 <Route path='/administration/viewreport' component={ViewAdministrationReport} exact />
                 <Route path='/imex/viewreport' component={ViewImexReport} exact />
+                <Route path='/imex/upload' component={UploadImexPage} exact />
                 <Route path='/productWarehouse' component={ViewProductWarehouseReport} exact />
                 <Route path='/accounting' component={ViewAccountingReport} exact />
                 <Route path='/factoryOperation' component={ViewFOReport} exact />
