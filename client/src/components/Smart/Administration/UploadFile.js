@@ -41,6 +41,7 @@ class UploadFile extends Component {
                         <p>***Note: Please change file name prefix to match types below:</p>
                         <ul>
                             <li>HR-</li>
+                            <li>AD-</li>
                         </ul>
                     </Col>
                     <Col xs={12} sm={4}>
