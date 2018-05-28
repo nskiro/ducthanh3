@@ -12,7 +12,7 @@ class UploadFile extends Component {
     render(){
         const uploadProps = {
             name: 'cuttingFile',
-            accept: '.pdf',
+            accept: '.xlsx',
             multiple: false,
             action: `${cmConfig.baseURL}api/upload/cutting`,
             headers: {

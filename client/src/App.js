@@ -49,7 +49,7 @@ import UploadSamplePage from './components/Smart/Sample/UploadFile';
 import ViewSampleReport from './components/Smart/Sample/ViewReport';
 // Cutting
 import UploadCuttingPage from './components/Smart/Cutting/UploadFile';
-import ViewCuttingReport from './components/Smart/Cutting/ViewReport';
+import ViewCuttingReport from './components/Smart/Cutting/CuttingProgress';
 // Numbering
 import UploadNumberingPage from './components/Smart/Numbering/UploadFile';
 import ViewNumberingReport from './components/Smart/Numbering/ViewReport';
