@@ -30,7 +30,7 @@ class ViewReport extends Component {
     handleDeptChange = (event) => {
         let value = event.target.value;
         this.setState({dept: value});
-        axios.get(`/api/marker/listfolder/${value}`)
+        axios.get(`/api/imex/listfolder/${value}`)
             .then((res) => {
                 if(res.data.length > 0){
                     message.success('Files found. Please select report file');
