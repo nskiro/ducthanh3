@@ -245,7 +245,7 @@ router.post('/fabricqc',(req,res,next)=>{
 router.post('/compliance',(req, res, next) => {
     if (!req.files)
         return res.status(500).send('No files were uploaded');
-    const sampleFile = req.files.planningFile;
+    const sampleFile = req.files.complianceFile;
     const fileNameArr = sampleFile.name.split('-');
     let filePath = `./upload/file/compliance/${fileNameArr[0]}/${sampleFile.name}`;
     if(fileNameArr[0] === 'G'){
