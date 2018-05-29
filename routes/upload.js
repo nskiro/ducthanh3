@@ -249,8 +249,8 @@ router.post('/compliance',(req, res, next) => {
     const fileNameArr = sampleFile.name.split('-');
     let filePath = `./upload/file/compliance/${fileNameArr[0]}/${sampleFile.name}`;
     if(fileNameArr[0] === 'G'){
-        //compliance/G/DT1/F
         filePath = `./upload/file/compliance/${fileNameArr[0]}/${fileNameArr[1]}/${fileNameArr[2]}/${sampleFile.name}`;
+        //compliance/G/DT1/F
     }
     sampleFile.mv(filePath, function(err) {
         if (err)
