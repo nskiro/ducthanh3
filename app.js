@@ -21,9 +21,11 @@ const embroideryRouter = require('./routes/embroidery');
 const packagingRouter = require('./routes/packaging');
 
 const fabricproviderRouter =  require('./routes/fabraric/fabricprovider');
-const fabricRouter =require('./routes/fabraric/fabric');
 const fabriccolorRouter =require('./routes/fabraric/fabriccolor');
 const fabrictypeRouter =require('./routes/fabraric/fabrictype');
+const fabricimportRouter =require('./routes/fabraric/fabricimport');
+const fabricexportRouter =require('./routes/fabraric/fabricexport');
+const fabricwarehouseRouter =require('./routes/fabraric/fabricwarehouse');
 
 const app = express();
 
@@ -59,11 +61,13 @@ app.use('/api/sample',sampleRouter);
 app.use('/api/production',productionRouter);
 app.use('/api/embroidery',embroideryRouter);
 app.use('/api/packaging',packagingRouter);
+
 app.use('/api/fabric/provider',fabricproviderRouter);
 app.use('/api/fabric/type',fabrictypeRouter);
 app.use('/api/fabric/color',fabriccolorRouter);
-
-app.use('/api/fabric',fabricRouter);
+app.use('/api/fabric/import',fabricimportRouter);
+app.use('/api/fabric/export',fabricexportRouter);
+app.use('/api/fabric/warehouse',fabricwarehouseRouter);
 
 // route middleware to verify a token
 app.use((req, res, next) => {

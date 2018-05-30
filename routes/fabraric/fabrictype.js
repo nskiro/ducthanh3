@@ -37,7 +37,6 @@ router.post('/add/', (req, res, next) => {
     })
 });
 
-
 router.post(`/update/:id/`, (req, res, next) => {
     let id = req.params.id;
     console.log('id = >' + id);
@@ -52,6 +51,7 @@ router.post(`/update/:id/`, (req, res, next) => {
         if (!err) {
             return res.status(200).send(ftype);
         }
+        console.log(err);
         return res.status(500).send(ftype);
 
     })

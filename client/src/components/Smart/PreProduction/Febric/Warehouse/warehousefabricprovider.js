@@ -16,20 +16,18 @@ import './views.css';
 
 const FormItem = Form.Item;
 const Panel = Collapse.Panel;
+const { DateLongFormatter, DateShortFormatter } = DateFormatter;
 
 class ProviderForm extends Component {
     constructor(props) {
         super(props);
-        // this.setDataForm = this.setDataForm.bind(this);
-
         this.state = {
-            provider_code: '',
-            provider_name: '',
-            _id: ''
+           // provider_code: '',
+           // provider_name: '',
+           // _id: ''
         }
 
     }
-
     onChangeProviderCode = (v) => {
         this.setState({ provider_code: v });
     }
@@ -40,7 +38,7 @@ class ProviderForm extends Component {
         const { getFieldDecorator } = form;
         return (
             <Modal
-                title="Thêm mới nhà cung cấp"
+                title="SUPPILER"
                 visible={visible}
                 onOk={onCreate}
                 maskClosable={false}
@@ -57,23 +55,15 @@ class ProviderForm extends Component {
                             </Col>
 
                             < Col md={5} sm={8} xs={5} >
-                                <FormItem label={'Mã nhà cung cấp'}>
+                                <FormItem label={'SUPPLIER'}>
                                     {getFieldDecorator('provider_code', { initialValue: this.props.data.provider_code }, {
-                                        rules: [{ required: true, message: 'Vui lòng nhập mã nhà cung cấp!' }],
+                                        rules: [{ required: true, message: 'Vui lòng nhập tên nhà cung cấp!' }],
                                     })
-                                        (<Input name='provider_code' onChange={this.onChangeProviderCode} placeholder="Mã nhà cung cấp" />)}
+                                        (<Input name='provider_code' onChange={this.onChangeProviderCode} placeholder="nhà cung cấp" />)}
                                 </FormItem>
                             </Col>
                         </Row>
-                        <Row>
-                            < Col md={5} sm={8} xs={5} >
-                                <FormItem label={'Tên nhà cung cấp'}>
-                                    {getFieldDecorator('provider_name', { initialValue: this.props.data.provider_name },
-                                        { rules: [{ required: true, message: 'Vui lòng nhập tên nhà cung cấp!', }], })
-                                        (<Input name='provider_name' placeholder="Tên nhà cung cấp" />)}
-                                </FormItem>
-                            </Col >
-                        </Row >
+                      
                     </Grid>
                 </Form>
             </Modal>
@@ -102,7 +92,7 @@ class WarehouseFabricProvider extends Component {
             provider_name: '',
             data_providers: [],
 
-            selected_provider: { 'provider_code': '', 'provider_name': '' }
+            selected_provider: { 'provider_code': undefined, 'provider_name':undefined }
         };
 
     }
@@ -128,11 +118,6 @@ class WarehouseFabricProvider extends Component {
         this.handleReset();
     }
 
-
-    onExportToExel = () => {
-        alert('Cứ từ từ,chuẩn bị export ... loading .... loading...');
-    }
-
     toggle = () => {
         const { expand } = this.state;
         this.setState({ expand: !expand });
@@ -145,7 +130,7 @@ class WarehouseFabricProvider extends Component {
             if (mod === 'new') {
                 this.setState({
                     modalvisible: true,
-                    selected_provider: { 'provider_code': '', 'provider_name': '' }
+                    selected_provider: { 'provider_code': undefined, 'provider_name': undefined }
                 });
 
             } else if (mod === 'edit') {
@@ -170,12 +155,8 @@ class WarehouseFabricProvider extends Component {
         const form = this.formRef.props.form;
 
         form.validateFields((err, values) => {
-            console.log(values);
-            if (err) {
-                return;
-            }
-            // console.log('Received values of form a: ', values);
-            //call goi service add
+            if (err) { return;  }
+            if(!values.provider_code){return;}
             let data = {
                 _id: values.id,
                 provider_code: values.provider_code,
@@ -249,28 +230,27 @@ class WarehouseFabricProvider extends Component {
         const { getFieldDecorator } = this.props.form;
         const columns = [
             // {key: '_id', name: 'id', hidd: false },
-            { key: 'provider_code', name: 'Mã nhà cung cấp' },
-            { key: 'provider_name', name: 'Tên nhà cung cấp' },
-            { key: 'create_date', name: 'Ngày tạo' ,  formatter: DateFormatter},
-            { key: 'update_date', name: 'Ngày cập nhật',formatter: DateFormatter },
+            { key: 'provider_code', name: 'SUPPLIER' },
+            { key: 'create_date', name: 'CREATE DATE' ,  formatter: DateLongFormatter},
+            { key: 'update_date', name: 'UPDATE DATE',formatter: DateLongFormatter },
         ];
         return (
             <div>
                 <Collapse className='ant-advanced-search-panel-collapse'>
-                    <Panel header="Tìm kiếm" key="1" >
+                    <Panel header="SEARCH" key="1" >
                         <Form className="ant-advanced-search-panel " onSubmit={this.handleSearch}>
                             <Grid>
                                 <Row className="show-grid">
                                     <Col md={4} sm={6} xs={12} style={{ textAlign: 'left' }}>
-                                        <FormItem label={'Mã nhà cung cấp'}>
+                                        <FormItem label={'SUPPLIER'}>
                                             {
-                                                getFieldDecorator('provider_code', {})(<Input placeholder="Nhập mã cung cấp" />)
+                                                getFieldDecorator('provider_code', {})(<Input placeholder="nhà cung cấp" />)
                                             }
                                         </FormItem>
                                     </Col>
                                     <Col md={4} sm={6} xs={12} style={{ textAlign: 'left' }}>
-                                        <Button type="primary" htmlType="submit">Search</Button>
-                                        <Button style={{ marginLeft: 8 }} onClick={this.handleReset}> Clear </Button>
+                                        <Button type="primary" htmlType="submit">SEARCH</Button>
+                                        <Button style={{ marginLeft: 8 }} onClick={this.handleReset}>CLEAR</Button>
                                     </Col>
                                 </Row>
 
@@ -279,10 +259,9 @@ class WarehouseFabricProvider extends Component {
                     </Panel>
                 </Collapse>
                 <div className="ant-advanced-toolbar">
-                    <Button type="primary" value='new' className='ant-advanced-toolbar-item' onClick={this.showModal}>Thêm mới</Button>
-                    <Button type="primary" value='edit' className='ant-advanced-toolbar-item' onClick={this.showModal}>Điều chỉnh</Button>
-                    <Button type="primary" className='ant-advanced-toolbar-item' onClick={this.onRefeshGrid}>Refesh Grid</Button>
-                    <Button type="primary" className='ant-advanced-toolbar-item' onClick={this.onExportToExel}>Export to Excel</Button>
+                    <Button type="primary" value='new' className='ant-advanced-toolbar-item' onClick={this.showModal}>NEW</Button>
+                    <Button type="primary" value='edit' className='ant-advanced-toolbar-item' onClick={this.showModal}>EDIT</Button>
+                    <Button type="primary" className='ant-advanced-toolbar-item' onClick={this.onRefeshGrid}>REFESH</Button>
 
                 </div>
                 <WrappedProviderForm

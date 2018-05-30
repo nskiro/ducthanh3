@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const fabricwarehousedetail = new mongoose.Schema({
-   
-    orderid: String,
+    orderid: Schema.Types.ObjectId,
     type: String,
     color: String,
     quantity: Number,

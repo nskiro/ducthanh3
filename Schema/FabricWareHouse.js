@@ -1,15 +1,18 @@
 const mongoose = require('mongoose');
-const fabricwarehouse = new mongoose.Schema({
-    importdate: Date,
-    provider: String,
-    declaration: String,
-    contract: String,
+const fabricwarehouses = new mongoose.Schema({
 
-    datecreate: Date,
-    usercreate:String,
-    dateupdate: Date,
-    userupdate: String,
-    mod: Number
+    fabric_type: String,
+    fabric_color: String,
+    roll: { type: Number, default: 0 },
+    met: { type: Number, default: 0 },
+
+    create_date: { type: Date, default: new Date() },
+    update_date: { type: Date, default: null },
+    record_status: { type: String, default: 'O' }
+
 });
 
-module.exports = mongoose.model('fabricwarehouses', fabricwarehouse);
+fabricwarehouses.virtual('id').get(function(){
+    return this._id;
+});
+module.exports = mongoose.model('fabricwarehouses', fabricwarehouses);

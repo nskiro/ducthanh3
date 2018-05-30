@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 
-import ReactDataGrid from 'react-data-grid';
 import PropTypes from 'prop-types';
+
+const formatDate_Longtype='MM/DD/YYYY hh:mm:ss';
+const formatDate_Shorttype='MM/DD/YYYY';
 
 /*
 function allowNull(wrappedPropTypes) {
@@ -14,10 +16,10 @@ function allowNull(wrappedPropTypes) {
 }
 */
 // Custom Formatter component
-class DateFormatter extends React.Component {
+class DateLongFormatter extends Component {
     render() {
         if (!this.props.value) { return null; }
-        const dateformat = moment(this.props.value).format('DD/MM/YYYY hh:mm:ss');// + '%';
+        const dateformat = moment(this.props.value).format(formatDate_Longtype);// + '%';
         return (
             <div style={{ marginTop: '0px' }}>
                 <div>
@@ -28,12 +30,35 @@ class DateFormatter extends React.Component {
     }
 };
 
-DateFormatter.propTypes = {
+DateLongFormatter.propTypes = {
     // setDataForm: PropTypes.func,
     value: PropTypes.date
 };
-DateFormatter.defaultProps = {
+DateLongFormatter.defaultProps = {
     value: null
 };
 
-export default DateFormatter;
+
+class DateShortFormatter extends Component {
+    render() {
+        if (!this.props.value) { return null; }
+        const dateformat = moment(this.props.value).format(formatDate_Shorttype);// + '%';
+        return (
+            <div style={{ marginTop: '0px' }}>
+                <div>
+                    {dateformat}
+                </div>
+            </div>);
+
+    }
+};
+
+DateShortFormatter.propTypes = {
+    // setDataForm: PropTypes.func,
+    value: PropTypes.date
+};
+DateShortFormatter.defaultProps = {
+    value: null
+};
+
+export default { DateLongFormatter, DateShortFormatter };

@@ -5,9 +5,7 @@ var router = express.Router();
 const FabricProvider = require('../../Schema/FabricProvider');
 
 router.get('/get', (req, res, next) => {
-    console.log(req.query);
-
-  // let reg= new RegExp('^'+name+'$', "i");
+    // let reg= new RegExp('^'+name+'$', "i");
     FabricProvider.find(req.query)
         .sort({ 'provider_name': 'asc' })
         .exec((err, fabricproviders) => {
@@ -18,20 +16,14 @@ router.get('/get', (req, res, next) => {
         })
 });
 
-
 router.post('/add/', (req, res, next) => {
     var provider;
     provider = {
         provider_code: req.body.provider_code,
         provider_name: req.body.provider_name,
         create_date: new Date(),
-        // datecreate: new Date(),
-        // usercreate: 'default',
-        // dateupdate: new Date(),
-        // userupdate: 'default',
         mod: 0
     };
-
     FabricProvider.create(provider, (err, provider) => {
         console.log(err);
         if (!err) {
@@ -43,7 +35,6 @@ router.post('/add/', (req, res, next) => {
 
 router.post(`/update/:id/`, (req, res, next) => {
     let id = req.params.id;
-
     console.log('id = >' + id);
     var data;
     data = {
@@ -53,6 +44,7 @@ router.post(`/update/:id/`, (req, res, next) => {
         //userupdate: 'default',
         // mod: 0
     };
+    
 
     FabricProvider.findByIdAndUpdate(id, data, (err, provider) => {
         if (!err) {

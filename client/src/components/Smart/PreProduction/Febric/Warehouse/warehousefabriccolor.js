@@ -17,6 +17,7 @@ import './views.css';
 
 const FormItem = Form.Item;
 const Panel = Collapse.Panel;
+const { DateLongFormatter, DateShortFormatter } = DateFormatter;
 
 class FabricColorForm extends Component {
     constructor(props) {
@@ -27,7 +28,7 @@ class FabricColorForm extends Component {
         const { getFieldDecorator } = form;
         return (
             <Modal
-                title="Loại vải"
+                title="COLOR"
                 visible={visible}
                 onOk={onCreate}
                 maskClosable={false}
@@ -42,25 +43,16 @@ class FabricColorForm extends Component {
                                         (<Input name='id' style={{ display: 'none', visible: false }} />)}
                                 </FormItem>
                             </Col>
-
                             < Col md={5} sm={8} xs={5} >
-                                <FormItem label={'Mã màu vải'}>
+                                <FormItem label={'COLOR'}>
                                     {getFieldDecorator('fabriccolor_code', { initialValue: this.props.data.fabriccolor_code }, {
-                                        rules: [{ required: true, message: 'Vui lòng nhập mã màu vải!' }],
+                                        rules: [{ required: true, message: 'Vui lòng nhập tên màu vải!' }],
                                     })
                                         (<Input name='fabriccolor_code' placeholder="tên màu vải" />)}
                                 </FormItem>
                             </Col>
                         </Row>
-                        <Row>
-                            < Col md={5} sm={8} xs={5} >
-                                <FormItem label={'Tên màu vải'}>
-                                    {getFieldDecorator('fabriccolor_name', { initialValue: this.props.data.fabriccolor_name },
-                                        { rules: [{ required: true, message: 'Vui lòng nhập Tên màu vải!', }], })
-                                        (<Input name='fabriccolor_name' placeholder="Tên màu vải" />)}
-                                </FormItem>
-                            </Col >
-                        </Row >
+
                     </Grid>
                 </Form>
             </Modal>
@@ -110,10 +102,6 @@ class WarehouseFabricColor extends Component {
         this.handleReset();
     }
 
-    onExportToExel = () => {
-        alert('Cứ từ từ,chuẩn bị export ... loading .... loading...');
-    }
-
     toggle = () => {
         const { expand } = this.state;
         this.setState({ expand: !expand });
@@ -127,7 +115,7 @@ class WarehouseFabricColor extends Component {
             if (mod === 'new') {
                 this.setState({
                     modalvisible: true,
-                    selected_fabriccolor: { 'fabriccolor_code': '', 'fabriccolor_name': '' }
+                    selected_fabriccolor: { 'fabriccolor_code': undefined, 'fabriccolor_name': undefined }
                 });
 
             } else if (mod === 'edit') {
@@ -176,15 +164,17 @@ class WarehouseFabricColor extends Component {
     handleCreate = (e) => {
         const form = this.formRef.props.form;
         form.validateFields((err, values) => {
-            if (err) {
-                return;
-            }
+            if (err) { return; }
+            if (!values.fabriccolor_code) { return; }
+
             let data = {
                 _id: values.id,
                 fabriccolor_code: values.fabriccolor_code,
                 fabriccolor_name: values.fabriccolor_name,
             }
-            console.log(values);
+            console.log(data);
+
+
             if (values.id) {
                 console.log('call update');
                 axios.post(`api/fabric/color/update/${values.id}`, data)
@@ -229,28 +219,27 @@ class WarehouseFabricColor extends Component {
         const { getFieldDecorator } = this.props.form;
         const columns = [
             // {key: '_id', name: 'id', hidd: false },
-            { key: 'fabriccolor_code', name: 'Mã màu vải' },
-            { key: 'fabriccolor_name', name: 'Tên màu vải' },
-            { key: 'create_date', name: 'Ngày tạo', formatter: DateFormatter },
-            { key: 'update_date', name: 'Ngày cập nhật', formatter: DateFormatter },
+            { key: 'fabriccolor_code', name: 'COLOR' },
+            { key: 'create_date', name: 'CREATE DATE', formatter: DateLongFormatter },
+            { key: 'update_date', name: 'UPDATE DATE', formatter: DateLongFormatter },
         ];
         return (
             <div>
                 <Collapse className='ant-advanced-search-panel-collapse'>
-                    <Panel header="Tìm kiếm" key="1" >
+                    <Panel header="SEARCH" key="1" >
                         <Form className="ant-advanced-search-panel " onSubmit={this.handleSearch}>
                             <Grid>
                                 <Row className="show-grid">
                                     <Col md={4} sm={6} xs={12} style={{ textAlign: 'left' }}>
-                                        <FormItem label={'Tên màu vải'}>
+                                        <FormItem label={'COLOR'}>
                                             {
-                                                getFieldDecorator('fabriccolor_name', {})(<Input placeholder="Nhập tên màu vải" />)
+                                                getFieldDecorator('fabriccolor_name', {})(<Input placeholder="tên màu vải" />)
                                             }
                                         </FormItem>
                                     </Col>
                                     <Col md={4} sm={6} xs={12} style={{ textAlign: 'left' }}>
-                                        <Button type="primary" htmlType="submit">Search</Button>
-                                        <Button style={{ marginLeft: 8 }} onClick={this.handleReset}> Clear </Button>
+                                        <Button type="primary" htmlType="submit">SEARCH</Button>
+                                        <Button style={{ marginLeft: 8 }} onClick={this.handleReset}>CLEAR</Button>
                                     </Col>
                                 </Row>
 
@@ -260,9 +249,9 @@ class WarehouseFabricColor extends Component {
                 </Collapse>
 
                 <div className="ant-advanced-toolbar">
-                    <Button type="primary" value='new' className='ant-advanced-toolbar-item' onClick={this.showModal}>Thêm mới</Button>
-                    <Button type="primary" value='edit' className='ant-advanced-toolbar-item' onClick={this.showModal}>Điều chỉnh</Button>
-                    <Button type="primary" className='ant-advanced-toolbar-item' onClick={this.onRefeshGrid}>Refesh Grid</Button>
+                    <Button type="primary" value='new' className='ant-advanced-toolbar-item' onClick={this.showModal}>NEW</Button>
+                    <Button type="primary" value='edit' className='ant-advanced-toolbar-item' onClick={this.showModal}>EDIT</Button>
+                    <Button type="primary" className='ant-advanced-toolbar-item' onClick={this.onRefeshGrid}>REFESH</Button>
                 </div>
                 <WrappedFabricColorForm
                     wrappedComponentRef={this.saveFormRef}

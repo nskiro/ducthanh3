@@ -17,6 +17,7 @@ import './views.css';
 
 const FormItem = Form.Item;
 const Panel = Collapse.Panel;
+const { DateLongFormatter, DateShortFormatter } = DateFormatter;
 
 class FabricTypeForm extends Component {
     constructor(props) {
@@ -27,7 +28,7 @@ class FabricTypeForm extends Component {
         const { getFieldDecorator } = form;
         return (
             <Modal
-                title="Loại vải"
+                title="TYPE"
                 visible={visible}
                 onOk={onCreate}
                 maskClosable={false}
@@ -44,23 +45,14 @@ class FabricTypeForm extends Component {
                             </Col>
 
                             < Col md={5} sm={8} xs={5} >
-                                <FormItem label={'Mã loại vải'}>
+                                <FormItem label={'TYPE'}>
                                     {getFieldDecorator('fabrictype_code', { initialValue: this.props.data.fabrictype_code }, {
-                                        rules: [{ required: true, message: 'Vui lòng nhập mã loại vải!' }],
+                                        rules: [{ required: true, message: 'Vui lòng nhập loại vải!' }],
                                     })
-                                        (<Input name='fabrictype_code' placeholder="mã loại vải" />)}
+                                        (<Input name='fabrictype_code' placeholder="loại vải" />)}
                                 </FormItem>
                             </Col>
                         </Row>
-                        <Row>
-                            < Col md={5} sm={8} xs={5} >
-                                <FormItem label={'Tên loại vải'}>
-                                    {getFieldDecorator('fabrictype_name', { initialValue: this.props.data.fabrictype_name },
-                                        { rules: [{ required: true, message: 'Vui lòng nhập Tên loại vải!', }], })
-                                        (<Input name='fabrictype_name' placeholder="Tên loại vải" />)}
-                                </FormItem>
-                            </Col >
-                        </Row >
                     </Grid>
                 </Form>
             </Modal>
@@ -90,12 +82,11 @@ class WarehouseFabricType extends Component {
     handleSearch = (e) => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
-            console.log('Received values of form: ', values);
-           if (values.fabrictype_name) {
-               this.loadFabricTypes(values);
-           } else {
-               this.loadFabricTypes({});
-           }
+            if (values.fabrictype_name) {
+                this.loadFabricTypes(values);
+            } else {
+                this.loadFabricTypes({});
+            }
         });
     }
 
@@ -107,11 +98,6 @@ class WarehouseFabricType extends Component {
     onRefeshGrid = () => {
         this.handleReset();
     }
-
-    onExportToExel = () => {
-        alert('Cứ từ từ,chuẩn bị export ... loading .... loading...');
-    }
-
     toggle = () => {
         const { expand } = this.state;
         this.setState({ expand: !expand });
@@ -124,7 +110,7 @@ class WarehouseFabricType extends Component {
             if (mod === 'new') {
                 this.setState({
                     modalvisible: true,
-                    selected_fabrictype: { 'provider_code': '', 'provider_name': '' }
+                    selected_fabrictype: { 'provider_code': undefined, 'provider_name': undefined }
                 });
 
             } else if (mod === 'edit') {
@@ -186,13 +172,6 @@ class WarehouseFabricType extends Component {
                 fabrictype_code: values.fabrictype_code,
                 fabrictype_name: values.fabrictype_name,
             }
-
-            if (values.id) {
-                data.dateupdate = new Date();
-            } else {
-                data.datecreate = new Date();
-            }
-
             // console.log(values);
             console.log(data);
 
@@ -200,7 +179,6 @@ class WarehouseFabricType extends Component {
                 console.log('call update');
                 axios.post(`api/fabric/type/update/${values.id}`, data)
                     .then((res) => {
-                        console.log(res.data);
                         this.loadFabricTypes({});
                     })
                     .catch((err) => {
@@ -210,7 +188,6 @@ class WarehouseFabricType extends Component {
                 console.log('call add');
                 axios.post('api/fabric/type/add', data)
                     .then((res) => {
-                        console.log(res.data);
                         this.loadFabricTypes({});
                     })
                     .catch((err) => {
@@ -240,10 +217,9 @@ class WarehouseFabricType extends Component {
         const { getFieldDecorator } = this.props.form;
         const columns = [
             // {key: '_id', name: 'id', hidd: false },
-            { key: 'fabrictype_code', name: 'Mã loại vải' },
-            { key: 'fabrictype_name', name: 'Tên loại vải' },
-            { key: 'create_date', name: 'Ngày tạo', formatter: DateFormatter },
-            { key: 'update_date', name: 'Ngày cập nhật', formatter: DateFormatter },
+            { key: 'fabrictype_name', name: 'TYPE' },
+            { key: 'create_date', name: 'CREATE DATE', formatter: DateLongFormatter },
+            { key: 'update_date', name: 'UPDATE DATE', formatter: DateLongFormatter },
         ];
         return (
             <div>
@@ -253,15 +229,15 @@ class WarehouseFabricType extends Component {
                             <Grid>
                                 <Row className="show-grid">
                                     <Col md={4} sm={6} xs={12} style={{ textAlign: 'left' }}>
-                                        <FormItem label={'Tên loại vải'}>
+                                        <FormItem label={'TYPE'}>
                                             {
-                                                getFieldDecorator('fabrictype_name', {})(<Input placeholder="Nhập tên loại vải" />)
+                                                getFieldDecorator('fabrictype_name', {})(<Input placeholder="tên loại vải" />)
                                             }
                                         </FormItem>
                                     </Col>
                                     <Col md={4} sm={6} xs={12} style={{ textAlign: 'left' }}>
-                                        <Button type="primary" htmlType="submit">Search</Button>
-                                        <Button style={{ marginLeft: 8 }} onClick={this.handleReset}> Clear </Button>
+                                        <Button type="primary" htmlType="submit">SEARCH</Button>
+                                        <Button style={{ marginLeft: 8 }} onClick={this.handleReset}>CLEAR</Button>
                                     </Col>
                                 </Row>
 
@@ -270,9 +246,9 @@ class WarehouseFabricType extends Component {
                     </Panel>
                 </Collapse>
                 <div className="ant-advanced-toolbar">
-                    <Button type="primary" value='new' className='ant-advanced-toolbar-item' onClick={this.showModal}>Thêm mới</Button>
-                    <Button type="primary" value='edit' className='ant-advanced-toolbar-item' onClick={this.showModal}>Điều chỉnh</Button>
-                    <Button type="primary" className='ant-advanced-toolbar-item' onClick={this.onRefeshGrid}>Refesh Grid</Button>
+                    <Button type="primary" value='new' className='ant-advanced-toolbar-item' onClick={this.showModal}>NEW</Button>
+                    <Button type="primary" value='edit' className='ant-advanced-toolbar-item' onClick={this.showModal}>EDIT</Button>
+                    <Button type="primary" className='ant-advanced-toolbar-item' onClick={this.onRefeshGrid}>REFESH</Button>
                 </div>
                 <WrappedFabricTypeForm
                     wrappedComponentRef={this.saveFormRef}

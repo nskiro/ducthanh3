@@ -31,6 +31,7 @@
     "nodemon": "^1.17.3",
     "react-addons-linked-state-mixin": "^15.6.2",
     "react-bootstrap-table-next": "^0.1.11",
+    "react-data-export": "^0.4.2",
     "react-data-grid": "^4.0.7",
     "xlsx": "^0.12.10"
   },
