@@ -63,7 +63,6 @@ import ViewPackagingReport from './components/Smart/Packaging/ViewReport';
 import UploadEmbroideryPage from './components/Smart/Embroidery/UploadFile';
 import ViewEmbroideryReport from './components/Smart/Embroidery/ViewReport';
 
-<<<<<<< HEAD
 //Trim
 import UploadTrimPage from './components/Smart/Trim/UploadFile';
 import TrimInputPage from './components/Smart/Trim/Input';
@@ -80,11 +79,9 @@ import ViewAdministrationReport from './components/Smart/Administration/ViewRepo
 //Sewing Plan
 import UploadSewingPlanPage from './components/Smart/SewingPlan/UploadFile';
 import ViewSewingPlanReport from './components/Smart/SewingPlan/ViewReport';
-=======
 //warehouse
 import WarehousePage from './components/Smart/PreProduction/Febric/Warehouse/Views'
 
->>>>>>> 9f737b722856a6f20d329829a558724f2fa71fac
 
 class App extends Component {
   render() {
