@@ -26,6 +26,14 @@ const administrationRouter = require('./routes/administration');
 const aqlRouter = require('./routes/aql');
 const sewingPlanRouter = require('./routes/sewingplan');
 const imexRouter = require('./routes/imex');
+
+const fabricproviderRouter =  require('./routes/fabraric/fabricprovider');
+const fabriccolorRouter =require('./routes/fabraric/fabriccolor');
+const fabrictypeRouter =require('./routes/fabraric/fabrictype');
+const fabricimportRouter =require('./routes/fabraric/fabricimport');
+const fabricexportRouter =require('./routes/fabraric/fabricexport');
+const fabricwarehouseRouter =require('./routes/fabraric/fabricwarehouse');
+
 const app = express();
 
 // CORS setup
@@ -44,8 +52,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'upload')));
 app.use(express.static(path.join(__dirname, 'client/build')));
- 
-app.use('/user', userRouter);
 
 // route middleware to verify a token
 app.use((req, res, next) => {
@@ -83,6 +89,13 @@ app.use('/api/administration',administrationRouter);
 app.use('/api/aql',aqlRouter);
 app.use('/api/sewingplan',sewingPlanRouter);
 app.use('/api/imex',imexRouter);
+
+app.use('/api/fabric/provider',fabricproviderRouter);
+app.use('/api/fabric/type',fabrictypeRouter);
+app.use('/api/fabric/color',fabriccolorRouter);
+app.use('/api/fabric/import',fabricimportRouter);
+app.use('/api/fabric/export',fabricexportRouter);
+app.use('/api/fabric/warehouse',fabricwarehouseRouter);
 app.get('*', (req,res)=>{
   res.render('index');
 })

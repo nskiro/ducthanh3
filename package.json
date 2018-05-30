@@ -15,18 +15,35 @@
     "cors": "^2.8.4",
     "debug": "^2.6.9",
     "directory-tree": "^2.1.0",
+<<<<<<< HEAD
     "ejs": "^2.6.1",
+=======
+    "eslint": "^4.19.1",
+>>>>>>> 9f737b722856a6f20d329829a558724f2fa71fac
     "express": "^4.16.3",
     "express-fileupload": "^0.4.0",
     "http-errors": "^1.6.3",
+<<<<<<< HEAD
+=======
+    "immutability-helper": "^2.7.0",
+    "jade": "^1.11.0",
+>>>>>>> 9f737b722856a6f20d329829a558724f2fa71fac
     "jsonwebtoken": "^8.2.1",
     "lodash": "^4.17.10",
     "mongoose": "^5.0.0",
     "morgan": "^1.9.0",
     "nodemon": "^1.17.3",
+<<<<<<< HEAD
+=======
+    "react-addons-linked-state-mixin": "^15.6.2",
+    "react-bootstrap-table-next": "^0.1.11",
+    "react-data-export": "^0.4.2",
+    "react-data-grid": "^4.0.7",
+>>>>>>> 9f737b722856a6f20d329829a558724f2fa71fac
     "xlsx": "^0.12.10"
   },
   "devDependencies": {
+    "babel-plugin-react-html-attrs": "^2.1.0",
     "concurrently": "^3.5.1",
     "react-app-rewire-less": "^2.1.1",
     "react-app-rewired": "^1.5.2"

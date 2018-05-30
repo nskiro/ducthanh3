@@ -81,5 +81,5 @@ const productionPlanning = new mongoose.Schema({
     vnInvoice: Number,
     xContainer: Number
 });
-mongoose.model('productionplannings', productionPlanning);
-module.exports = mongoose.model('productionplannings');
+
+module.exports = mongoose.model('productionplannings', productionPlanning);
