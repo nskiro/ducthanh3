@@ -57,9 +57,16 @@ const export_columns = [
 ];
 
 const inventory_colums = [
+    { key: 'invoice_no', name: 'INVOICE #' },
+    { key: 'im_date', name: 'IM DATE', formatter: DateShortFormatter },
+    { key: 'ex_date', name: 'EX DATE', formatter: DateShortFormatter },
     { key: 'fabric_type', name: 'CODE' },
     { key: 'fabric_color', name: 'COLOR' },
+    { key: 'i_met', name: 'IM MET' },
+    { key: 'e_met', name: 'EX MET' },
     { key: 'met', name: 'MET' },
+    { key: 'i_roll', name: 'IM ROLL' },
+    { key: 'e_roll', name: 'EX ROLL' },
     { key: 'roll', name: 'ROLL' },
 ]
 class Inventory extends Component {
@@ -431,23 +438,22 @@ class Imports extends Component {
                             }
 
                             </FormItem>
-                            <FormItem label={'COLOR '}>{
-                                getFieldDecorator('fabric_color', {})(<AutoComplete placeholder='màu vải' dataSource={this.state.data_colors}
-                                    filterOption={(inputValue, option) => option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1}
-                                ></AutoComplete>)
-                            }
-
-                            </FormItem>
-                        </Col>
-                    </Row>
-                    <Row className="show-grid">
-                        <Col md={6} sm={12} xs={6} style={{ textAlign: 'left' }}>
                             <FormItem label={'TYPE '}>{
                                 getFieldDecorator('fabric_type', {})(<AutoComplete placeholder='loại vải' dataSource={this.state.data_types}
                                     filterOption={(inputValue, option) => option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1}
                                 ></AutoComplete>)
                             }
+                            </FormItem>
 
+                        </Col>
+                    </Row>
+                    <Row className="show-grid">
+                        <Col md={6} sm={12} xs={6} style={{ textAlign: 'left' }}>
+                            <FormItem label={'COLOR '}>{
+                                getFieldDecorator('fabric_color', {})(<AutoComplete placeholder='màu vải' dataSource={this.state.data_colors}
+                                    filterOption={(inputValue, option) => option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1}
+                                ></AutoComplete>)
+                            }
                             </FormItem>
                         </Col>
                     </Row>
@@ -758,23 +764,21 @@ class Exports extends Component {
                             }
 
                             </FormItem>
-                            <FormItem label={'COLOR '}>{
-                                getFieldDecorator('fabric_color', {})(<AutoComplete placeholder='màu vải' dataSource={this.state.data_colors}
-                                    filterOption={(inputValue, option) => option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1}
-                                ></AutoComplete>)
-                            }
-
-                            </FormItem>
-                        </Col>
-                    </Row>
-                    <Row className="show-grid">
-                        <Col md={6} sm={12} xs={6} style={{ textAlign: 'left' }}>
                             <FormItem label={'TYPE '}>{
                                 getFieldDecorator('fabric_type', {})(<AutoComplete placeholder='loại vải' dataSource={this.state.data_types}
                                     filterOption={(inputValue, option) => option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1}
                                 ></AutoComplete>)
                             }
-
+                            </FormItem>
+                        </Col>
+                    </Row>
+                    <Row className="show-grid">
+                        <Col md={6} sm={12} xs={6} style={{ textAlign: 'left' }}>
+                            <FormItem label={'COLOR '}>{
+                                getFieldDecorator('fabric_color', {})(<AutoComplete placeholder='màu vải' dataSource={this.state.data_colors}
+                                    filterOption={(inputValue, option) => option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1}
+                                ></AutoComplete>)
+                            }
                             </FormItem>
                         </Col>
                     </Row>

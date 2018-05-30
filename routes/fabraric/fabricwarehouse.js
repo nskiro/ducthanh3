@@ -297,7 +297,7 @@ router.get('/getexports', async (req, res, next) => {
             })*/
 });
 
-findInventory =(req) =>{
+findInventory = (req) => {
     /*/
     FabricWarehouse.find(req.query)
     .sort({ 'fabric_type': 'asc', 'fabric_color': 'asc' })
@@ -311,8 +311,6 @@ findInventory =(req) =>{
     return FabricWarehouse.find(req);
 }
 
-
-
 router.get('/getinventorys', async (req, res, next) => {
     req.query.record_status = 'O';
     console.log('req.query -->' + JSON.stringify(req.query));
@@ -324,19 +322,19 @@ router.get('/getinventorys', async (req, res, next) => {
     const q_import_details = await findImportsDetail(req.query);
     let import_ids = [];
     for (let i = 0; i < q_import_details.length; i++) {
-        import_ids.push(q_import_details.importid);
+        import_ids.push(q_import_details[i].importid);
     }
     //get imports
-    let qr_imports = [];
+    let q_imports = [];
     if (import_ids.length > 0) {
-        qr_imports = await findImports({ _id: { $in: import_ids }, record_status: 'O' });
+        q_imports = await findImports({ _id: { $in: import_ids }, record_status: 'O' });
     }
 
     //get extporst detail 
-    const q_export_details = await findExportsDetail(req.query);
+    let q_export_details = await findExportsDetail(req.query);
     let export_ids = [];
     for (let i = 0; i < q_export_details.length; i++) {
-        export_ids.push();
+        export_ids.push(q_export_details[i].exportid);
     }
 
     let q_exports = [];
@@ -344,17 +342,79 @@ router.get('/getinventorys', async (req, res, next) => {
         q_exports = await findExports({ _id: { $in: export_ids }, record_status: 'O' });
     }
 
-    if( q_exports.length ===0 && qr_imports ===0) {  return res.status(200).send([]); }
+    if (q_exports.length === 0 && q_imports === 0) { return res.status(200).send([]); }
     //get inventory
-
-
+    const q_eventory = await findInventory(req.query);
+    //
+    //console.log('q_imports =>' + JSON.stringify(q_imports));
+    //console.log('q_exports =>' + JSON.stringify(q_exports));
+    //console.log('q_eventory =>' + JSON.stringify(q_eventory));
 
     //combine 
 
+    let data_imports = [];
+    let data_exports = [];
+    for (let i = 0; i < q_import_details.length; i++) {
+        let row = q_import_details[i];
+        let new_row = {
+            fabric_color: row.fabric_color,
+            fabric_type: row.fabric_type,
+            i_roll: row.roll,
+            i_met: row.met
+        }
+        for (let j = 0; j < q_imports.length; j++) {
+            if (row.importid === q_imports[j]._id.toString()) {
+                new_row.invoice_no = q_imports[j].invoice_no;
+                new_row.im_date = new Date(q_imports[j].inputdate_no);
+                new_row.date = new Date(q_imports[j].inputdate_no);
+                break;
+            }
+        }
+        data_exports.push(new_row);
+    }
+
+    //export
+    for (let i = 0; i < q_export_details.length; i++) {
+        let row = q_export_details[i];
+
+        let new_row = {
+            fabric_color: row.fabric_color,
+            fabric_type: row.fabric_type,
+            e_roll: row.roll,
+            e_met: row.met
+        }
+        for (let j = 0; j < q_exports.length; j++) {
+            if (row.exportid === q_exports[j]._id.toString()) {
+                new_row.ex_date = new Date(q_exports[j].inputdate_no);
+                new_row.date = new Date(q_exports[j].inputdate_no);
+                break;
+            }
+        }
+        data_exports.push(new_row);
+    }
+
+    data_exports.sort((a, b) => {
+        if (a.date > b.date) {
+            return 1;
+        } else if (a.date === b.date) {
+            if (a.fabric_type > b.fabric_type) { return 1; }
+            else if (a.fabric_type === b.fabric_type) {
+                return a.fabric_color > b.fabric_color;
+            } else { return -1; }
+        }
+        return -1;    
+    });
+
+    let data_return = [];
+
+
+
+
     //sort
-
+    console.log('data_exports =>' + JSON.stringify(data_exports));
     //process 
-
+    return res.status(200).send(data_exports);
+    /*
     FabricWarehouse.find(req.query)
         .sort({ 'fabric_type': 'asc', 'fabric_color': 'asc' })
         .exec((err, inventorys) => {
@@ -363,7 +423,7 @@ router.get('/getinventorys', async (req, res, next) => {
                 return res.status(200).send(inventorys);
             }
             return res.status(500).send(err);
-        })
+        })*/
 });
 
 module.exports = router;
