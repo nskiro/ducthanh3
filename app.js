@@ -52,7 +52,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'upload')));
 app.use(express.static(path.join(__dirname, 'client/build')));
-
+app.use('/user', userRouter);
 // route middleware to verify a token
 app.use((req, res, next) => {
   console.log(req.path);
