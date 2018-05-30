@@ -253,7 +253,6 @@ router.get('/getexports', async (req, res, next) => {
             qr_import_detail.record_status = 'O';
             //console.log('only qr_import_detail =>' + JSON.stringify(qr_import_detail));
             data_imports_detail = await findExportsDetail(qr_import_detail);
-
             let data_ids = [];
             for (let i = 0; i < data_imports_detail.length; i++) {
                 if (data_ids.indexOf(data_imports_detail[i].exportid) === -1) {
@@ -288,12 +287,7 @@ router.get('/getexports', async (req, res, next) => {
     return res.status(200).send(data_return);
     /*
         FabricExport.find(req.query)
-            .exec((err, fabricwarehouse) => {
-    
-    
-                
-    
-    
+            .exec((err, fabricwarehouse) => {   
                 console.log('err = ' + err);
                 if (!err) {
                     console.log(JSON.stringify(fabricwarehouse));
@@ -303,12 +297,63 @@ router.get('/getexports', async (req, res, next) => {
             })*/
 });
 
+findInventory =(req) =>{
+    /*/
+    FabricWarehouse.find(req.query)
+    .sort({ 'fabric_type': 'asc', 'fabric_color': 'asc' })
+    .exec((err, inventorys) => {
+        if (!err) {
+            console.log(inventorys);
+            return res.status(200).send(inventorys);
+        }
+        return res.status(500).send(err);
+    })*/
+    return FabricWarehouse.find(req);
+}
+
+
 
 router.get('/getinventorys', async (req, res, next) => {
     req.query.record_status = 'O';
-    console.log('req.query -->' + JSON.stringify(req.query)); 
+    console.log('req.query -->' + JSON.stringify(req.query));
 
-    
+    if (req.query.fabric_color != undefined && req.query.fabric_color.length === 0) { delete req.query.fabric_color; }
+    if (req.query.fabric_type != undefined && req.query.fabric_type.length === 0) { delete req.query.fabric_type; }
+
+    //get imports detail
+    const q_import_details = await findImportsDetail(req.query);
+    let import_ids = [];
+    for (let i = 0; i < q_import_details.length; i++) {
+        import_ids.push(q_import_details.importid);
+    }
+    //get imports
+    let qr_imports = [];
+    if (import_ids.length > 0) {
+        qr_imports = await findImports({ _id: { $in: import_ids }, record_status: 'O' });
+    }
+
+    //get extporst detail 
+    const q_export_details = await findExportsDetail(req.query);
+    let export_ids = [];
+    for (let i = 0; i < q_export_details.length; i++) {
+        export_ids.push();
+    }
+
+    let q_exports = [];
+    if (export_ids.length > 0) {
+        q_exports = await findExports({ _id: { $in: export_ids }, record_status: 'O' });
+    }
+
+    if( q_exports.length ===0 && qr_imports ===0) {  return res.status(200).send([]); }
+    //get inventory
+
+
+
+    //combine 
+
+    //sort
+
+    //process 
 
     FabricWarehouse.find(req.query)
         .sort({ 'fabric_type': 'asc', 'fabric_color': 'asc' })
