@@ -106,7 +106,7 @@ class ViewReport extends Component {
                     </Col>
                 </Row>
                 <Row className="show-grid">
-                    {this.state.selectedFile !== null ? <iframe src={`${cmConfig.baseURL + 'web/viewer.html?file='+ _.replace(this.state.selectedFile,'upload\\','..\\')}`} width="100%" height="600px" /> : null }
+                    {this.state.selectedFile !== null ? <iframe src={`${cmConfig.baseURL + 'pdf/viewer.html?file='+ _.replace(this.state.selectedFile,'upload\\','..\\')}`} width="100%" height="600px" /> : null }
                 </Row>
             </Aux>
         );
