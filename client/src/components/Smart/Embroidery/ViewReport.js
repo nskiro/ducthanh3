@@ -39,10 +39,6 @@ class ViewReport extends Component {
             console.log(err);
         });
     }
-
-    handleFileFocus = (value) => {
-        this.setState({selectedFile: null});
-    }
     
     handleFileChange = (value) => {
         this.setState({selectedFile: value});
@@ -83,7 +79,7 @@ class ViewReport extends Component {
                                     style={{ width: 350 }}
                                     placeholder = "Select report file"
                                     optionFilterProp = "children"
-                                    onFocus = {this.handleFileFocus}
+                                    
                                     onSelect = {this.handleFileChange}
                                     filterOption = {(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}>
                                     {optionReportFile}
@@ -93,8 +89,8 @@ class ViewReport extends Component {
                     </Col>
                 </Row>
                 <Row className="show-grid">
-                    {this.state.selectedFile !== null ? <PdfViewer pdfUrl={`${cmConfig.baseURL + _.replace(this.state.selectedFile,'upload\\','')}`} /> : null }
-                </Row>
+                    {this.state.selectedFile !== null ? <iframe src={`${cmConfig.baseURL + 'web/viewer.html?file='+ _.replace(this.state.selectedFile,'upload\\','..\\')}`} width="100%" height="600px" /> : null }
+                </Row> 
             </Aux>
         );
     }

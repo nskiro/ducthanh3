@@ -173,7 +173,7 @@ class CuttingProgress extends Component {
                                     style={{ width: 350 }}
                                     placeholder = "Select report file"
                                     optionFilterProp = "children"
-                                    onFocus = {this.handleFileFocus}
+                                    
                                     onSelect = {this.handleFileChange}
                                     filterOption = {(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}>
                                     {optionCuttingFile}
