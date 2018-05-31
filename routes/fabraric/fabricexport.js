@@ -107,10 +107,36 @@ createConditionFindTypeAndColor = (data_detail) => {
     return { $or: type_colors };
 }
 
+createDataForTrans = (exportid, row) => {
+    let tran = {
+        tran_type_id: exportid,
+        tran_type: 'Xuất',
+
+        orderid: row.orderid,
+        fabric_type: row.fabric_type,
+        fabric_color: row.fabric_color,
+
+        po_no: row.po_no,
+        line_no: row.line_no,
+
+        sku: row.sku,
+        des: row.des,
+        qty: row.qty,
+        yield: row.yield,
+        fab_qty: row.fab_qty,
+        note: row.note,
+
+        roll: row.roll,
+        met: row.met,
+
+    };
+    return tran;
+}
+
+
 router.post('/add/', (req, res, next) => {
     let data_com = req.body.data;
     let data_detail = req.body.detail;
-    console.log('export data ->' + JSON.stringify(req.body));
     // kiem tra ton tai 
     let conditions = createConditionFindTypeAndColor(data_detail);
 
@@ -124,40 +150,18 @@ router.post('/add/', (req, res, next) => {
                     return res.status(500).send({ valid: false, error: 'Không tồn tại các loại vải và màu vải', data: pairs.notfound });
                 }
                 const create_export = await createnewExport(data_com, data_detail);
-                console.log('create export result =>' + JSON.stringify(create_export));
-
                 const create_export_detail = await createnewExportDetail(create_export._id, data_detail);
-                console.log('create export detail  result =>' + JSON.stringify(create_export_detail));
 
                 //update value
                 for (let i = 0; i < pairs.found.length; i++) {
                     let row = pairs.found[i];
                     const update_row = await updateWarehouse(row.fabric_type, row.fabric_color, -row.met, -row.roll);
-                    console.log('update result => ' + JSON.stringify(update_row));
                     //create transaction
                     if (!create_export.err) {
                         // row_updated = update_row.data;
-                        let tran = {
-                            tran_type_id: create_export._id,
-                            tran_type: 'Xuất',
-
-                            orderid: row.orderid,
-                            fabric_type: String,
-                            po_no: row.po_no,
-                            line_no: row.line_no,
-                        
-                            sku: row.sku,
-                            des: row.des,
-                            qty: row.qty,
-                            yield: row.yield,
-                            fab_qty:row.fab_qty,
-                            note:row.note,
-
-                            roll: row.roll,
-                            met: row.met,
-                            roll_after: update_row.roll - row.roll,
-                            met_after: update_row.met - row.met,
-                        };
+                        let tran = createDataForTrans(create_export._id, row);
+                        tran.roll_after = update_row.roll - row.roll;
+                        tran.met_after = update_row.met - row.met;
                         const write_tran = await createnewTransaction(tran);
                     }
                 }
@@ -166,36 +170,6 @@ router.post('/add/', (req, res, next) => {
             return res.status(500).send({ valid: false, error: err });
         }
         );
-
-    //
-    /*
-    var fabs = [];
-    for (let i = 0; i < data_detail.length; i++) {
-        let fab = {};
-        fabs.push(
-            {
-                inputdate_no: data_com.inputdate_no,
-
-                orderid: data_detail[i].orderid,
-                fabric_type: data_detail[i].fabric_type,
-                fabric_color: data_detail[i].fabric_color,
-                quantity: data_detail[i].quantity,
-
-                roll: data_detail[i].roll,
-                po_no: data_detail[i].po_no,
-                line_no: data_detail[i].line_no,
-                note: data_detail[i].note,
-                create_date: new Date()
-            }
-        );
-    }
-    FabricExport.create(fabs, (err, fabs) => {
-        console.log(err);
-        if (!err) {
-            return res.status(200).send(fabs);
-        }
-        return res.status(500).send(fabs);
-    })*/
 });
 
 
