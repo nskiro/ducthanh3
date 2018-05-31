@@ -725,6 +725,12 @@ console-control-strings@^1.0.0, console-control-strings@~1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/console-control-strings/-/console-control-strings-1.1.0.tgz#3d7cf4464db6446ea644bf4b39507f9851008e8e"
 
+console-title@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/console-title/-/console-title-1.0.1.tgz#4de4b6d90588a9a394020d006240e4a09c47448e"
+  optionalDependencies:
+    windows-console-title "~1.0.0"
+
 constantinople@~3.0.1:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/constantinople/-/constantinople-3.0.2.tgz#4b945d9937907bcd98ee575122c3817516544141"
@@ -4022,6 +4028,10 @@ widest-line@^2.0.0:
 window-size@0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/window-size/-/window-size-0.1.0.tgz#5438cd2ea93b202efa3a19fe8887aee7c94f9c9d"
+
+windows-console-title@~1.0.0:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/windows-console-title/-/windows-console-title-1.0.1.tgz#133bb5f968e8f5765cd2824060f7f0c2cddfbca1"
 
 with@~4.0.0:
   version "4.0.3"

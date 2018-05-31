@@ -4,9 +4,12 @@
  * Module dependencies.
  */
 
+const setTitle = require('console-title');
 var app = require('./app');
 var debug = require('debug')('ducthanh3:server');
 var http = require('http');
+
+setTitle("DT3 Web App Running");
 
 /**
  * Get port from environment and store in Express.

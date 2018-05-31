@@ -31,7 +31,8 @@
     "react-bootstrap-table-next": "^0.1.11",
     "react-data-export": "^0.4.2",
     "react-data-grid": "^4.0.7",
-    "xlsx": "^0.12.10"
+    "xlsx": "^0.12.10",
+    "console-title": "^1.0.1"
   },
   "devDependencies": {
     "babel-plugin-react-html-attrs": "^2.1.0",
