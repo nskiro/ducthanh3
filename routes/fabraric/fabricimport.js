@@ -12,11 +12,9 @@ const FabricWarehouseTran = require('../../Schema/FabricWarehouseTran');
 
 router.get('/get', (req, res, next) => {
     console.log(req.query);
-    console.log('toi day 1');
     if (req.query.provider_name && req.query.provider_name === 'A') {
         delete req.query.provider_name;
     }
-    console.log('toi day 2');
     if (req.query.declare_dates) {
         req.query.declare_date = {
             $gte: new Date(req.query.declare_dates[0]),
@@ -24,21 +22,15 @@ router.get('/get', (req, res, next) => {
         };
         delete req.query.declare_dates;
     }
-    console.log('toi day 3');
     if (req.query.orderid) {
         let details = { orderid: req.query.orderid };
         req.query['details.orderid'] = req.query.orderid;
         delete req.query.orderid;
     }
-    console.log('toi day 4');
-
     if (req.query.declare_no != undefined && req.query.declare_no.length === 0) { delete req.query.declare_no; }
     if (req.query.invoice_no != undefined && req.query.invoice_no.length === 0) { delete req.query.invoice_no; }
     if (req.query.orderid != undefined && req.query.orderid.length === 0) { delete req.query.orderid; }
 
-
-
-    console.log('toi day 5');
     req.query.record_status = 'O';
     console.log('query ===> ' + JSON.stringify(req.query));
 
@@ -71,25 +63,7 @@ checkPairTypeAndColor = (data_detail, fabricwarehouse) => {
 }
 
 creatnewWarehouse = (datas) => {
-    return FabricWarehouse.create(datas, async (err, fhouses) => {
-        if (!err) {
-            for (let i = 0; i < datas.length; i++) {
-                let data = datas[i];
-
-                let tran = {
-                    tran_type_id: data._id,
-                    tran_type: 'Nhập',
-                    roll: data.roll,
-                    met: data.met,
-                    roll_after: data.roll,
-                    met_after: data.met,
-                };
-                const write_tran = await createnewTransaction(tran);
-            }
-            return { valid: true, data: fhouses };
-        }
-        return { valid: false, error: err };
-    })
+    return FabricWarehouse.create(datas);
 }
 
 updateWarehouse = (ftype, fcolor, imet, iroll) => {
@@ -99,12 +73,7 @@ updateWarehouse = (ftype, fcolor, imet, iroll) => {
 }
 
 createnewTransaction = (tran) => {
-    return FabricWarehouseTran.create(tran, (err, rstran) => {
-        if (!err) {
-            return { valid: true, data: rstran };
-        }
-        return { valid: false, error: err };
-    });
+    return FabricWarehouseTran.create(tran);
 }
 
 createnewImport = (data_com, data_detail) => {
@@ -150,13 +119,14 @@ createConditionFindTypeAndColor = (data_detail) => {
     return { $or: type_colors };
 }
 
-createDataForTrans = (importid, row) => {
+createDataImForTrans = (importid, row) => {
     let tran = {
         tran_type_id: importid,
         tran_type: 'Nhập',
 
         orderid: row.orderid,
-        fabric_type: String,
+        fabric_type: row.fabric_type,
+        fabric_color: row.fabric_color,
         po_no: row.po_no,
         line_no: row.line_no,
 
@@ -188,19 +158,19 @@ router.post('/add/', async (req, res, next) => {
                 const newWarehouse = await creatnewWarehouse(pairs.notfound);
                 const create_import = await createnewImport(data_com, data_detail);
                 const create_import_detail = await createnewImportDetail(create_import._id, data_detail);
-
+                
                 //create transtion
                 for (let i = 0; i < pairs.notfound.length; i++) {
                     let row = pairs.notfound[i];
                     if (!create_import.err) {
                         // row_updated = update_row.data;
-                        let tran = createDataForTrans(create_import._id, row);
+                        let tran = createDataImForTrans(create_import._id, row);
                         tran.roll_after = row.roll;
                         tran.met_after = row.met;
+                        console.log(JSON.stringify(tran));
                         const write_tran = await createnewTransaction(tran);
                     }
                 }
-
                 //update value
                 for (let i = 0; i < pairs.found.length; i++) {
                     let row = pairs.found[i];
@@ -236,6 +206,7 @@ findDetailByImportId = (importid) => {
     return FabricImportDetail.find({ importid: importid });
 }
 
+/*
 router.post(`/update/:id/`, async (req, res, next) => {
     let id = req.params.id;
     console.log('id = >' + id);
@@ -309,11 +280,11 @@ router.post(`/update/:id/`, async (req, res, next) => {
         console.log(err);
         return res.status(500).send(ftype);
     });
-    */
+    
 
 
 });
 
-
+*/
 
 module.exports = router;

@@ -69,28 +69,48 @@ const inventory_trans_colums = [
     { key: 'stk', name: 'STK' },
     { key: 'im_inputdate_no', name: 'IM DATE' },
     { key: 'ex_inputdate_no', name: 'EX DATE' },
-    { key: 'fabric_type', name: 'TYPE' },
-    { key: 'fabric_color', name: 'COLOR' },
     { key: 'im_met', name: 'IM MET' },
     { key: 'ex_met', name: 'EX MET' },
     { key: 'met', name: 'MET' },
     { key: 'im_roll', name: 'IM ROLL' },
     { key: 'ex_roll', name: 'EX ROLL' },
     { key: 'roll', name: 'ROLL' },
-
 ]
 
 class FormTransDetail extends Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
-            //data: this.props.data
-            // rows: this.props.data.details,
-            columns: []
+            data_trans: []
         };
     }
+
+    rowInventoryTransGetter = (i) => {
+        if (i >= 0 && i < this.state.data_trans.length) {
+            return this.state.data_trans[i];
+        }
+        return null;
+    }
+
+    onSearchDetailTrans = (e) => {
+        e.preventDefault();
+        this.props.form.validateFields((err, values) => {
+            console.log('Received values of form: ', values);
+            axios.get('api/fabric/warehouse/getinventorytrans', { params: values })
+                .then((res) => {
+                    this.setState({ data_trans: res.data });
+                })
+                .catch((err) => {
+                    console.log(err);
+                    this.setState({ data_trans: [] });
+                });
+
+        });
+    }
+
     render() {
         const { visible, onCancel, onCreate, form } = this.props;
+        const { getFieldDecorator } = this.props.form;
         let fabric_type = '';
         let fabric_color = '';
         if (this.props.data.data != undefined) {
@@ -105,12 +125,67 @@ class FormTransDetail extends Component {
                 onOk={onCreate}
                 maskClosable={false}
                 onCancel={onCancel}
-                width={900}
+                width={1000}
                 style={{ top: 5 }}
             >
                 <div>
-                    <div><b> TYPE:</b> {fabric_type} </div>
-                    <div><b> COLOR:</b> {fabric_color} </div>
+                    <Form className="ant-advanced-search-panel " >
+                        <Grid>
+                            <Row className="show-grid">
+                                <Col md={6} sm={12} xs={6} style={{ textAlign: 'left' }}>
+                                    <div><b> TYPE:</b> {fabric_type} </div>
+                                </Col>
+                                <Col md={6} sm={12} xs={6} style={{ textAlign: 'left' }}>
+                                    <div><b> COLOR:</b> {fabric_color} </div>
+                                </Col>
+                            </Row >
+                            <Row className="show-grid">
+                                <Col>
+                                    <FormItem>
+                                        {getFieldDecorator('fabric_type', { initialValue: fabric_type })
+                                            (<Input style={{ display: 'none', visible: false }} />)}
+                                    </FormItem>
+                                    <FormItem>
+                                        {getFieldDecorator('fabric_color', { initialValue: fabric_color })
+                                            (<Input style={{ display: 'none', visible: false }} />)}
+                                    </FormItem>
+                                </Col>
+                            </Row>
+
+                            <Row className="show-grid">
+                                <Col md={6} sm={12} xs={6} style={{ textAlign: 'left' }}>
+                                    <FormItem label="FROM DATE" >
+                                        {getFieldDecorator('fromdate', {}, )
+                                            (<DatePicker format={dateFormat} />)
+                                        }
+                                    </FormItem>
+                                </Col>
+                                <Col md={6} sm={12} xs={6} style={{ textAlign: 'left' }}>
+                                    <FormItem label="TO DATE" >
+                                        {getFieldDecorator('todate', {}, )
+                                            (<DatePicker format={dateFormat} />)
+                                        }
+                                    </FormItem>
+                                </Col>
+                            </Row>
+                            <Row className="show-grid">
+                                <Col md={4} sm={6} xs={12} style={{ textAlign: 'left' }}>
+                                    <Button type="primary" onClick={this.onSearchDetailTrans} > SEARCH</Button>
+                                    <Button style={{ marginLeft: 8 }} onClick={this.handleReset}>CLEAR</Button>
+                                </Col>
+                            </Row>
+                        </Grid>
+                    </Form>
+                    <div></div>
+                    <ReactDataGrid
+                        enableCellSelect={true}
+                        resizable={true}
+                        columns={inventory_trans_colums}
+                        rowGetter={this.rowInventoryTransGetter}
+                        rowsCount={this.state.data_trans.length}
+                        minHeight={300}
+                        rowRenderer={RowRenderer}
+                    ></ReactDataGrid>
                 </div>
             </Modal>
         );

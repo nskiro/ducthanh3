@@ -309,17 +309,15 @@ router.get('/getinventorytrans', async (req, res, next) => {
     req.query.record_status = 'O';
 
     console.log('getinventorytrans =>' + JSON.stringify(req.query));
-
     /*
     if (req.query.fabric_color != undefined && req.query.fabric_color.length === 0) { delete req.query.fabric_color; }
     if (req.query.fabric_type != undefined && req.query.fabric_type.length === 0) { delete req.query.fabric_type; }
     */
-
     //get imports detail
     const q_import_details = await findImportsDetailTrans(req.query);
     let import_ids = [];
     for (let i = 0; i < q_import_details.length; i++) {
-        import_ids.push(q_import_details[i].importid);
+        import_ids.push(q_import_details[i].tran_type_id);
     }
     //get imports
     let q_imports = [];
@@ -331,31 +329,45 @@ router.get('/getinventorytrans', async (req, res, next) => {
     let q_export_details = await findExportsDetail(req.query);
     let export_ids = [];
     for (let i = 0; i < q_export_details.length; i++) {
-        export_ids.push(q_export_details[i].exportid);
+        export_ids.push(q_export_details[i].tran_type_id);
     }
 
     let q_exports = [];
     if (export_ids.length > 0) {
         q_exports = await findExports({ _id: { $in: export_ids }, record_status: 'O' });
     }
-
     if (q_exports.length === 0 && q_imports === 0) { return res.status(200).send([]); }
 
+    //combine
+    console.log(JSON.stringify(q_import_details));
+    let data_returned = [];
+    for (let i = 0; i < q_import_details.length; i++) {
+        let row = q_import_details[i];
+        let new_row = {
+            tran_type:row.tran_type,
+            orderid:row.orderid,
+            po_no:row.po_no,
+            line_no:row.line_no,
+            sku:row.sku,
+            des:row.des,
+            qty:row.qty,
+            yield:row.yield,
+            fab_qty:row.fab_qty,
+            note:row.note,
+            im_roll:row.roll,
+            roll:row.roll_after,
+            im_met:row.met,
+            met:row.met_after,
+            im_inputdate_no:row.create_date,
+        }
+        data_returned.push(new_row);
+    }
+
+    return res.status(200).send(data_returned);
 }
 );
 
 findInventory = (req) => {
-    //console.log('findInventory =>' + JSON.stringify(req));
-    /*/
-    FabricWarehouse.find(req.query)
-    .sort({ 'fabric_type': 'asc', 'fabric_color': 'asc' })
-    .exec((err, inventorys) => {
-        if (!err) {
-            console.log(inventorys);
-            return res.status(200).send(inventorys);
-        }
-        return res.status(500).send(err);
-    })*/
     return FabricWarehouse.find(req);
 }
 

@@ -5,6 +5,7 @@ const fabricwarehousetran = new mongoose.Schema({
     tran_type: { type: String, default: null },
     orderid: Number,
     fabric_type: String,
+    fabric_color: String,
     po_no: { type: Number, default: 0 },
     line_no: { type: Number, default: 0 },
 
