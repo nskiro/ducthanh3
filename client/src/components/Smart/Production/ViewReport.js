@@ -108,7 +108,7 @@ class ViewReport extends Component {
                     </Col>
                 </Row>
                 <Row className="show-grid">
-                    {this.state.selectedFile !== null ? <PdfViewer pdfUrl={`${cmConfig.baseURL + _.replace(this.state.selectedFile,'upload/','')}`} /> : null }
+                    {this.state.selectedFile !== null ? <PdfViewer pdfUrl={`${cmConfig.baseURL + _.replace(this.state.selectedFile,'upload\\','')}`} /> : null }
                 </Row>
             </Aux>
         );
