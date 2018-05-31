@@ -84,7 +84,6 @@ class WarehouseImportForm extends Component {
                 let children = []
                 let children_uni = []
                 for (let i = 0; i < data.length; i++) {
-
                     if (data[i].provider_code && children_uni.indexOf(data[i].provider_code) === -1) {
                         children.push(<Option key={data[i].provider_code}>{data[i].provider_code}</Option>);
                         children_uni.push(data[i].provider_code);
@@ -188,7 +187,7 @@ class WarehouseImportForm extends Component {
                             <Col md={4} sm={6} xs={6} style={{ textAlign: 'left' }}>
                                 <FormItem   {...formItemLayout} label="IM DATE" >
                                     {getFieldDecorator('inputdate_no', { initialValue: moment(this.props.data.inputdate_no) }, { rules: [{ type: 'object', required: true, message: 'Vui lòng chọn thời gian nhập kho !' }], }, )
-                                        (<DatePicker format={dateFormat} />)
+                                        (<DatePicker format={dateFormat} disabled/>)
                                     }
                                 </FormItem>
                             </Col>
@@ -592,7 +591,6 @@ class WarehouseImport extends Component {
 
                 <div className="ant-advanced-toolbar">
                     <Button type="primary" value='new' className='ant-advanced-toolbar-item' onClick={this.showModal}>NEW</Button>
-                    <Button type="primary" value='edit' className='ant-advanced-toolbar-item' onClick={this.showModal}>EDIT</Button>
                     <Button type="primary" value='view' className='ant-advanced-toolbar-item' onClick={this.showModal}>DETAIL</Button>
                 </div>
 

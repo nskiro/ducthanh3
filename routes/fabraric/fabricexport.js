@@ -140,6 +140,19 @@ router.post('/add/', (req, res, next) => {
                         let tran = {
                             tran_type_id: create_export._id,
                             tran_type: 'Xuất',
+
+                            orderid: row.orderid,
+                            fabric_type: String,
+                            po_no: row.po_no,
+                            line_no: row.line_no,
+                        
+                            sku: row.sku,
+                            des: row.des,
+                            qty: row.qty,
+                            yield: row.yield,
+                            fab_qty:row.fab_qty,
+                            note:row.note,
+
                             roll: row.roll,
                             met: row.met,
                             roll_after: update_row.roll - row.roll,

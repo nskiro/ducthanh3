@@ -201,7 +201,7 @@ class WarehouseExportForm extends Component {
                             <Col md={4} sm={6} xs={6} style={{ textAlign: 'left' }}>
                                 <FormItem   {...formItemLayout} label="EX DATE" >
                                     {getFieldDecorator('inputdate_no', { initialValue: moment(this.props.data.inputdate_no) }, { rules: [{ type: 'object', required: true, message: 'Vui lòng chọn thời gian xuất kho !' }], }, )
-                                        (<DatePicker placeholder='thời gian xuất kho' format={dateFormat} />)
+                                        (<DatePicker format={dateFormat} disabled />)
                                     }
                                 </FormItem>
                             </Col>
@@ -294,9 +294,9 @@ class WarehouseExport extends Component {
                     data_export_selected: { inputdate_no: new Date(), details: [], title: 'NEW' },
                 });
 
-            } else if (mod === 'edit') {
+            } else if (mod === 'detail') {
                 let selected = this.state.data_export_selected;
-                selected['title'] = 'EDIT';
+                selected['title'] = 'DETAIL';
                 this.setState({
                     modalvisible: true,
                     data_export_selected: selected
@@ -359,6 +359,11 @@ class WarehouseExport extends Component {
             if (err) {
                 return;
             }
+
+            if (this.state.mod === 'detail') {
+                return;
+            }
+
             let data_collect = this.collectDataGrid(this.formRef.state.rows);
             if (!data_collect.isvalid) {
                 alert('Dữ liệu không hợp lệ. Vui lòng kiểm tra lại.');
@@ -368,6 +373,8 @@ class WarehouseExport extends Component {
                 // _id: values.id,
                 inputdate_no: values.inputdate_no.format('YYYY-MM-DD')
             }
+
+
             if (values.id) {
                 console.log('call update');
 
@@ -482,7 +489,7 @@ class WarehouseExport extends Component {
 
                 <div className="ant-advanced-toolbar">
                     <Button type="primary" value='new' className='ant-advanced-toolbar-item' onClick={this.showModal}>NEW</Button>
-                    <Button type="primary" value='edit' className='ant-advanced-toolbar-item' onClick={this.showModal}>EDIT</Button>
+                    <Button type="primary" value='detail' className='ant-advanced-toolbar-item' onClick={this.showModal}>DETAIL</Button>
                 </div>
 
                 <WrappedWarehouseExportForm

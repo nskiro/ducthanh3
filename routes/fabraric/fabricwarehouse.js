@@ -1,6 +1,7 @@
 var express = require('express');
 var mongoose = require('mongoose');
 var router = express.Router();
+var moment = require('moment');
 const _ = require('lodash');
 
 const FabricImport = require('../../Schema/FabricImport');
@@ -22,6 +23,12 @@ findImportsDetail = (req) => {
     console.log('findImportsDetail =>' + JSON.stringify(req));
     return FabricImportDetail.find(req).sort({ 'inputdate_no': 'asc' });
 }
+
+findImportsDetailTrans = (req) => {
+    console.log('findImportsDetail =>' + JSON.stringify(req));
+    return FabricWarehouseTran.find(req);
+}
+
 
 
 router.get('/getimports', async (req, res, next) => {
@@ -297,29 +304,19 @@ router.get('/getexports', async (req, res, next) => {
             })*/
 });
 
-findInventory = (req) => {
-    /*/
-    FabricWarehouse.find(req.query)
-    .sort({ 'fabric_type': 'asc', 'fabric_color': 'asc' })
-    .exec((err, inventorys) => {
-        if (!err) {
-            console.log(inventorys);
-            return res.status(200).send(inventorys);
-        }
-        return res.status(500).send(err);
-    })*/
-    return FabricWarehouse.find(req);
-}
 
-router.get('/getinventorys', async (req, res, next) => {
+router.get('/getinventorytrans', async (req, res, next) => {
     req.query.record_status = 'O';
-    console.log('req.query -->' + JSON.stringify(req.query));
 
+    console.log('getinventorytrans =>' + JSON.stringify(req.query));
+
+    /*
     if (req.query.fabric_color != undefined && req.query.fabric_color.length === 0) { delete req.query.fabric_color; }
     if (req.query.fabric_type != undefined && req.query.fabric_type.length === 0) { delete req.query.fabric_type; }
+    */
 
     //get imports detail
-    const q_import_details = await findImportsDetail(req.query);
+    const q_import_details = await findImportsDetailTrans(req.query);
     let import_ids = [];
     for (let i = 0; i < q_import_details.length; i++) {
         import_ids.push(q_import_details[i].importid);
@@ -343,84 +340,184 @@ router.get('/getinventorys', async (req, res, next) => {
     }
 
     if (q_exports.length === 0 && q_imports === 0) { return res.status(200).send([]); }
-    //get inventory
-    const q_eventory = await findInventory(req.query);
-    //
-    //console.log('q_imports =>' + JSON.stringify(q_imports));
-    //console.log('q_exports =>' + JSON.stringify(q_exports));
-    //console.log('q_eventory =>' + JSON.stringify(q_eventory));
 
-    //combine 
+}
+);
 
-    let data_imports = [];
-    let data_exports = [];
-    for (let i = 0; i < q_import_details.length; i++) {
-        let row = q_import_details[i];
-        let new_row = {
-            fabric_color: row.fabric_color,
-            fabric_type: row.fabric_type,
-            i_roll: row.roll,
-            i_met: row.met
+findInventory = (req) => {
+    //console.log('findInventory =>' + JSON.stringify(req));
+    /*/
+    FabricWarehouse.find(req.query)
+    .sort({ 'fabric_type': 'asc', 'fabric_color': 'asc' })
+    .exec((err, inventorys) => {
+        if (!err) {
+            console.log(inventorys);
+            return res.status(200).send(inventorys);
         }
-        for (let j = 0; j < q_imports.length; j++) {
-            if (row.importid === q_imports[j]._id.toString()) {
-                new_row.invoice_no = q_imports[j].invoice_no;
-                new_row.im_date = new Date(q_imports[j].inputdate_no);
-                new_row.date = new Date(q_imports[j].inputdate_no);
-                break;
-            }
-        }
-        data_exports.push(new_row);
-    }
+        return res.status(500).send(err);
+    })*/
+    return FabricWarehouse.find(req);
+}
 
-    //export
-    for (let i = 0; i < q_export_details.length; i++) {
-        let row = q_export_details[i];
+router.get('/getinventorys', async (req, res, next) => {
+    req.query.record_status = 'O';
 
-        let new_row = {
-            fabric_color: row.fabric_color,
-            fabric_type: row.fabric_type,
-            e_roll: row.roll,
-            e_met: row.met
-        }
-        for (let j = 0; j < q_exports.length; j++) {
-            if (row.exportid === q_exports[j]._id.toString()) {
-                new_row.ex_date = new Date(q_exports[j].inputdate_no);
-                new_row.date = new Date(q_exports[j].inputdate_no);
-                break;
-            }
-        }
-        data_exports.push(new_row);
-    }
+    if (req.query.fabric_color != undefined && req.query.fabric_color.length === 0) { delete req.query.fabric_color; }
+    if (req.query.fabric_type != undefined && req.query.fabric_type.length === 0) { delete req.query.fabric_type; }
 
-    data_exports.sort((a, b) => {
-        if (a.date > b.date) {
-            return 1;
-        } else if (a.date === b.date) {
-            if (a.fabric_type > b.fabric_type) { return 1; }
-            else if (a.fabric_type === b.fabric_type) {
-                return a.fabric_color > b.fabric_color;
-            } else { return -1; }
-        }
-        return -1;    
-    });
-
-    let data_return = [];
-
-    //sort
-    console.log('data_exports =>' + JSON.stringify(data_exports));
-    //process 
-    return res.status(200).send(data_exports);
     /*
+      console.log('req.query -->' + JSON.stringify(req.query));
+  
+ 
+      //get imports detail
+      const q_import_details = await findImportsDetail(req.query);
+      let import_ids = [];
+      for (let i = 0; i < q_import_details.length; i++) {
+          import_ids.push(q_import_details[i].importid);
+      }
+      //get imports
+      let q_imports = [];
+      if (import_ids.length > 0) {
+          q_imports = await findImports({ _id: { $in: import_ids }, record_status: 'O' });
+      }
+  
+      //get extporst detail 
+      let q_export_details = await findExportsDetail(req.query);
+      let export_ids = [];
+      for (let i = 0; i < q_export_details.length; i++) {
+          export_ids.push(q_export_details[i].exportid);
+      }
+  
+      let q_exports = [];
+      if (export_ids.length > 0) {
+          q_exports = await findExports({ _id: { $in: export_ids }, record_status: 'O' });
+      }
+  
+      if (q_exports.length === 0 && q_imports === 0) { return res.status(200).send([]); }
+      //get inventory
+      const q_eventory = await findInventory(req.query);
+  
+      let map_invs_roll = {};
+      let map_invs_met = {};
+      console.log('q_eventory' + JSON.stringify(q_eventory));
+      for (let i = 0; i < q_eventory.length; i++) {
+          let inv = q_eventory[i];
+          let pair = '(' + inv.fabric_type + ')-(' + inv.fabric_color + ')';
+          map_invs_roll[pair] = inv.roll;
+          map_invs_met[pair] = inv.met;
+      }
+  
+      console.log('map_invs_roll = ' + JSON.stringify(map_invs_roll));
+      console.log('map_invs_met =' + JSON.stringify(map_invs_met));
+      //
+      //console.log('q_imports =>' + JSON.stringify(q_imports));
+      //console.log('q_exports =>' + JSON.stringify(q_exports));
+      //console.log('q_eventory =>' + JSON.stringify(q_eventory));
+  
+      //combine 
+      let data_imports = [];
+      let data_exports = [];
+      for (let i = 0; i < q_import_details.length; i++) {
+          let row = q_import_details[i];
+          let new_row = {
+              fabric_color: row.fabric_color,
+              fabric_type: row.fabric_type,
+              i_roll: row.roll,
+              i_met: row.met,
+              op: 0
+          }
+          for (let j = 0; j < q_imports.length; j++) {
+              if (row.importid === q_imports[j]._id.toString()) {
+                  new_row.invoice_no = q_imports[j].invoice_no;
+                  new_row.im_date = new Date(q_imports[j].inputdate_no);
+                  new_row.date = new Date(q_imports[j].inputdate_no);
+                  break;
+              }
+          }
+          data_exports.push(new_row);
+      }
+  
+      //export
+      for (let i = 0; i < q_export_details.length; i++) {
+          let row = q_export_details[i];
+  
+          let new_row = {
+              fabric_color: row.fabric_color,
+              fabric_type: row.fabric_type,
+              e_roll: row.roll,
+              e_met: row.met,
+              op:1
+          }
+          for (let j = 0; j < q_exports.length; j++) {
+              if (row.exportid === q_exports[j]._id.toString()) {
+                  new_row.ex_date = new Date(q_exports[j].inputdate_no);
+                  new_row.date = new Date(q_exports[j].inputdate_no);
+                  break;
+              }
+          }
+          data_exports.push(new_row);
+      }
+  
+      data_exports.sort((a, b) => {
+          // return a.date > b.date;
+          let a_m = moment(a.date);
+          let b_m = moment(b.date);
+          if (a_m.isAfter(b_m)) {
+              return 1;
+          } else if (a_m.isSame(b_m)) {
+              if (a.fabric_type > b.fabric_type) {
+                  return 1;
+              }
+              else if (a.fabric_type === b.fabric_type) {
+                  if (a.fabric_color > b.fabric_color) {
+                      return 1;
+                  } else if (a.fabric_color === b.fabric_color) {
+                      if (a.im_date != undefined) {
+                          if (b.im_date != undefined) {
+                              return 0;
+                          }
+                          return -1;
+                      }
+                      return 1;
+                  }
+                  return -1;
+              } else { return -1; }
+          }
+          return -1;
+      });
+  
+  
+      for (let  i =data_exports.length-1;i>=0;i--){
+  
+      }
+  
+      let data_return = [];
+  
+      for (let i = 0; i < data_exports.length; i++) {
+          console.log(JSON.stringify(data_exports[i]));
+      }
+  */
+    //sort
+
+    //process 
+    //return res.status(200).send(data_exports);
+
     FabricWarehouse.find(req.query)
         .sort({ 'fabric_type': 'asc', 'fabric_color': 'asc' })
         .exec((err, inventorys) => {
             if (!err) {
-                console.log(inventorys);
-                return res.status(200).send(inventorys);
+                let data_returned = [];
+                for (let i = 0; i < inventorys.length; i++) {
+                    let row = JSON.parse(JSON.stringify(inventorys[i]));
+                    row['stt'] = (i + 1);
+                    data_returned.push(row);
+                }
+                console.log(data_returned);
+
+                return res.status(200).send(data_returned);
             }
             return res.status(500).send(err);
-        })*/
+        });
 });
 
 module.exports = router;

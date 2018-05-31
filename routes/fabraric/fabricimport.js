@@ -150,6 +150,30 @@ createConditionFindTypeAndColor = (data_detail) => {
     return { $or: type_colors };
 }
 
+createDataForTrans = (importid, row) => {
+    let tran = {
+        tran_type_id: importid,
+        tran_type: 'Nhập',
+
+        orderid: row.orderid,
+        fabric_type: String,
+        po_no: row.po_no,
+        line_no: row.line_no,
+
+        sku: row.sku,
+        des: row.des,
+        qty: row.qty,
+        yield: row.yield,
+        fab_qty: row.fab_qty,
+        note: row.note,
+
+        roll: row.roll,
+        met: row.met,
+
+    };
+    return tran;
+}
+
 router.post('/add/', async (req, res, next) => {
     let data_com = req.body.data;
     let data_detail = req.body.detail;
@@ -165,23 +189,28 @@ router.post('/add/', async (req, res, next) => {
                 const create_import = await createnewImport(data_com, data_detail);
                 const create_import_detail = await createnewImportDetail(create_import._id, data_detail);
 
+                //create transtion
+                for (let i = 0; i < pairs.notfound.length; i++) {
+                    let row = pairs.notfound[i];
+                    if (!create_import.err) {
+                        // row_updated = update_row.data;
+                        let tran = createDataForTrans(create_import._id, row);
+                        tran.roll_after = row.roll;
+                        tran.met_after = row.met;
+                        const write_tran = await createnewTransaction(tran);
+                    }
+                }
+
                 //update value
                 for (let i = 0; i < pairs.found.length; i++) {
                     let row = pairs.found[i];
                     const update_row = await updateWarehouse(row.fabric_type, row.fabric_color, row.met, row.roll);
-                    //console.log('update result => ' + JSON.stringify(update_row));
-                    //console.log('create import result =>'+JSON.stringify(create_import));
                     //create transaction
                     if (!create_import.err) {
                         // row_updated = update_row.data;
-                        let tran = {
-                            tran_type_id: create_import._id,
-                            tran_type: 'Nhập',
-                            roll: row.roll,
-                            met: row.met,
-                            roll_after: update_row.roll + row.roll,
-                            met_after: update_row.met + row.met,
-                        };
+                        let tran = createDataForTrans(create_import._id, row);
+                        tran.roll_after = update_row.roll + row.roll;
+                        tran.met_after = update_row.met + row.met;
                         const write_tran = await createnewTransaction(tran);
                     }
                 }

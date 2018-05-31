@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Grid, Row, Col } from 'react-bootstrap';
 import ExcelFileSheet from 'react-data-export';
 
-import { Radio, AutoComplete, Input, InputNumber, Form, Button, Tabs, DatePicker, Select } from 'antd';
+import { Radio, AutoComplete, Input, InputNumber, Form, Modal, Button, Tabs, DatePicker, Select } from 'antd';
 import ReactDataGrid from 'react-data-grid';
 
 import RowRenderer from './rowrenderer';
@@ -41,11 +41,11 @@ const import_columns = [
 
 const export_columns = [
     { key: 'inputdate_no', name: 'DATE', formatter: DateShortFormatter },
-    { key: 'orderid', name: 'ORDER #' },
     { key: 'fabric_type', name: 'CODE' },
     { key: 'fabric_color', name: 'COLOR' },
     { key: 'met', name: 'MET' },
     { key: 'roll', name: 'ROLL' },
+    { key: 'orderid', name: 'ORDER #' },
     { key: 'po_no', name: 'PO#' },
     { key: 'line_no', name: 'LINE#' },
     { key: 'sku', name: 'SKU' },
@@ -57,24 +57,81 @@ const export_columns = [
 ];
 
 const inventory_colums = [
-    { key: 'invoice_no', name: 'INVOICE #' },
-    { key: 'im_date', name: 'IM DATE', formatter: DateShortFormatter },
-    { key: 'ex_date', name: 'EX DATE', formatter: DateShortFormatter },
-    { key: 'fabric_type', name: 'CODE' },
+    { key: 'stt', name: 'STT', width: 60 },
+    { key: 'fabric_type', name: 'TYPE' },
     { key: 'fabric_color', name: 'COLOR' },
-    { key: 'i_met', name: 'IM MET' },
-    { key: 'e_met', name: 'EX MET' },
-    { key: 'met', name: 'MET' },
-    { key: 'i_roll', name: 'IM ROLL' },
-    { key: 'e_roll', name: 'EX ROLL' },
-    { key: 'roll', name: 'ROLL' },
+    { key: 'met', name: 'INV MET' },
+    { key: 'roll', name: 'INV ROLL' },
 ]
+
+const inventory_trans_colums = [
+    { key: 'stt', name: 'STT', width: 60 },
+    { key: 'stk', name: 'STK' },
+    { key: 'im_inputdate_no', name: 'IM DATE' },
+    { key: 'ex_inputdate_no', name: 'EX DATE' },
+    { key: 'fabric_type', name: 'TYPE' },
+    { key: 'fabric_color', name: 'COLOR' },
+    { key: 'im_met', name: 'IM MET' },
+    { key: 'ex_met', name: 'EX MET' },
+    { key: 'met', name: 'MET' },
+    { key: 'im_roll', name: 'IM ROLL' },
+    { key: 'ex_roll', name: 'EX ROLL' },
+    { key: 'roll', name: 'ROLL' },
+
+]
+
+class FormTransDetail extends Component {
+    constructor(props, context) {
+        super(props, context);
+        this.state = {
+            //data: this.props.data
+            // rows: this.props.data.details,
+            columns: []
+        };
+    }
+    render() {
+        const { visible, onCancel, onCreate, form } = this.props;
+        let fabric_type = '';
+        let fabric_color = '';
+        if (this.props.data.data != undefined) {
+            fabric_type = this.props.data.data.fabric_type;
+            fabric_color = this.props.data.data.fabric_color;
+        }
+
+        return (
+            <Modal
+                title='VIEW DETAIL'
+                visible={visible}
+                onOk={onCreate}
+                maskClosable={false}
+                onCancel={onCancel}
+                width={900}
+                style={{ top: 5 }}
+            >
+                <div>
+                    <div><b> TYPE:</b> {fabric_type} </div>
+                    <div><b> COLOR:</b> {fabric_color} </div>
+                </div>
+            </Modal>
+        );
+    }
+}
+FormTransDetail.propTypes = {
+    data: PropTypes.object
+};
+FormTransDetail.defaultProps = {
+
+};
+
 class Inventory extends Component {
     state = {
         data_colors: [],
         data_types: [],
         show_grid_result: false,
-        data_inventory: []
+        data_inventory: [],
+        showdetail: false,
+        data_inventory_selected: {}
+
     }
     handleSearchInventory = (e) => {
         e.preventDefault();
@@ -82,7 +139,6 @@ class Inventory extends Component {
             console.log('handleSearchInventory -> Received values of form: ', values);
             axios.get('api/fabric/warehouse/getinventorys', { params: values })
                 .then((res) => {
-                    console.log(res.data);
                     this.setState({ data_inventory: res.data });
                 })
                 .catch((err) => {
@@ -160,11 +216,49 @@ class Inventory extends Component {
         this.loadFabricTypes();
     }
 
+    onViewDetail = (e) => {
+        if (e) {
+            this.setState({ showdetail: true });
+        }
+    }
+
+    saveFormRef = (formRef) => {
+        this.formRef = formRef;
+    }
+    handleCancel = (e) => {
+        this.setState({
+            showdetail: false,
+        });
+    }
+    handleCreate = (e) => {
+        const form = this.formRef.props.form;
+        this.setState({
+            showdetail: false,
+        });
+    }
+
+    onRowWarehouseInventClick = (e) => {
+        let index = e;
+        if (index >= 0 && index < this.state.data_inventory.length) {
+            let row = this.state.data_inventory[index];
+
+            this.setState({ data_inventory_selected: { data: row } });
+        }
+    }
+
     render() {
         const { getFieldDecorator } = this.props.form;
-
+        const WapperFormTransDetail = Form.create()(FormTransDetail);
         return (
             <div>
+                <WapperFormTransDetail
+                    wrappedComponentRef={this.saveFormRef}
+                    visible={this.state.showdetail}
+                    onCancel={this.handleCancel}
+                    onCreate={this.handleCreate}
+                    data={this.state.data_inventory_selected}
+                >
+                </WapperFormTransDetail>
                 <Form className="ant-advanced-search-panel " onSubmit={this.handleSearchInventory}>
                     <Grid>
                         <Row className="show-grid">
@@ -191,15 +285,19 @@ class Inventory extends Component {
                 </Form>
                 {this.state.show_grid_result === true ? (
                     <div>
-                        <ExcelFile element={<Button>Download Data</Button>} filename={"Inventory - " + moment().format('MM/DD/YYYY h:mm:ss')}>
-                            <ExcelSheet dataSet={this.inventoryDataset()} name="Inventory" />
-                        </ExcelFile>
+                        <div className="ant-advanced-toolbar">
+                            <ExcelFile element={<Button type="primary">Download Data</Button>} filename={"Inventory - " + moment().format('MM/DD/YYYY h:mm:ss')}>
+                                <ExcelSheet dataSet={this.inventoryDataset()} name="Inventory" />
+                            </ExcelFile>
+                            <Button style={{ marginLeft: 8 }} type="primary" value='view' className='ant-advanced-toolbar-item' onClick={this.onViewDetail}>DETAIL</Button>
+                        </div>
                         <ReactDataGrid
                             enableCellSelect={true}
                             resizable={true}
                             columns={inventory_colums}
                             rowGetter={this.rowInventoryGetter}
                             rowsCount={this.state.data_inventory.length}
+                            onRowClick={this.onRowWarehouseInventClick}
                             minHeight={290}
                             rowRenderer={RowRenderer}
                         ></ReactDataGrid>
@@ -214,6 +312,7 @@ class Imports extends Component {
     state = {
         data_import: [],
         data_providers: [],
+        show_grid_result: false,
         si_data: {
             si_from_date: undefined,
             si_to_date: undefined,
@@ -249,6 +348,8 @@ class Imports extends Component {
 
     handleImportReset = () => {
         this.props.form.resetFields();
+        this.setState({ data_import: [], show_grid_result: false });
+
     }
     rowImportGetter = (i) => {
         if (i >= 0 && i < this.state.data_import.length) {
@@ -304,8 +405,6 @@ class Imports extends Component {
                             si_color
                         }
                     });
-
-                    console.log(this.state.si_data);
                     let data = [];
                     for (let i = 0; i < res.data.length; i++) {
                         let row = res.data[i];
@@ -326,8 +425,7 @@ class Imports extends Component {
                             });
                         }
                     }
-                    this.setState({ data_import: data });
-                    // console.log(JSON.stringify(res));
+                    this.setState({ data_import: data, show_grid_result: true });
                 })
                 .catch((err) => {
                     console.log(err);
@@ -391,11 +489,8 @@ class Imports extends Component {
         }
         data.data = data_row;
         dataset.push(data);
-
-        console.log('export 1 complete');
         return dataset;
     }
-
 
     componentDidMount = () => {
         this.loadProviders({});
@@ -465,18 +560,22 @@ class Imports extends Component {
                     </Row>
                 </Grid>
             </Form>
-            <ExcelFile element={<Button>Export to Excel</Button>} filename={"Import - " + moment().format('MM/DD/YYYY h:mm:ss')}>
-                <ExcelSheet dataSet={this.importDataset()} name="Imports" />
-            </ExcelFile>
-            <ReactDataGrid
-                enableCellSelect={true}
-                resizable={true}
-                columns={import_columns}
-                rowGetter={this.rowImportGetter}
-                rowsCount={this.state.data_import.length}
-                minHeight={290}
-                rowRenderer={RowRenderer}
-            ></ReactDataGrid>
+            {this.state.show_grid_result === true ? <div>
+                <div className="ant-advanced-toolbar">
+                    <ExcelFile element={<Button>Export to Excel</Button>} filename={"Import - " + moment().format('MM/DD/YYYY h:mm:ss')}>
+                        <ExcelSheet dataSet={this.importDataset()} name="Imports" />
+                    </ExcelFile>
+                </div>
+                <ReactDataGrid
+                    enableCellSelect={true}
+                    resizable={true}
+                    columns={import_columns}
+                    rowGetter={this.rowImportGetter}
+                    rowsCount={this.state.data_import.length}
+                    minHeight={290}
+                    rowRenderer={RowRenderer}
+                ></ReactDataGrid>
+            </div> : null}
         </div>
         );
     }
@@ -485,14 +584,11 @@ class Imports extends Component {
 class Exports extends Component {
 
     state = {
-        //data_providers_size: 'default',
         data_types: [],
-        // data_types_size: 'default',
         data_colors: [],
-        // data_colors_size: 'default',
         data_export: [],
         size: 'default',
-
+        show_grid_result: false,
         se_data: {
             se_from_date: undefined,
             se_to_date: undefined,
@@ -620,8 +716,6 @@ class Exports extends Component {
                             se_color
                         }
                     });
-
-                    console.log(this.state.se_data);
                     let data = [];
                     for (let i = 0; i < res.data.length; i++) {
                         let row = res.data[i];
@@ -645,7 +739,7 @@ class Exports extends Component {
                             });
                         }
                     }
-                    this.setState({ data_export: data });
+                    this.setState({ data_export: data, show_grid_result: true });
                 })
                 .catch((err) => {
                     console.log(err);
@@ -656,7 +750,11 @@ class Exports extends Component {
         });
     }
 
+    handleExportReset = () => {
+        this.props.form.resetFields();
+        this.setState({ data_export: [], show_grid_result: false });
 
+    }
     rowExportGetter = (i) => {
         if (i >= 0 && i < this.state.data_export.length) {
             return this.state.data_export[i];
@@ -785,23 +883,27 @@ class Exports extends Component {
                     <Row className="show-grid">
                         <Col md={4} sm={6} xs={12} style={{ textAlign: 'left' }}>
                             <Button type="primary" htmlType="submit">SEARCH</Button>
-                            <Button style={{ marginLeft: 8 }} onClick={this.handleReset}>CLEAR</Button>
+                            <Button style={{ marginLeft: 8 }} onClick={this.handleExportReset}>CLEAR</Button>
                         </Col>
                     </Row>
                 </Grid>
             </Form>
-            <ExcelFile element={<Button>Download Data</Button>} filename={"Export - " + moment().format('MM/DD/YYYY h:mm:ss')} >
-                <ExcelSheet dataSet={this.exportDataset()} name="Export" />
-            </ExcelFile>
-            <ReactDataGrid
-                enableCellSelect={true}
-                resizable={true}
-                columns={export_columns}
-                rowGetter={this.rowExportGetter}
-                rowsCount={this.state.data_export.length}
-                minHeight={290}
-                rowRenderer={RowRenderer}
-            ></ReactDataGrid>
+            {this.state.show_grid_result === true ? <div>
+                <div className="ant-advanced-toolbar">
+                    <ExcelFile element={<Button type="primary">Download Data</Button>} filename={"Export - " + moment().format('MM/DD/YYYY h:mm:ss')} >
+                        <ExcelSheet dataSet={this.exportDataset()} name="Export" />
+                    </ExcelFile>
+                </div>
+                <ReactDataGrid
+                    enableCellSelect={true}
+                    resizable={true}
+                    columns={export_columns}
+                    rowGetter={this.rowExportGetter}
+                    rowsCount={this.state.data_export.length}
+                    minHeight={290}
+                    rowRenderer={RowRenderer}
+                ></ReactDataGrid></div> : null}
+
         </div>);
     }
 }
