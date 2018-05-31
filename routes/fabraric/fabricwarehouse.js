@@ -407,9 +407,6 @@ router.get('/getinventorys', async (req, res, next) => {
 
     let data_return = [];
 
-
-
-
     //sort
     console.log('data_exports =>' + JSON.stringify(data_exports));
     //process 

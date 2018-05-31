@@ -65,7 +65,10 @@ typings/
 # dotenv environment variables file
 .env
 
+#vuonglb ignore
 package-lock.json
+start-mongodb.bat
+package.json
 
 # End of https://www.gitignore.io/api/node
 client/src/CommonConfig.js
