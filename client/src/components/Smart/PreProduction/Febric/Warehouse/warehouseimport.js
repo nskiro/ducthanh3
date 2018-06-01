@@ -205,7 +205,7 @@ class WarehouseImportForm extends Component {
 
                         <Row className="show-grid">
                             <Col md={4} sm={6} xs={4} >
-                                <FormItem {...formItemLayout} label="INVOICE #">
+                                <FormItem {...formItemLayout} label="STK">
                                     {getFieldDecorator('declare_no', { initialValue: this.props.data.declare_no }, { rules: [{ required: true, message: 'Vui lòng nhập số tờ khai.' }] })
                                         (<Input placeholder="số tờ khai" />)}
                                 </FormItem>

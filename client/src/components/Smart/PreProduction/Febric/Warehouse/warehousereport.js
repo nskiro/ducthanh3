@@ -237,7 +237,6 @@ class FormTransDetail extends Component {
             fabric_type = this.props.data.data.fabric_type;
             fabric_color = this.props.data.data.fabric_color;
         }
-
         return (
             <Modal
                 title='VIEW DETAIL'
@@ -614,6 +613,46 @@ class Imports extends Component {
                 this.setState({ data_providers: [] });
             });
     }
+    loadFabricColors = () => {
+        axios.get('api/fabric/color/get', { params: {} })
+            .then((res) => {
+                let colors = res.data;
+                let colors_grid = [];
+                let data_uni = [];
+                for (let i = 0; i < colors.length; i++) {
+                    if (data_uni.indexOf(colors[i].fabriccolor_name) === -1) {
+                        colors_grid.push(<Option key={colors[i].fabriccolor_name}> {colors[i].fabriccolor_name}</Option>);
+                        data_uni.push(colors[i].fabriccolor_name);
+                    }
+                }
+                this.setState({ data_colors: data_uni });
+
+            })
+            .catch((err) => {
+                this.setState({ data_colors: [] });
+            });
+    }
+
+    loadFabricTypes = () => {
+        axios.get('api/fabric/type/get', { params: {} })
+            .then((res) => {
+                let data = res.data;
+                let children = []
+                let data_uni = []
+                for (let i = 0; i < data.length; i++) {
+                    if (data_uni.indexOf(data[i].fabrictype_name) === -1) {
+                        children.push(<Option key={data[i].fabrictype_name}> {data[i].fabrictype_name} </Option>);
+                        data_uni.push(data[i].fabrictype_name);
+                    }
+                }
+                this.setState({ data_types: data_uni });
+                this.loadFabricColors(data_uni);
+            })
+            .catch((err) => {
+                console.log(err);
+                this.setState({ data_types: [] });
+            });
+    }
 
     handleImportReset = () => {
         this.props.form.resetFields();
@@ -763,6 +802,8 @@ class Imports extends Component {
 
     componentDidMount = () => {
         this.loadProviders({});
+        this.loadFabricColors({});
+        this.loadFabricTypes({});
     }
 
     render() {
