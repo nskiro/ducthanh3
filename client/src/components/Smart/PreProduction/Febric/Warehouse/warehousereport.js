@@ -9,8 +9,9 @@ import RowRenderer from './rowrenderer';
 import DateFormatter from './dateformatter';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-
+import _ from 'lodash';
 import axios from '../../../../../axiosInst';
+
 const RadioGroup = Radio.Group;
 const Option = Select.Option;
 
@@ -57,31 +58,33 @@ const export_columns = [
 ];
 
 const inventory_colums = [
-    { key: 'stt', name: 'STT', width: 60 },
-    { key: 'fabric_type', name: 'TYPE' },
-    { key: 'fabric_color', name: 'COLOR' },
-    { key: 'met', name: 'INV MET' },
-    { key: 'roll', name: 'INV ROLL' },
+    { key: 'stt', name: 'STT', resizable: true, width: 60 },
+    { key: 'fabric_type', resizable: true, name: 'TYPE' },
+    { key: 'fabric_color', resizable: true, name: 'COLOR' },
+    { key: 'met', resizable: true, name: 'INV MET' },
+    { key: 'roll', resizable: true, name: 'INV ROLL' },
 ]
 
 const inventory_trans_colums = [
-    { key: 'stt', name: 'STT', width: 60 },
-    { key: 'stk', name: 'STK' },
-    { key: 'im_inputdate_no', name: 'IM DATE' },
-    { key: 'ex_inputdate_no', name: 'EX DATE' },
-    { key: 'im_met', name: 'IM MET' },
-    { key: 'ex_met', name: 'EX MET' },
-    { key: 'met', name: 'MET' },
-    { key: 'im_roll', name: 'IM ROLL' },
-    { key: 'ex_roll', name: 'EX ROLL' },
-    { key: 'roll', name: 'ROLL' },
+    { key: 'stt', name: 'STT', resizable: true, width: 60 },
+    { key: 'invoice_no', name: 'STK', resizable: true, width: 120 },
+    { key: 'im_inputdate_no', name: 'IM DATE', resizable: true, formatter: DateLongFormatter, width: 150 },
+    { key: 'ex_inputdate_no', name: 'EX DATE', resizable: true, formatter: DateLongFormatter, width: 150 },
+    { key: 'im_met', name: 'IM MET', resizable: true, width: 100 },
+    { key: 'ex_met', name: 'EX MET', resizable: true, width: 100 },
+    { key: 'met', name: 'MET', resizable: true, width: 100 },
+    { key: 'im_roll', name: 'IM ROLL', resizable: true, width: 100 },
+    { key: 'ex_roll', name: 'EX ROLL', resizable: true, width: 100 },
+    { key: 'roll', name: 'ROLL', resizable: true, width: 100 },
+    { key: 'note', name: 'NOTE', resizable: true, width: 200 },
 ]
 
 class FormTransDetail extends Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
-            data_trans: []
+            data_trans: [],
+            data_search: {},
         };
     }
 
@@ -96,8 +99,25 @@ class FormTransDetail extends Component {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             console.log('Received values of form: ', values);
+
+            let data_search = {};
+            if (values.fromdate) {
+                data_search.from_date = values.fromdate.format(dateFormat);
+                values.fromdate = values.fromdate.format('YYYY-MM-DD');
+            }
+            if (values.todate) {
+                data_search.to_date = values.todate.format(dateFormat);
+                let todate = moment(values.todate).add(1, 'days');
+                values.todate = todate.format('YYYY-MM-DD');
+            }
+
+            if (values.fabric_color) { data_search.fabric_color = values.fabric_color; }
+            if (values.fabric_type) { data_search.fabric_type = values.fabric_type; }
+
+            this.setState({ data_search: data_search });
             axios.get('api/fabric/warehouse/getinventorytrans', { params: values })
                 .then((res) => {
+                    // console.log(res.data);
                     this.setState({ data_trans: res.data });
                 })
                 .catch((err) => {
@@ -106,6 +126,88 @@ class FormTransDetail extends Component {
                 });
 
         });
+    }
+
+    inventoryTransDetailDataset = () => {
+        let dataset = [];
+        dataset.push({
+            xSteps: 2,
+            ySteps: 0,
+            columns: ['BÁO CÁO CHI TIẾT XUẤT -  NHẬP - TỒN'],
+            data: [[]]
+        });
+
+        let conditions = {
+            xSteps: 0,
+            ySteps: 0,
+            columns: ['', '']
+
+        };
+        let conditions_data = [];
+        let from_date = '';
+        let to_date = '';
+        let fabric_color = '';
+        let fabric_type = '';
+
+        let data_search = this.state.data_search;
+        if (!_.isEmpty(data_search)) {
+            if (data_search.from_date) { from_date = data_search.from_date; }
+            if (data_search.to_date) { to_date = data_search.to_date; }
+            if (data_search.fabric_color) { fabric_color = data_search.fabric_color; }
+            if (data_search.fabric_type) { fabric_type = data_search.fabric_type; }
+        }
+
+        conditions_data.push([{ value: "FROM DATE", style: { font: { bold: true } } }, from_date]);
+        conditions_data.push([{ value: "TO DATE", style: { font: { bold: true } } }, to_date]);
+        conditions_data.push([{ value: 'TYPE', style: { font: { bold: true } } }, fabric_type]);
+        conditions_data.push([{ value: 'COLOR', style: { font: { bold: true } } }, fabric_color]);
+
+        conditions.data = conditions_data;
+        dataset.push(conditions);
+
+        let data = {
+            xSteps: 0,
+            ySteps: 2,
+            // columns: ['STT', 'TYPE', 'COLOR', 'INV MET', 'INV ROLL']
+            columns: ['STT', 'STK', 'IM DATE', 'EX DATE', 'CODE', 'COLOR', 'IM MET', 'EX MET', 'INV MET', 'IM ROLL', 'EX ROLL', 'INV ROLL']
+        }
+
+        let data_row = [];
+
+
+        for (let i = 0; i < this.state.data_trans.length; i++) {
+            let row = [];
+
+            let r = this.state.data_trans[i];
+            row.push(r.stt);
+            row.push(r.invoice_no);
+            if (r.im_inputdate_no) {
+                let im_date = moment(r.im_inputdate_no).format(dateFormat);
+                row.push(im_date);
+            } else { row.push(''); }
+
+            if (r.ex_inputdate_no) {
+                let ex_date = moment(r.ex_inputdate_no).format(dateFormat);
+                row.push(ex_date);
+            } else { row.push(''); }
+
+            row.push(fabric_type);
+            row.push(fabric_color);
+            row.push(r.im_met);
+            row.push(r.ex_met);
+            row.push(r.met);
+            row.push(r.im_roll);
+            row.push(r.ex_roll);
+            // row.push({ value: r.roll, style: { fill: { patternType: "solid", fgColor: { rgb: "FFFF0000" } } } });
+            row.push(r.roll);
+
+            data_row.push(row);
+        }
+
+        data.data = data_row;
+        dataset.push(data);
+
+        return dataset;
     }
 
     render() {
@@ -176,7 +278,11 @@ class FormTransDetail extends Component {
                             </Row>
                         </Grid>
                     </Form>
-                    <div></div>
+                    <div className="ant-advanced-toolbar">
+                        <ExcelFile element={<Button type="primary">Download Data</Button>} filename={"InventoryDetail - " + moment().format('MM/DD/YYYY h:mm:ss')}>
+                            <ExcelSheet dataSet={this.inventoryTransDetailDataset()} name="Inventory Detail" />
+                        </ExcelFile>
+                    </div>
                     <ReactDataGrid
                         enableCellSelect={true}
                         resizable={true}
@@ -205,15 +311,27 @@ class Inventory extends Component {
         show_grid_result: false,
         data_inventory: [],
         showdetail: false,
-        data_inventory_selected: {}
+        data_inventory_selected: {},
+
+        s_fabric_type: [],
+        s_fabric_color: [],
 
     }
     handleSearchInventory = (e) => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             console.log('handleSearchInventory -> Received values of form: ', values);
+            if (values.fabric_color) {
+                this.setState({ s_fabric_color: values.fabric_color });
+            }
+
+            if (values.fabric_type) {
+                this.setState({ s_fabric_type: values.fabric_type });
+            }
+
             axios.get('api/fabric/warehouse/getinventorys', { params: values })
                 .then((res) => {
+                    console.log(' res.data ->' + JSON.stringify(res.data));
                     this.setState({ data_inventory: res.data });
                 })
                 .catch((err) => {
@@ -228,12 +346,72 @@ class Inventory extends Component {
         this.props.form.resetFields();
         this.setState({ show_grid_result: false });
     }
-    handleColorChange = (value) => { console.log(`selected ${value}`); }
+    handleColorChange = (value) => { console.log('selected' + JSON.stringify(value)); }
 
     handleTypeChange = (value) => { console.log(`selected ${value}`); }
 
     inventoryDataset = () => {
-        return [];
+        let dataset = [];
+        dataset.push({
+            xSteps: 2,
+            ySteps: 0,
+            columns: ['BÁO CÁO TỒN'],
+            data: [[]]
+        });
+
+        let conditions = {
+            xSteps: 0,
+            ySteps: 0,
+            columns: ['', '']
+
+        };
+        let conditions_data = [];
+        let s_fabric_type = '';
+        for (let j = 0; j < this.state.s_fabric_type.length; j++) {
+            if (j === 0) { s_fabric_type = this.state.s_fabric_type[j]; }
+            else { s_fabric_type = s_fabric_type + "," + this.state.s_fabric_type[j]; }
+        }
+
+        let s_fabric_color = '';
+        for (let j = 0; j < this.state.s_fabric_color.length; j++) {
+            if (j === 0) { s_fabric_color = this.state.s_fabric_color[j]; }
+            else { s_fabric_color = s_fabric_color + "," + this.state.s_fabric_color[j]; }
+        }
+
+        conditions_data.push(['TYPE', s_fabric_type]);
+        conditions_data.push(['COLOR', s_fabric_color]);
+
+        conditions.data = conditions_data;
+        dataset.push(conditions);
+
+        let data = {
+            xSteps: 0,
+            ySteps: 2,
+            columns: ['STT', 'TYPE', 'COLOR', 'INV MET', 'INV ROLL']
+            //columns: ['STT', 'STK', 'IM DATE', 'EX DATE', 'CODE', 'COLOR', 'IM MET', 'EX MET', 'INV MET', 'IM ROLL', 'EX ROLL', 'INV ROLL']
+        }
+
+        let data_row = [];
+
+        for (let i = 0; i < this.state.data_inventory.length; i++) {
+            let row = [];
+
+            let r = this.state.data_inventory[i];
+            row.push(r.stt);
+            row.push(r.fabric_type);
+            row.push(r.fabric_color);
+            row.push(r.met);
+            row.push(r.roll);
+
+
+            data_row.push(row);
+        }
+
+        data.data = data_row;
+        dataset.push(data);
+
+        return dataset;
+
     }
 
     rowInventoryGetter = (i) => {
@@ -293,7 +471,8 @@ class Inventory extends Component {
 
     onViewDetail = (e) => {
         if (e) {
-            this.setState({ showdetail: true });
+            let data_inventory_selected = this.state.data_inventory_selected;
+            if (!_.isEmpty(data_inventory_selected)) { this.setState({ showdetail: true }); }
         }
     }
 
@@ -316,7 +495,6 @@ class Inventory extends Component {
         let index = e;
         if (index >= 0 && index < this.state.data_inventory.length) {
             let row = this.state.data_inventory[index];
-
             this.setState({ data_inventory_selected: { data: row } });
         }
     }
@@ -338,14 +516,14 @@ class Inventory extends Component {
                     <Grid>
                         <Row className="show-grid">
                             <Col md={6} sm={12} xs={6} style={{ textAlign: 'left' }}>
-                                <FormItem label={'COLOR '}>{
-                                    getFieldDecorator('fabric_color', {})(<Select mode='tags' style={{ width: '100%' }} tokenSeparators={[',']} onChange={this.handleColorChange}>{this.state.data_colors}</Select>)
+                                <FormItem label={'TYPE '}>{
+                                    getFieldDecorator('fabric_type', {})(<Select mode='tags' style={{ width: '100%' }} tokenSeparators={[',']} onChange={this.handleTypeChange}>{this.state.data_types}</Select>)
                                 }
                                 </FormItem>
                             </Col>
                             <Col md={6} sm={12} xs={6} style={{ textAlign: 'left' }}>
-                                <FormItem label={'TYPE '}>{
-                                    getFieldDecorator('fabric_type', {})(<Select mode='tags' style={{ width: '100%' }} tokenSeparators={[',']} onChange={this.handleTypeChange}>{this.state.data_types}</Select>)
+                                <FormItem label={'COLOR '}>{
+                                    getFieldDecorator('fabric_color', {})(<Select mode='tags' style={{ width: '100%' }} tokenSeparators={[',']} onChange={this.handleColorChange}>{this.state.data_colors}</Select>)
                                 }
                                 </FormItem>
                             </Col>

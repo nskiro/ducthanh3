@@ -160,8 +160,8 @@ router.post('/add/', (req, res, next) => {
                     if (!create_export.err) {
                         // row_updated = update_row.data;
                         let tran = createDataForTrans(create_export._id, row);
-                        tran.roll_after = update_row.roll - row.roll;
-                        tran.met_after = update_row.met - row.met;
+                        tran.roll_after = parseFloat(update_row.roll) - parseFloat(row.roll);
+                        tran.met_after = parseFloat(update_row.met) - parseFloat(row.met);
                         const write_tran = await createnewTransaction(tran);
                     }
                 }

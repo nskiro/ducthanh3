@@ -21,11 +21,6 @@ const { DateLongFormatter, DateShortFormatter } = DateFormatter;
 class ProviderForm extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-           // provider_code: '',
-           // provider_name: '',
-           // _id: ''
-        }
 
     }
     onChangeProviderCode = (v) => {
@@ -63,7 +58,7 @@ class ProviderForm extends Component {
                                 </FormItem>
                             </Col>
                         </Row>
-                      
+
                     </Grid>
                 </Form>
             </Modal>
@@ -87,12 +82,11 @@ class WarehouseFabricProvider extends Component {
         this.state = {
             expand: false,
             modalvisible: false,
-            //  rows:[],
             provider_code: '',
             provider_name: '',
             data_providers: [],
 
-            selected_provider: { 'provider_code': undefined, 'provider_name':undefined }
+            selected_provider: { 'provider_code': undefined, 'provider_name': undefined }
         };
 
     }
@@ -155,8 +149,8 @@ class WarehouseFabricProvider extends Component {
         const form = this.formRef.props.form;
 
         form.validateFields((err, values) => {
-            if (err) { return;  }
-            if(!values.provider_code){return;}
+            if (err) { return; }
+            if (!values.provider_code) { return; }
             let data = {
                 _id: values.id,
                 provider_code: values.provider_code,
@@ -167,8 +161,7 @@ class WarehouseFabricProvider extends Component {
                 console.log('call update');
                 axios.post(`api/fabric/provider/update/${values.id}`, data)
                     .then((res) => {
-                        console.log(res.data);
-                        this.loadProviders({});
+                        this.loadSearchProviders({});
                     })
                     .catch((err) => {
                         console.log(err);
@@ -177,8 +170,7 @@ class WarehouseFabricProvider extends Component {
                 console.log('call add');
                 axios.post('api/fabric/provider/add', data)
                     .then((res) => {
-                        console.log(res.data);
-                        this.loadProviders({});
+                        this.loadSearchProviders({});
                     })
                     .catch((err) => {
                         console.log(err);
@@ -231,8 +223,8 @@ class WarehouseFabricProvider extends Component {
         const columns = [
             // {key: '_id', name: 'id', hidd: false },
             { key: 'provider_code', name: 'SUPPLIER' },
-            { key: 'create_date', name: 'CREATE DATE' ,  formatter: DateLongFormatter},
-            { key: 'update_date', name: 'UPDATE DATE',formatter: DateLongFormatter },
+            { key: 'create_date', name: 'CREATE DATE', formatter: DateLongFormatter },
+            { key: 'update_date', name: 'UPDATE DATE', formatter: DateLongFormatter },
         ];
         return (
             <div>

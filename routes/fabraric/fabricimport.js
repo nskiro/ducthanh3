@@ -165,8 +165,8 @@ router.post('/add/', async (req, res, next) => {
                     if (!create_import.err) {
                         // row_updated = update_row.data;
                         let tran = createDataImForTrans(create_import._id, row);
-                        tran.roll_after = row.roll;
-                        tran.met_after = row.met;
+                        tran.roll_after = parseFloat(row.roll);
+                        tran.met_after = parseFloat(row.met);
                         console.log(JSON.stringify(tran));
                         const write_tran = await createnewTransaction(tran);
                     }
@@ -179,8 +179,8 @@ router.post('/add/', async (req, res, next) => {
                     if (!create_import.err) {
                         // row_updated = update_row.data;
                         let tran = createDataForTrans(create_import._id, row);
-                        tran.roll_after = update_row.roll + row.roll;
-                        tran.met_after = update_row.met + row.met;
+                        tran.roll_after = parseFloatupdate_r(ow.roll) + parseFloat(row.roll);
+                        tran.met_after = parseFloat(update_row.met) + parseFloat(row.met);
                         const write_tran = await createnewTransaction(tran);
                     }
                 }

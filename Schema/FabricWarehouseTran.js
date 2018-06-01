@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-
+const moment = require('moment');
 const fabricwarehousetran = new mongoose.Schema({
     tran_type_id: String,
     tran_type: { type: String, default: null },
@@ -23,8 +23,9 @@ const fabricwarehousetran = new mongoose.Schema({
     met: { type: Number, default: 0 },
     met_after: { type: Number, default: 0 },
 
-    create_date: { type: String, default: new Date() },
-    update_date: { type: String, default: null },
+    create_date: { type: Date, default: new Date() },
+    
+    update_date: { type: Date, default: null },
     record_status: { type: String, default: 'O' }
 
 });
