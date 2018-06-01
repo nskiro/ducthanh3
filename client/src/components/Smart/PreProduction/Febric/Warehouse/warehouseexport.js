@@ -29,19 +29,19 @@ const Panel = Collapse.Panel;
 const dateFormat = 'MM/DD/YYYY';
 
 const default_cols = [
-    { key: 'orderid', name: 'ORDER #', editable: true, width: 100 },
-    { key: 'fabric_type', name: 'TYPE', editable: true, resizable: true },
-    { key: 'fabric_color', name: 'COLOR', editable: true, resizable: true },
-    { key: 'met', name: 'MET', editable: true },
-    { key: 'roll', name: 'ROLL', editable: true },
-    { key: 'po_no', name: 'PO', editable: true },
-    { key: 'line_no', name: 'LINE', editable: true },
-    { key: 'sku', name: 'SKU', editable: true },
-    { key: 'des', name: 'DESCRIPTION', editable: true },
-    { key: 'qty', name: 'QTY', editable: true },
-    { key: 'yield', name: 'YIELD', editable: true },
-    { key: 'fab_qty', name: 'FAB_QTY', editable: true },
-    { key: 'note', name: 'NOTE', editable: true }
+    { key: 'orderid', name: 'ORDER #', resizable: true, editable: true, width: 100 },
+    { key: 'fabric_type', name: 'TYPE', resizable: true, editable: true, resizable: true },
+    { key: 'fabric_color', name: 'COLOR', resizable: true, editable: true, resizable: true },
+    { key: 'met', name: 'MET', resizable: true, editable: true },
+    { key: 'roll', name: 'ROLL', resizable: true, editable: true },
+    { key: 'po_no', name: 'PO', resizable: true, editable: true },
+    { key: 'line_no', name: 'LINE', resizable: true, editable: true },
+    { key: 'sku', name: 'SKU', resizable: true, editable: true },
+    { key: 'des', name: 'DESCRIPTION', resizable: true, editable: true },
+    { key: 'qty', name: 'QTY', resizable: true, editable: true },
+    { key: 'yield', name: 'YIELD', resizable: true, editable: true },
+    { key: 'fab_qty', name: 'FAB_QTY', resizable: true, editable: true },
+    { key: 'note', name: 'NOTE', resizable: true, editable: true }
 ]
 
 class WarehouseExportForm extends Component {
@@ -139,19 +139,19 @@ class WarehouseExportForm extends Component {
                     }
                 }
                 let cols = [
-                    { key: 'orderid', name: 'ORDER #', editable: true, width: 100 },
+                    { key: 'orderid', name: 'ORDER #', resizable: true, editable: true, width: 100 },
                     { key: 'fabric_type', name: 'TYPE', editable: true, resizable: true, editor: <AutoCompleteEditor options={ftypes} /> },
                     { key: 'fabric_color', name: 'COLOR', editable: true, resizable: true, editor: <AutoCompleteEditor options={colors_grid} /> },
-                    { key: 'met', name: 'MET', editable: true },
-                    { key: 'roll', name: 'ROLL', editable: true },
-                    { key: 'po_no', name: 'PO', editable: true },
-                    { key: 'line_no', name: 'LINE', editable: true },
-                    { key: 'sku', name: 'SKU', editable: true },
-                    { key: 'des', name: 'DESCRIPTION', editable: true },
-                    { key: 'qty', name: 'QTY', editable: true },
-                    { key: 'yield', name: 'YIELD', editable: true },
-                    { key: 'fab_qty', name: 'FAB_QTY', editable: true },
-                    { key: 'note', name: 'NOTE', editable: true }
+                    { key: 'met', name: 'MET', resizable: true, editable: true },
+                    { key: 'roll', name: 'ROLL', resizable: true, editable: true },
+                    { key: 'po_no', name: 'PO', resizable: true, editable: true },
+                    { key: 'line_no', name: 'LINE', resizable: true, editable: true },
+                    { key: 'sku', name: 'SKU', resizable: true, editable: true },
+                    { key: 'des', name: 'DESCRIPTION', resizable: true, editable: true },
+                    { key: 'qty', name: 'QTY', resizable: true, editable: true },
+                    { key: 'yield', name: 'YIELD', resizable: true, editable: true },
+                    { key: 'fab_qty', name: 'FAB_QTY', resizable: true, editable: true },
+                    { key: 'note', name: 'NOTE', resizable: true, editable: true }
                 ]
                 this.setState({ columns: cols });
             })
@@ -400,7 +400,16 @@ class WarehouseExport extends Component {
                     })
                     .catch((err) => {
                         console.log(err);
-                        alert(err.error);
+                        if (err.response.data) {
+                            let dt_error = err.response.data;
+                            let msg = dt_error.error + '\n\n';
+                            for (let k = 0; k < dt_error.data.length; k++) {
+                                let r = dt_error.data[k]
+                                msg += ' - '+r.fabric_type + ' - ' + r.fabric_color + ": met = " + r.met + ", roll = " + r.roll + "\n";
+                            }
+                            alert(msg);
+
+                        }
                     });
 
             }

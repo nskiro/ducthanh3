@@ -388,7 +388,6 @@ class Inventory extends Component {
             xSteps: 0,
             ySteps: 2,
             columns: ['STT', 'TYPE', 'COLOR', 'INV MET', 'INV ROLL']
-            //columns: ['STT', 'STK', 'IM DATE', 'EX DATE', 'CODE', 'COLOR', 'IM MET', 'EX MET', 'INV MET', 'IM ROLL', 'EX ROLL', 'INV ROLL']
         }
 
         let data_row = [];
@@ -402,8 +401,7 @@ class Inventory extends Component {
             row.push(r.fabric_color);
             row.push(r.met);
             row.push(r.roll);
-
-
+            
             data_row.push(row);
         }
 

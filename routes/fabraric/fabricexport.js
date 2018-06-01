@@ -52,19 +52,32 @@ router.get('/get', (req, res, next) => {
 checkPairTypeAndColor = (data_detail, fabricwarehouse) => {
     let pair_notfound = [];
     let pair_found = [];
+    let value_invalid = [];
     for (let i = 0; i < data_detail.length; i++) {
         let found = false;
         let pair = data_detail[i];
+
+        let r_roll = Math.abs(pair.roll);
+        let r_met = Math.abs(pair.met);
+
         for (let j = 0; j < fabricwarehouse.length; j++) {
             if (pair.fabric_type === fabricwarehouse[j].fabric_type && pair.fabric_color === fabricwarehouse[j].fabric_color) {
                 found = true;
                 pair_found.push(pair);
+
+                let f_roll = fabricwarehouse[j].roll - r_roll;
+                let f_met = fabricwarehouse[j].met - r_met;
+
+                if (f_roll < 0 || f_met < 0) {
+                    value_invalid.push(pair);
+                }
+
                 break;
             }
         }
         if (!found) { pair_notfound.push(pair); }
     }
-    return { found: pair_found, notfound: pair_notfound };
+    return { found: pair_found, notfound: pair_notfound, value_invalid: value_invalid };
 }
 
 updateWarehouse = (ftype, fcolor, imet, iroll) => {
@@ -147,21 +160,30 @@ router.post('/add/', (req, res, next) => {
                 let pairs = checkPairTypeAndColor(data_detail, fabricwarehouse);
                 // neu chua co -> bao loi
                 if (pairs.notfound.length > 0) {
-                    return res.status(500).send({ valid: false, error: 'Không tồn tại các loại vải và màu vải', data: pairs.notfound });
+                    return res.status(500).send({ valid: false, error: 'Không tồn tại các loại vải - màu vải', data: pairs.notfound });
                 }
+
+                if (pairs.value_invalid.length > 0) {
+                    return res.status(500).send({ valid: false, error: 'Vải trong kho không còn đủ để xuất cho các loại vải - màu vải', data: pairs.value_invalid });
+                }
+                // kiem tra luong vai-mau ton kho
+
+                //
                 const create_export = await createnewExport(data_com, data_detail);
                 const create_export_detail = await createnewExportDetail(create_export._id, data_detail);
 
                 //update value
                 for (let i = 0; i < pairs.found.length; i++) {
                     let row = pairs.found[i];
-                    const update_row = await updateWarehouse(row.fabric_type, row.fabric_color, -row.met, -row.roll);
+                    let rowroll = Math.abs(row.roll);
+                    let rowmet = Math.abs(row.met);
+                    const update_row = await updateWarehouse(row.fabric_type, row.fabric_color, -rowmet, -rowroll);
                     //create transaction
                     if (!create_export.err) {
                         // row_updated = update_row.data;
                         let tran = createDataForTrans(create_export._id, row);
-                        tran.roll_after = parseFloat(update_row.roll) - parseFloat(row.roll);
-                        tran.met_after = parseFloat(update_row.met) - parseFloat(row.met);
+                        tran.roll_after = parseFloat(update_row.roll) - parseFloat(rowroll);
+                        tran.met_after = parseFloat(update_row.met) - parseFloat(rowmet);
                         const write_tran = await createnewTransaction(tran);
                     }
                 }
