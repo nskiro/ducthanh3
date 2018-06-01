@@ -76,6 +76,14 @@ const inventory_trans_colums = [
     { key: 'im_roll', name: 'IM ROLL', resizable: true, width: 100 },
     { key: 'ex_roll', name: 'EX ROLL', resizable: true, width: 100 },
     { key: 'roll', name: 'ROLL', resizable: true, width: 100 },
+    { key: 'orderid', name: 'ORDER#', resizable: true, width: 100 },
+    { key: 'po_no', name: 'PO#', resizable: true, width: 100 },
+    { key: 'line_no', name: 'LINE#', resizable: true, width: 100 },
+    { key: 'sku', name: 'SKU', resizable: true, width: 100 },
+    { key: 'des', name: 'DESCRIPTION', resizable: true, width: 100 },
+    { key: 'qty', name: 'QTY', resizable: true, width: 100 },
+    { key: 'yield', name: 'YIELD', resizable: true, width: 100 },
+    { key: 'fab_qty', name: 'FAB_QTY', resizable: true, width: 100 },
     { key: 'note', name: 'NOTE', resizable: true, width: 200 },
 ]
 
@@ -169,7 +177,7 @@ class FormTransDetail extends Component {
             xSteps: 0,
             ySteps: 2,
             // columns: ['STT', 'TYPE', 'COLOR', 'INV MET', 'INV ROLL']
-            columns: ['STT', 'STK', 'IM DATE', 'EX DATE', 'CODE', 'COLOR', 'IM MET', 'EX MET', 'INV MET', 'IM ROLL', 'EX ROLL', 'INV ROLL']
+            columns: ['STT', 'STK', 'IM DATE', 'EX DATE', 'CODE', 'COLOR', 'IM MET', 'EX MET', 'INV MET', 'IM ROLL', 'EX ROLL', 'INV ROLL', 'ORDER #', 'PO', 'LINE', 'SKU', 'DESCRIPTION', 'QTY', 'YIELD', 'FAB_QTY', 'NOTE']
         }
 
         let data_row = [];
@@ -198,8 +206,18 @@ class FormTransDetail extends Component {
             row.push(r.met);
             row.push(r.im_roll);
             row.push(r.ex_roll);
+
             // row.push({ value: r.roll, style: { fill: { patternType: "solid", fgColor: { rgb: "FFFF0000" } } } });
             row.push(r.roll);
+            row.push(r.orderid);
+            row.push(r.po_no);
+            row.push(r.line_no);
+            row.push(r.sku);
+            row.push(r.des);
+            row.push(r.qty);
+            row.push(r.yield);
+            row.push(r.fab_qty);
+            row.push(r.note);
 
             data_row.push(row);
         }
@@ -401,7 +419,7 @@ class Inventory extends Component {
             row.push(r.fabric_color);
             row.push(r.met);
             row.push(r.roll);
-            
+
             data_row.push(row);
         }
 

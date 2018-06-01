@@ -343,7 +343,7 @@ class WarehouseExport extends Component {
             .then((res) => {
                 let data = res.data;
                 // update data
-                console.log(data);
+                //console.log(data);
                 this.setState({ warehouse_import_data: data });
             })
             .catch((err) => {
