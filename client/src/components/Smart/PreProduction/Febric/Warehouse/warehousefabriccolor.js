@@ -170,8 +170,11 @@ class WarehouseFabricColor extends Component {
             let data = {
                 _id: values.id,
                 fabriccolor_code: values.fabriccolor_code,
-                fabriccolor_name: values.fabriccolor_name,
+                fabriccolor_name:  values.fabriccolor_code,
             }
+
+           
+
             console.log(data);
 
 

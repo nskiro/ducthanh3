@@ -46,10 +46,10 @@ class FabricTypeForm extends Component {
 
                             < Col md={5} sm={8} xs={5} >
                                 <FormItem label={'TYPE'}>
-                                    {getFieldDecorator('fabrictype_code', { initialValue: this.props.data.fabrictype_code }, {
+                                    {getFieldDecorator('fabrictype_name', { initialValue: this.props.data.fabrictype_code }, {
                                         rules: [{ required: true, message: 'Vui lòng nhập loại vải!' }],
                                     })
-                                        (<Input name='fabrictype_code' placeholder="loại vải" />)}
+                                        (<Input name='fabrictype_name' placeholder="loại vải" />)}
                                 </FormItem>
                             </Col>
                         </Row>
@@ -169,9 +169,10 @@ class WarehouseFabricType extends Component {
             //call goi service add
             let data = {
                 _id: values.id,
-                fabrictype_code: values.fabrictype_code,
+                fabrictype_code: values.fabrictype_name,
                 fabrictype_name: values.fabrictype_name,
             }
+
             // console.log(values);
             console.log(data);
 
