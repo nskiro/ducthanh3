@@ -252,6 +252,10 @@ router.post('/compliance',(req, res, next) => {
         filePath = `./upload/file/compliance/${fileNameArr[0]}/${fileNameArr[1]}/${fileNameArr[2]}/${sampleFile.name}`;
         //compliance/G/DT1/F
     }
+    else if(fileNameArr[0] === 'H'){
+        filePath = `./upload/file/compliance/${fileNameArr[0]}/${fileNameArr[1]}/${sampleFile.name}`;
+        //compliance/G/DT1/F
+    }
     sampleFile.mv(filePath, function(err) {
         if (err)
             switch(typeof err){
