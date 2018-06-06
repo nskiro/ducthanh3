@@ -37,6 +37,31 @@ router.post('/add/', (req, res, next) => {
     })
 });
 
+/*
+router.post(`/update`, (req, res, next) => {
+    req.query.record_status = 'O';
+    req.query.fabraictype_name=undefined;
+    FabricType.find(req.query)
+        .exec((err, fabrictypes) => {
+            if (!err){
+                //update 
+                for( let  i=0;i<fabrictypes.length;i++){
+                    let row = fabrictypes[i];
+                    let _id = row._id;
+
+                   let update_rs= FabricType.update({_id:_id},{$set:{fabrictype_name:row.fabrictype_code}}).exec();
+                   console.log(update_rs);
+
+                }
+                //for 
+                return res.status(200).send(fabrictypes);
+            }
+              
+            return res.status(500).send(fabrictypes);
+        });
+});
+*/
+
 router.post(`/update/:id/`, (req, res, next) => {
     let id = req.params.id;
     console.log('id = >' + id);
@@ -61,8 +86,7 @@ router.post(`/update/:id/`, (req, res, next) => {
 router.post(`/delete/:id/`, (req, res, next) => {
     let id = req.params.id;
     console.log('id = >' + id);
-    var data;
-    data = {
+    let data= {
         record_status: 'C',
         update_date: new Date(),
     };
