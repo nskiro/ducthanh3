@@ -39,8 +39,8 @@ class ViewWarehouse extends Component {
         return (
             
             <Tabs defaultActiveKey="1">
-                <TabPane tab="IMPORT" key="1"><WrappedWarehouseImport /></TabPane>
-                <TabPane tab="EXPORT" key="2"><WrappedWarehouseExport /></TabPane>
+                <TabPane tab="INPUT" key="1"><WrappedWarehouseImport /></TabPane>
+                <TabPane tab="OUTPUT" key="2"><WrappedWarehouseExport /></TabPane>
                 <TabPane tab="REPORT" key="3"><WrappedWarehouseReport /></TabPane>
                 <TabPane tab="SUPPLIER" key="4"><WrappedWarehouseFabricProvider /></TabPane>
                 <TabPane tab="TYPE" key="5"><WrappedWarehouseFabricType /></TabPane>
