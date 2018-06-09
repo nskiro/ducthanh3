@@ -13,7 +13,7 @@ router.get('/production',(req,res,next) => {
 router.get('/production/:fileName',(req,res,next) => {
     const workbook = XLSX.readFile(`./upload/file/plan/P/${req.params.fileName}`);
     const first_worksheet = workbook.Sheets[workbook.SheetNames[0]];
-    const data = XLSX.utils.sheet_to_json(first_worksheet);
+    const data = XLSX.utils.sheet_to_json(first_worksheet,{defval:""});
     const newData = data.map((obj) => {
         return _.mapKeys(obj, (v, k) => _.camelCase(k));
     });
