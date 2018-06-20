@@ -22,6 +22,7 @@ class Production extends Component {
         rows: [],
         filters: {},
         files: [],
+        selectedFile: null,
         columns: [
             { key: 'poIssued', name: 'PO Issued', filterable: true, filterRenderer: MultiSelectFilter, width: 75, visible: false },
             { key: 'shipBy', name: 'Ship By', filterable: true, filterRenderer: MultiSelectFilter, width: 60, visible: false },
@@ -122,6 +123,7 @@ class Production extends Component {
     }
 
     handleFileChange = (value) => {
+        this.setState({selectedFile: value});
         axios.get(`/api/planning/production/${value}`)
             .then((res) => {
                 this.setState({ rows: res.data });
@@ -173,17 +175,15 @@ class Production extends Component {
             message.warning('Please select file to delete!');
         }
         else {
-            const filePath = this.state.selectedFile.split('\\');
-            console.log(filePath);
-            axios.get(`/api/planning/deleteFile/${filePath[4]}`)
+            axios.get(`/api/planning/deleteFile/${this.state.selectedFile}`)
                 .then((res) => {
-                    let temp = [...this.state.fileList];
+                    let temp = [...this.state.files];
                     const indx = _.findIndex(temp, (o) => {
-                        return o.name === filePath[4];
+                        return o.name === this.state.selectedFile;
                     });
                     _.pullAt(temp, indx);
                     message.success(res.data);
-                    this.setState({ selectedFile: null, fileList: temp });
+                    this.setState({ selectedFile: null, files: temp });
                 })
                 .catch((err) => {
                     console.log(err);
