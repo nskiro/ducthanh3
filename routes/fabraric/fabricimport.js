@@ -35,7 +35,7 @@ router.get('/get', (req, res, next) => {
     console.log('query ===> ' + JSON.stringify(req.query));
 
     FabricImport.find(req.query)
-        .sort({ 'inputdate_no': 'desc' })
+        .sort({ create_date: 'desc', inputdate_no: 'desc' })
         .exec((err, fabricwarehouse) => {
             if (!err) {
                 return res.status(200).send(fabricwarehouse);
@@ -158,7 +158,7 @@ router.post('/add/', async (req, res, next) => {
                 const newWarehouse = await creatnewWarehouse(pairs.notfound);
                 const create_import = await createnewImport(data_com, data_detail);
                 const create_import_detail = await createnewImportDetail(create_import._id, data_detail);
-                
+
                 //create transtion
                 for (let i = 0; i < pairs.notfound.length; i++) {
                     let row = pairs.notfound[i];
