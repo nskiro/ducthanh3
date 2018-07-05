@@ -164,13 +164,13 @@ router.get('/getexports', async (req, res, next) => {
 
     //console.log('Tới day 1');
     if (req.query.fabric_color) {
-        if (req.query.fabric_color.length != 0) { qr_import_detail['fabric_color'] = req.query.fabric_color; }
+        if (req.query.fabric_color.length != 0) { qr_import_detail['fabric_color'] = {$regex: req.query.fabric_color}; }
         delete req.query.fabric_color;
     }
     //console.log('Tới day 2');
 
     if (req.query.fabric_type) {
-        if (req.query.fabric_type.length != 0) { qr_import_detail['fabric_type'] = req.query.fabric_type; }
+        if (req.query.fabric_type.length != 0) { qr_import_detail['fabric_type'] = {$regex: req.query.fabric_type}; }
         delete req.query.fabric_type;
     }
     //console.log('Tới day 3');
@@ -247,8 +247,7 @@ router.get('/getexports', async (req, res, next) => {
         }
 
     }
-
-    console.log('data_return ==>' + JSON.stringify(data_return));
+   // console.log('data_return ==>' + JSON.stringify(data_return));
     return res.status(200).send(data_return);
 
 });

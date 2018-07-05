@@ -3,10 +3,10 @@ var mongoose = require('mongoose');
 var router = express.Router();
 
 const _ = require('lodash');
-const FabricExport = require('../../Schema/FabricExport');
-const FabricExportDetail = require('../../Schema/FabricExportDetail');
-const FabricWarehouse = require('../../Schema/FabricWarehouse');
-const FabricWarehouseTran = require('../../Schema/FabricWarehouseTran');
+const FabricExport = require('../../Schema/Fabric/FabricExport');
+const FabricExportDetail = require('../../Schema/Fabric/FabricExportDetail');
+const FabricWarehouse = require('../../Schema/Fabric/FabricWarehouse');
+const FabricWarehouseTran = require('../../Schema/Fabric/FabricWarehouseTran');
 
 router.get('/get', (req, res, next) => {
     req.query.record_status = 'O';
@@ -38,8 +38,9 @@ router.get('/get', (req, res, next) => {
     if (!_.isEmpty(cond_orderid)) { req.query['details.orderid'] = cond_orderid; }
     if (!_.isEmpty(cond_dates)) { req.query['inputdate_no'] = cond_dates; }
 
-    console.log('req.query==>' + JSON.stringify(req.query));
-    FabricExport.find(req.query).sort({ create_date: 'desc' })
+    //console.log('req.query==>' + JSON.stringify(req.query));
+    FabricExport.find(req.query)
+        .sort({'create_date':'desc'})
         .exec((err, fabricwarehouse) => {
             console.log('err = ' + err);
             if (!err) {
@@ -53,7 +54,6 @@ checkPairTypeAndColor = (data_detail, fabricwarehouse) => {
     let pair_notfound = [];
     let pair_found = [];
     let value_invalid = [];
-
     for (let i = 0; i < data_detail.length; i++) {
         let found = false;
         let pair = data_detail[i];
@@ -78,53 +78,6 @@ checkPairTypeAndColor = (data_detail, fabricwarehouse) => {
         }
         if (!found) { pair_notfound.push(pair); }
     }
-    //group detail by type and color
-    let g_TypeAndColor = [];
-    for (let i = 0; i < data_detail.length; i++) {
-        let found = false;
-        let d = data_detail[i];
-        for (let j = 0; j < g_TypeAndColor.length; j++) {
-            let t = g_TypeAndColor[j];
-
-            if (d.fabric_type === t.fabric_type && d.fabric_color === t.fabric_color) {
-                t.met = t.met + Math.abs(parseFloat(d.met));
-                t.roll = t.roll + Math.abs(parseFloat(d.roll));
-                found = true;
-                g_TypeAndColor[j] = t;
-                break;
-            }
-        }
-
-        if (!found) {
-            let pn = {
-                fabric_type: d.fabric_type,
-                fabric_color: d.fabric_color,
-                met: Math.abs(parseFloat(d.met)),
-                roll: Math.abs(parseFloat(d.roll))
-            }
-            g_TypeAndColor.push(pn);
-        }
-    }
-    console.log('g_TypeAndColor ==> ' + JSON.stringify(g_TypeAndColor));
-    // check total
-    for (let i = 0; i < g_TypeAndColor.length; i++) {
-        let g_index = _.findIndex(fabricwarehouse, { fabric_type: g_TypeAndColor[i].fabric_type, fabric_color: g_TypeAndColor[i].fabric_color });
-        if (g_index >= 0) {
-            let value_idex = fabricwarehouse[g_index];
-            console.log('value_idex ==>' + JSON.stringify(value_idex));
-            let re_met = value_idex.met - g_TypeAndColor[i].met;
-            let re_roll = value_idex.roll - g_TypeAndColor[i].roll;
-            console.log('re_met==' + re_met + ",re_roll ==" + re_roll);
-            if (re_met < 0 || re_roll < 0) {
-                g_TypeAndColor[i].met_inventory = value_idex.met;
-                g_TypeAndColor[i].roll_inventory = value_idex.roll;
-                console.log(JSON.stringify(g_TypeAndColor[i]));
-                value_invalid.push(g_TypeAndColor[i]);
-            }
-        }
-
-    }
-
     return { found: pair_found, notfound: pair_notfound, value_invalid: value_invalid };
 }
 
@@ -137,6 +90,7 @@ updateWarehouse = (ftype, fcolor, imet, iroll) => {
 createnewExport = (data_com, data_detail) => {
     let fab = {
         inputdate_no: new Date(data_com.inputdate_no),
+        create_date:new Date(),
         details: data_detail
     };
     return FabricExport.create(fab);
@@ -145,9 +99,10 @@ createnewExport = (data_com, data_detail) => {
 createnewExportDetail = (exportid, data_detail) => {
     for (let i = 0; i < data_detail.length; i++) {
         data_detail[i]._id = new mongoose.mongo.ObjectId();
+        data_detail[i].create_date=new Date()
         data_detail[i].exportid = exportid;
     }
-    console.log(data_detail);
+    //console.log(data_detail);
     return FabricExportDetail.create(data_detail);
 }
 createConditionFindTypeAndColor = (data_detail) => {
@@ -206,26 +161,25 @@ router.post('/add/', (req, res, next) => {
             if (!err) {
                 // kiem tra cap type-color khong ton tai
                 let pairs = checkPairTypeAndColor(data_detail, fabricwarehouse);
-                //return res.status(500).send({ valid: false, error: 'Không tồn tại các loại vải - màu vải', data: pairs.notfound });
-
                 // neu chua co -> bao loi
                 if (pairs.notfound.length > 0) {
                     return res.status(500).send({ valid: false, error: 'Không tồn tại các loại vải - màu vải', data: pairs.notfound });
                 }
 
-                // kiem tra luong vai-mau ton kho
                 if (pairs.value_invalid.length > 0) {
                     return res.status(500).send({ valid: false, error: 'Vải trong kho không còn đủ để xuất cho các loại vải - màu vải', data: pairs.value_invalid });
                 }
+                // kiem tra luong vai-mau ton kho
 
+                //
                 const create_export = await createnewExport(data_com, data_detail);
                 const create_export_detail = await createnewExportDetail(create_export._id, data_detail);
 
                 //update value
                 for (let i = 0; i < pairs.found.length; i++) {
                     let row = pairs.found[i];
-                    let rowroll = Math.abs(parseFloat(row.roll));
-                    let rowmet = Math.abs(parseFloat(row.met));
+                    let rowroll = Math.abs(row.roll);
+                    let rowmet = Math.abs(row.met);
                     const update_row = await updateWarehouse(row.fabric_type, row.fabric_color, -rowmet, -rowroll);
                     //create transaction
                     if (!create_export.err) {
@@ -250,7 +204,7 @@ removeOldExport = (importid) => {
 }
 
 removeOldExportDetail = (importid) => {
-    console.log('remove detail');
+    console.log('remove detail '+ importid);
     return FabricExportDetail.update({ exportid: importid }, { record_status: 'C', update_date: new Date() }, { multi: true });
 }
 
@@ -278,6 +232,7 @@ router.post(`/update/:id/`, async (req, res, next) => {
                 }
                 //find old detail
                 let old_detail = await findDetailByExportId(id);
+                //console.log('old_detail --->' + old_detail);
                 //update old -> C
                 let remove_export = await removeOldExport(id);
                 let remove_export_detail = await removeOldExportDetail(id);
@@ -290,10 +245,10 @@ router.post(`/update/:id/`, async (req, res, next) => {
                 //create new
                 const create_export = await createnewExport(data_com, data_detail);
                 //console.log('create export result =>' + JSON.stringify(create_export));
-                //console.log('create_export id ==>' + create_export._id);
+               // console.log('create_export id ==>' + create_export._id);
 
                 const create_export_detail = await createnewExportDetail(create_export._id, data_detail);
-                // console.log('create export detail  result =>' + JSON.stringify(create_export_detail));
+               // console.log('create export detail  result =>' + JSON.stringify(create_export_detail));
 
                 //update value
                 for (let i = 0; i < pairs.found.length; i++) {
@@ -310,7 +265,6 @@ router.post(`/update/:id/`, async (req, res, next) => {
                             met: row.met,
                             roll_after: update_row.roll - row.roll,
                             met_after: update_row.met - row.met,
-                            create_date: new Date()
                         };
                         const write_tran = await createnewTransaction(tran);
                     }
@@ -324,6 +278,5 @@ router.post(`/update/:id/`, async (req, res, next) => {
 
 
 });
-
 
 module.exports = router;
