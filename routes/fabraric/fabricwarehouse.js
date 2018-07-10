@@ -4,14 +4,14 @@ var router = express.Router();
 var moment = require('moment');
 const _ = require('lodash');
 
-const FabricImport = require('../../Schema/FabricImport');
-const FabricImportDetail = require('../../Schema/FabricImportDetail');
+const FabricImport = require('../../Schema/Fabric/FabricImport');
+const FabricImportDetail = require('../../Schema/Fabric/FabricImportDetail');
 
-const FabricExport = require('../../Schema/FabricExport');
-const FabricExportDetail = require('../../Schema/FabricExportDetail');
+const FabricExport = require('../../Schema/Fabric/FabricExport');
+const FabricExportDetail = require('../../Schema/Fabric/FabricExportDetail');
 
-const FabricWarehouse = require('../../Schema/FabricWarehouse');
-const FabricWarehouseTran = require('../../Schema/FabricWarehouseTran');
+const FabricWarehouse = require('../../Schema/Fabric/FabricWarehouse');
+const FabricWarehouseTran = require('../../Schema/Fabric/FabricWarehouseTran');
 
 
 findImports = (req) => {
@@ -42,7 +42,6 @@ router.get('/getimports', async (req, res, next) => {
         if (req.query.order_from) { orderids.$gte = parseInt(req.query.order_from); }
         if (req.query.order_to) { orderids.$lte = parseInt(req.query.order_to); }
         if (!_.isEmpty(orderids)) { qr_import_detail['orderid'] = orderids; }
-        //console.log('Tới day 4');
 
         if (req.query.fabric_color) {
             if (req.query.fabric_color.length != 0) { qr_import_detail['fabric_color'] = req.query.fabric_color; }

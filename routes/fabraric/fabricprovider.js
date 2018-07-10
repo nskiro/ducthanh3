@@ -2,7 +2,7 @@ var express = require('express');
 var mongoose = require('mongoose');
 var router = express.Router();
 
-const FabricProvider = require('../../Schema/FabricProvider');
+const FabricProvider = require('../../Schema/Fabric/FabricProvider');
 
 router.get('/get', (req, res, next) => {
     // let reg= new RegExp('^'+name+'$', "i");

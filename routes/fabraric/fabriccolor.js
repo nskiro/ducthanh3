@@ -2,7 +2,7 @@ var express = require('express');
 var mongoose = require('mongoose');
 var router = express.Router();
 
-const FabricColor = require('../../Schema/FabricColor');
+const FabricColor = require('../../Schema/Fabric/FabricColor');
 
 router.get('/get',(req,res,next)=>{
     req.query.record_status = 'O';

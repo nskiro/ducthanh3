@@ -2,7 +2,7 @@ var express = require('express');
 var mongoose = require('mongoose');
 var router = express.Router();
 
-const FabricType = require('../../Schema/FabricType');
+const FabricType = require('../../Schema/Fabric/FabricType');
 
 
 
