@@ -3,7 +3,7 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { Menu } from 'antd';
-import FontAwesome  from 'react-fontawesome';
+import FontAwesome from 'react-fontawesome';
 import Logo from '../../../assets/images/ergobaby-logo-square.png';
 
 const SubMenu = Menu.SubMenu;
@@ -14,23 +14,28 @@ const MenuMarkup = ({ mobileVersion, activeLinkKey, onLinkClick, className }) =>
     selectedKeys={[`${activeLinkKey}`]}
     className={className}
   >
-    <Menu.Item key='/'>
-      <Link onClick={onLinkClick} to='/'><img src={Logo} style={{padding: 0,margin: 0, maxHeight: '43px'}} alt="Ergo Baby" /></Link>
-    </Menu.Item>
+    <SubMenu title={<span><img src={Logo} style={{ padding: 0, margin: 0, maxHeight: '43px' }} alt="Ergo Baby" /></span>}>
+      <Menu.Item key='/usercp'>
+        <Link onClick={onLinkClick} to='/usercp'>Profile</Link>
+      </Menu.Item>
+      <Menu.Item key='/report-category'>
+        <Link onClick={onLinkClick} to='/report-category'>Report Category</Link>
+      </Menu.Item>
+    </SubMenu>
     <Menu.Item key={`/${_.toLower(localStorage.getItem('dept'))}/upload`}>
-          <Link onClick={onLinkClick} to={`/${_.toLower(localStorage.getItem('dept'))}/upload`}>Upload</Link>
-        </Menu.Item>
+      <Link onClick={onLinkClick} to={`/${_.toLower(localStorage.getItem('dept'))}/upload`}>Upload</Link>
+    </Menu.Item>
     <SubMenu title={<span>Planning</span>}>
-        <Menu.Item key='/planning/production'>
-          <Link onClick={onLinkClick} to='/planning/production'>Production</Link>
-        </Menu.Item>
-        <Menu.Item key='/planning/booking'>
-          <Link onClick={onLinkClick} to='/planning/booking'>Booking</Link>
-        </Menu.Item>
-        <Menu.Item key='/planning/shipping'>
-          <Link onClick={onLinkClick} to='/planning/shipping'>Shipping</Link>
-        </Menu.Item>
-      </SubMenu>
+      <Menu.Item key='/planning/production'>
+        <Link onClick={onLinkClick} to='/planning/production'>Production</Link>
+      </Menu.Item>
+      <Menu.Item key='/planning/booking'>
+        <Link onClick={onLinkClick} to='/planning/booking'>Booking</Link>
+      </Menu.Item>
+      <Menu.Item key='/planning/shipping'>
+        <Link onClick={onLinkClick} to='/planning/shipping'>Shipping</Link>
+      </Menu.Item>
+    </SubMenu>
     <Menu.Item key='/imex/viewreport'>
       <Link onClick={onLinkClick} to='/imex/viewreport'>Import-Export</Link>
     </Menu.Item>
@@ -44,23 +49,23 @@ const MenuMarkup = ({ mobileVersion, activeLinkKey, onLinkClick, className }) =>
         </Menu.Item>
       </SubMenu>
       <Menu.Item key='/sample/viewreport'>
-          <Link onClick={onLinkClick} to='/sample/viewreport'>Sample</Link>
+        <Link onClick={onLinkClick} to='/sample/viewreport'>Sample</Link>
       </Menu.Item>
       <Menu.Item key='/marker/viewreport'>
-          <Link onClick={onLinkClick} to='/marker/viewreport'>Marker</Link>
+        <Link onClick={onLinkClick} to='/marker/viewreport'>Marker</Link>
       </Menu.Item>
       <Menu.Item key='/cutting/viewreport'>
-          <Link onClick={onLinkClick} to='/cutting/viewreport'>Cutting</Link>
+        <Link onClick={onLinkClick} to='/cutting/viewreport'>Cutting</Link>
       </Menu.Item>
       <Menu.Item key='/numbering/viewreport'>
-          <Link onClick={onLinkClick} to='/numbering/viewreport'>Numbering</Link>
+        <Link onClick={onLinkClick} to='/numbering/viewreport'>Numbering</Link>
       </Menu.Item>
       <SubMenu title={<span>Embroidery</span>}>
         <Menu.Item key='/planning/embroidery'>
-            <Link onClick={onLinkClick} to='/planning/embroidery'>Management</Link>
-          </Menu.Item>
+          <Link onClick={onLinkClick} to='/planning/embroidery'>Management</Link>
+        </Menu.Item>
         <Menu.Item key='/embroidery/viewreport'>
-            <Link onClick={onLinkClick} to='/embroidery/viewreport'>QC</Link>
+          <Link onClick={onLinkClick} to='/embroidery/viewreport'>QC</Link>
         </Menu.Item>
       </SubMenu>
       <SubMenu title={<span>Trim</span>}>
@@ -74,27 +79,27 @@ const MenuMarkup = ({ mobileVersion, activeLinkKey, onLinkClick, className }) =>
     </SubMenu>
     <SubMenu title={<span>Production</span>}>
       <Menu.Item key='/sewingplan/viewreport'>
-          <Link onClick={onLinkClick} to='/sewingplan/viewreport'>Sewing Plan</Link>
+        <Link onClick={onLinkClick} to='/sewingplan/viewreport'>Sewing Plan</Link>
       </Menu.Item>
       <Menu.Item key='/production/viewreport'>
-          <Link onClick={onLinkClick} to='/production/viewreport'>Sewing</Link>
+        <Link onClick={onLinkClick} to='/production/viewreport'>Sewing</Link>
       </Menu.Item>
       <Menu.Item key='/qaqc/viewreport'>
-          <Link onClick={onLinkClick} to='/qaqc/viewreport'>QA-QC</Link>
+        <Link onClick={onLinkClick} to='/qaqc/viewreport'>QA-QC</Link>
       </Menu.Item>
       <Menu.Item key='/factoryOperation'>
-          <Link onClick={onLinkClick} to='/factoryOperation'>Factory Operation</Link>
+        <Link onClick={onLinkClick} to='/factoryOperation'>Factory Operation</Link>
       </Menu.Item>
     </SubMenu>
     <SubMenu title={<span>Post-Production</span>}>
       <Menu.Item key='/aql/viewreport'>
-          <Link onClick={onLinkClick} to='/aql/viewreport'>FRI-AQL</Link>
+        <Link onClick={onLinkClick} to='/aql/viewreport'>FRI-AQL</Link>
       </Menu.Item>
       <Menu.Item key='/packaging/viewreport'>
-          <Link onClick={onLinkClick} to='/packaging/viewreport'>Packaging</Link>
+        <Link onClick={onLinkClick} to='/packaging/viewreport'>Packaging</Link>
       </Menu.Item>
       <Menu.Item key='/productWarehouse'>
-          <Link onClick={onLinkClick} to='/productWarehouse'>Product Warehouse</Link>
+        <Link onClick={onLinkClick} to='/productWarehouse'>Product Warehouse</Link>
       </Menu.Item>
     </SubMenu>
     <Menu.Item key='/administration/viewreport'>
@@ -104,18 +109,18 @@ const MenuMarkup = ({ mobileVersion, activeLinkKey, onLinkClick, className }) =>
       <Link onClick={onLinkClick} to='/accounting'>Accounting</Link>
     </Menu.Item>
     <SubMenu title={<span>Compliance</span>}>
-        <Menu.Item key='/compliance/humidity'>
-          <Link onClick={onLinkClick} to='/compliance/humidity'>Humidity Control</Link>
-        </Menu.Item>
-        <Menu.Item key='/compliance/metal'>
-          <Link onClick={onLinkClick} to='/compliance/metal'>Metal Calibration</Link>
-        </Menu.Item>
-        <Menu.Item key='/compliance/general'>
-          <Link onClick={onLinkClick} to='/compliance/general'>General Report</Link>
-        </Menu.Item>
+      <Menu.Item key='/compliance/humidity'>
+        <Link onClick={onLinkClick} to='/compliance/humidity'>Humidity Control</Link>
+      </Menu.Item>
+      <Menu.Item key='/compliance/metal'>
+        <Link onClick={onLinkClick} to='/compliance/metal'>Metal Calibration</Link>
+      </Menu.Item>
+      <Menu.Item key='/compliance/general'>
+        <Link onClick={onLinkClick} to='/compliance/general'>General Report</Link>
+      </Menu.Item>
     </SubMenu>
-    <Menu.Item key='/logout' style={{position: 'absolute', right: '20px'}}>
-        <Link onClick={onLinkClick} to='/logout'><FontAwesome name="sign-out-alt" /> Logout</Link>
+    <Menu.Item key='/logout' style={{ position: 'relative', right: '20px' }}>
+      <Link onClick={onLinkClick} to='/logout'><FontAwesome name="sign-out-alt" /> Logout</Link>
     </Menu.Item>
   </Menu>
 );

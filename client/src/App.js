@@ -6,6 +6,7 @@ import cmConfig from './CommonConfig';
 
 import LoginPage from './components/Smart/Login/Login';
 import Logout from './components/Smart/Logout/Logout';
+import UserCpPage from './components/Smart/UserCP';
 import HomePage from './components/Dumb/Home/Home';
 import Header from './components/Dumb/Header';
 import ComingSoon from './components/Dumb/ComingSoon';
@@ -101,6 +102,7 @@ class App extends Component {
           <Row className="show-grid" style={{padding: "15px", background: "#f8f8f8"}}>
             <Col sm={12} md={12}>
               <Switch>
+                <Route path='/usercp' component={UserCpPage} exact />
                 <Route path='/production/viewreport' component={ViewProductionReport} exact />
                 <Route path='/production/upload' component={UploadProductionPage} exact />
                 <Route path='/packaging/viewreport' component={ViewPackagingReport} exact />

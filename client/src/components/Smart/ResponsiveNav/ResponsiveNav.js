@@ -35,7 +35,6 @@ class ResponsiveNav extends Component {
 
   render() {
     const MenuMarkup = this.props.menuMarkup;
-
     if (this.state.viewportWidth > this.props.mobileBreakPoint) {
       return <MenuMarkup activeLinkKey={this.props.activeLinkKey} />;
     }
@@ -46,7 +45,6 @@ class ResponsiveNav extends Component {
           onLinkClick={() => this.handleMenuVisibility(false)}
           activeLinkKey={this.props.activeLinkKey}
           mobileVersion
-          // className='to-override-mobile-menu-class'
           />
         }
         trigger='click'

@@ -1,0 +1,113 @@
+[
+    {
+        "path": "",
+        "label": "Planning",
+        "subMenu": [
+            {
+                "path": "/planning/production",
+                "label": "Production"
+            },
+            {
+                "path": "/planning/booking",
+                "label": "Booking"
+            },
+            {
+                "path": "/planning/shipping",
+                "label": "Shipping"
+            }
+        ]
+    },{
+        "path": "/imex/viewreport",
+        "label": "Import-Export"
+    },{
+        "path": "",
+        "label": "Pre-Production",
+        "subMenu": [
+            {
+                "path": "/fabric/warehouse",
+                "label": "Fabric Warehouse"
+            },{
+                "path": "/fabric/qc",
+                "label": "Fabric QC"
+            },{
+                "path": "/sample/viewreport",
+                "label": "Sample"
+            },{
+                "path": "/marker/viewreport",
+                "label": "Marker"
+            },{
+                "path": "/cutting/viewreport",
+                "label": "Cutting"
+            },{
+                "path": "/numbering/viewreport",
+                "label": "Numbering"
+            },{
+                "path": "/planning/embroidery",
+                "label": "Embroidery Management"
+            },{
+                "path": "/embroidery/viewreport",
+                "label": "Embroidery QC"
+            },{
+                "path": "/trim/input",
+                "label": "Trim Input"
+            },{
+                "path": "/trim/qa",
+                "label": "Trim QA"
+            }
+        ]
+    },{
+        "path": "",
+        "label": "Production",
+        "subMenu": [
+            {
+                "path": "/sewingplan/viewreport",
+                "label": "Sewing Plan"
+            },{
+                "path": "/production/viewreport",
+                "label": "Sewing"
+            },{
+                "path": "/qaqc/viewreport",
+                "label": "QA-QC"
+            },{
+                "path": "/factoryOperation",
+                "label": "Factory Operation"
+            }
+        ]
+    },{
+        "path": "",
+        "label": "Post-Production",
+        "subMenu": [
+            {
+                "path": "/aql/viewreport",
+                "label": "FRI-AQL"
+            },{
+                "path": "/packaging/viewreport",
+                "label": "Packaging"
+            },{
+                "path": "/productWarehouse",
+                "label": "Product Warehouse"
+            }
+        ]
+    },{
+        "path": "/administration/viewreport",
+        "label": "Administration"
+    },{
+        "path": "/accounting",
+        "label": "Accounting"
+    },{
+        "path": "",
+        "label": "Compliance",
+        "subMenu": [
+            {
+                "path": "/compliance/humidity",
+                "label": "Humidity Control"
+            },{
+                "path": "/compliance/metal",
+                "label": "Metal Calibration"
+            },{
+                "path": "/compliance/general",
+                "label": "General Report"
+            }
+        ]
+    }
+]

@@ -10,7 +10,7 @@ class Logout extends Component {
         localStorage.removeItem('token');
         localStorage.removeItem('dept');
         this.props.onLogout();
-        return <Redirect to="http://ducthanh3.com.vn/"/>;
+        return window.location.href = "http://ducthanh3.com.vn/";
     }
 }
 

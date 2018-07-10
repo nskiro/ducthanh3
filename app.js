@@ -53,6 +53,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'upload')));
 app.use(express.static(path.join(__dirname, 'client/build')));
 app.use('/user', userRouter);
+app.use('/api/cutting',cuttingRouter);
 // route middleware to verify a token
 app.use((req, res, next) => {
   console.log(req.path);
@@ -77,7 +78,7 @@ app.use('/api/qaqc',qaRouter);
 app.use('/api/planning',planningRouter);
 app.use('/api/marker',markerRouter);
 app.use('/api/sample',sampleRouter);
-app.use('/api/cutting',cuttingRouter);
+
 app.use('/api/numbering',numberingRouter);
 app.use('/api/production',productionRouter);
 app.use('/api/embroidery',embroideryRouter);

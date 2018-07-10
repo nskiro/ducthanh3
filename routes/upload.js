@@ -4,6 +4,7 @@ const XLSX = require('xlsx');
 const _ = require('lodash');
 
 const productionPlanning = require('../Schema/ProductionPlanning');
+const deptInfo = require('../Schema/DepartmentInfo');
 
 router.post('/planning',(req, res, next) => {
     if (!req.files)
@@ -377,6 +378,33 @@ router.post('/imex',(req,res,next)=>{
             res.status(200).send("File was uploaded successfully");
         }
     });
+});
+
+router.post('/avatar/:dept',(req,res,next)=>{
+    if (!req.files)
+        return res.status(500).send('No files were uploaded');
+    const sampleFile = req.files.avatar;
+    const path = `avatar/${sampleFile.name}`;
+    sampleFile.mv(`./upload/${path}`, function(err){
+        if (err)
+            switch(typeof err){
+                case 'object':
+                    res.status(500).send(err.code);
+                    break;
+                default:
+                    res.status(500).send(err);
+                    break;
+            }
+        else{
+            deptInfo.findOneAndUpdate({deptName: req.params.dept},{avatar: path},{new: true}, (err,doc)=>{
+                if(!err){
+                    return res.status(200).send(doc);
+                }
+                return res.status(500).send(err);
+            })
+        }
+    })
+    
 });
 
 module.exports = router;

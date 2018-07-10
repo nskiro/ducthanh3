@@ -110,7 +110,7 @@ const MenuMarkup = ({ mobileVersion, activeLinkKey, onLinkClick, className }) =>
           <Link onClick={onLinkClick} to='/compliance/general'>General Report</Link>
         </Menu.Item>
     </SubMenu>
-    <Menu.Item key='/logout' style={{position: 'absolute', right: '20px'}}>
+    <Menu.Item key='/logout' style={{position: 'relative', right: '20px'}}>
         <Link onClick={onLinkClick} to='/logout'><FontAwesome name="sign-out-alt" /> Logout</Link>
     </Menu.Item>
   </Menu>
