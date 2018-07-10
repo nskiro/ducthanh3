@@ -318,6 +318,7 @@ class WarehouseExport extends Component {
         for (let i = 0; i < check_keys.length; i++) {
             if (row[check_keys[i]]) { c_size++; }
         }
+        console.log('valid key => ' + c_size + "/" + check_keys);
         if (c_size === check_keys.length || c_size === 0) { return { valid: true, size: c_size }; }
         return { valid: false };
     }
@@ -374,10 +375,10 @@ class WarehouseExport extends Component {
                 inputdate_no: values.inputdate_no.format('YYYY-MM-DD')
             }
 
-
             if (values.id) {
                 console.log('call update');
-
+                this.setState({ modalvisible: false });
+                /*
                 axios.post(`api/fabric/export/update/${values.id}`, { data: data, detail: data_collect.data })
                     .then((res) => {
                         console.log(res.data);
@@ -388,9 +389,9 @@ class WarehouseExport extends Component {
                         console.log(err);
                         alert(err.error);
                     });
+                    */
             } else {
                 console.log('call add');
-
                 axios.post('api/fabric/export/add', { data: data, detail: data_collect.data })
                     .then((res) => {
                         console.log(res.data);
@@ -405,7 +406,7 @@ class WarehouseExport extends Component {
                             let msg = dt_error.error + '\n\n';
                             for (let k = 0; k < dt_error.data.length; k++) {
                                 let r = dt_error.data[k]
-                                msg += ' - '+r.fabric_type + ' - ' + r.fabric_color + ": met = " + r.met + ", roll = " + r.roll + "\n";
+                                msg += ' - ' + r.fabric_type + ' - ' + r.fabric_color + ": met/inventory = " + r.met + "/" + r.met_inventory + ", roll/inventory = " + r.roll + "/" + r.roll_inventory + "\n";
                             }
                             alert(msg);
 

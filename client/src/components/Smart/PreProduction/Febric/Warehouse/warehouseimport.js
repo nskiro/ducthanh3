@@ -195,7 +195,7 @@ class WarehouseImportForm extends Component {
                                 <FormItem   {...formItemLayout} label="SUPPLIER" >
                                     {getFieldDecorator('provider_name', { initialValue: this.props.data.provider_name }, {
                                         rules: [{ required: true, message: 'Vui lòng chọn nhà cung cấp!' }],
-                                    })(<Select size={this.state.provider_size} placeholder='nhà cung cấp.'>
+                                    })(<Select size='default' placeholder='nhà cung cấp.'>
                                         {this.state.data_providers}
                                     </Select>
                                     )}

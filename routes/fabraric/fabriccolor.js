@@ -33,7 +33,30 @@ router.post('/add/', (req, res, next) => {
     })
 });
 
+/*
+router.post(`/update`, (req, res, next) => {
+    req.query.record_status = 'O';
+    req.query.fabriccolor_name=undefined;
+    FabricColor.find(req.query)
+        .exec((err, fabrictypes) => {
+            if (!err){
+                //update 
+                for( let  i=0;i<fabrictypes.length;i++){
+                    let row = fabrictypes[i];
+                    let _id = row._id;
 
+                   let update_rs= FabricColor.update({_id:_id},{$set:{fabriccolor_name:row.fabriccolor_code}}).exec();
+                   console.log(update_rs);
+
+                }
+                //for 
+                return res.status(200).send(fabrictypes);
+            }
+              
+            return res.status(500).send(fabrictypes);
+        });
+});
+*/
 router.post(`/update/:id/`, (req, res, next) => {
     let id = req.params.id;
     console.log('id = >' + id);

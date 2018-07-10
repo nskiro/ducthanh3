@@ -1223,19 +1223,19 @@ class WarehouseReport extends Component {
         const WapperInventory = Form.create()(Inventory);
         const WapperImports = Form.create()(Imports);
         const WapperExports = Form.create()(Exports);
-
+        
         return (
             <Tabs defaultActiveKey="1">
-                <TabPane tab="IMPORT" key="1">
+                <TabPane tab="INPUT" key="1">
                     <WapperImports />
                 </TabPane >
 
-                <TabPane tab="EXPORT" key="2">
+                <TabPane tab="OUTPUT" key="2">
                     <WapperExports />
                 </TabPane >
 
                 <TabPane tab="INVENTORY" key="3">
-                    <WapperInventory />
+                <WapperInventory />
                 </TabPane >
             </Tabs >
 

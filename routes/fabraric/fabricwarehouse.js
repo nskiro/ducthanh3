@@ -24,9 +24,9 @@ findImportsDetail = (req) => {
     return FabricImportDetail.find(req).sort({ 'inputdate_no': 'asc' });
 }
 
-findImportsDetailTrans = (req) => {
+findDetailTrans = (req) => {
     console.log('findImportsDetail =>' + JSON.stringify(req));
-    return FabricWarehouseTran.find(req);
+    return FabricWarehouseTran.find(req).sort({create_date:'asc'});
 }
 
 router.get('/getimports', async (req, res, next) => {
@@ -108,8 +108,6 @@ router.get('/getimports', async (req, res, next) => {
                 data_imports = await findImports({ _id: { $in: data_ids }, record_status: 'O' });
             }
         }
-
-
         //filter 
         let data_return = [];
         for (let i = 0; i < data_imports.length; i++) {
@@ -166,13 +164,13 @@ router.get('/getexports', async (req, res, next) => {
 
     //console.log('Tới day 1');
     if (req.query.fabric_color) {
-        if (req.query.fabric_color.length != 0) { qr_import_detail['fabric_color'] = req.query.fabric_color; }
+        if (req.query.fabric_color.length != 0) { qr_import_detail['fabric_color'] = {$regex: req.query.fabric_color}; }
         delete req.query.fabric_color;
     }
     //console.log('Tới day 2');
 
     if (req.query.fabric_type) {
-        if (req.query.fabric_type.length != 0) { qr_import_detail['fabric_type'] = req.query.fabric_type; }
+        if (req.query.fabric_type.length != 0) { qr_import_detail['fabric_type'] = {$regex: req.query.fabric_type}; }
         delete req.query.fabric_type;
     }
     //console.log('Tới day 3');
@@ -249,8 +247,7 @@ router.get('/getexports', async (req, res, next) => {
         }
 
     }
-
-    console.log('data_return ==>' + JSON.stringify(data_return));
+   // console.log('data_return ==>' + JSON.stringify(data_return));
     return res.status(200).send(data_return);
 
 });
@@ -297,7 +294,7 @@ convertTranExToNewRow = (row) => {
 router.get('/getinventorytrans', async (req, res, next) => {
     req.query.record_status = 'O';
 
-    console.log('getinventorytrans =>' + JSON.stringify(req.query));
+    //console.log('getinventorytrans =>' + JSON.stringify(req.query));
 
     let conditions_date = {};
     if (req.query.fromdate) {
@@ -310,14 +307,14 @@ router.get('/getinventorytrans', async (req, res, next) => {
         delete req.query.todate;
     }
 
-    if (!_.isEmpty(conditions_date)) { req.query['create_date'] = conditions_date; }
-
-    //get imports detail
-    req.query.tran_type = 'Nhập';
-    const q_import_details = await findImportsDetailTrans(req.query);
+    if (!_.isEmpty(conditions_date)) { req.query['create_date'] = conditions_date; };
+    
+    const q_import_details = await findDetailTrans(req.query);
     let import_ids = [];
+    let export_ids = [];
     for (let i = 0; i < q_import_details.length; i++) {
-        import_ids.push(q_import_details[i].tran_type_id);
+        if(q_import_details[i].tran_type==='Nhập'){ import_ids.push(q_import_details[i].tran_type_id)}
+        else if(q_import_details[i].tran_type==='Xuất'){ export_ids.push(q_import_details[i].tran_type_id)};
     }
     //get imports
     let q_imports = [];
@@ -325,58 +322,45 @@ router.get('/getinventorytrans', async (req, res, next) => {
         q_imports = await findImports({ _id: { $in: import_ids }, record_status: 'O' });
     }
 
-    //get extporst detail 
-    req.query.tran_type = 'Xuất';
-    let q_export_details = await findImportsDetailTrans(req.query);
-    let export_ids = [];
-    for (let i = 0; i < q_export_details.length; i++) {
-        export_ids.push(q_export_details[i].tran_type_id);
-    }
-
     let q_exports = [];
     if (export_ids.length > 0) {
         q_exports = await findExports({ _id: { $in: export_ids }, record_status: 'O' });
     }
-    if (q_exports.length === 0 && q_imports === 0) { return res.status(200).send([]); }
+
+    if (q_exports.length === 0 && q_imports.length === 0) { return res.status(200).send([]); }
 
     //combine
-    console.log(JSON.stringify(q_import_details));
+   // console.log(JSON.stringify(q_import_details));
     let data_returned = [];
     for (let i = 0; i < q_import_details.length; i++) {
         let row = q_import_details[i];
 
-        let im_data = {};
-        for (let j = 0; j < q_imports.length; j++) {
-            if (row.tran_type_id === q_imports[j]._id.toString()) {
-                im_data = q_imports[j];
-                break;
+        if(row.tran_type==='Nhập'){
+            let im_data = {};
+            for (let j = 0; j < q_imports.length; j++) {
+                if (row.tran_type_id === q_imports[j]._id.toString()) {
+                    im_data = q_imports[j];
+                    break;
+                }
             }
-        }
-        let new_row = convertTranImToNewRow(row);
-        new_row.invoice_no = im_data.invoice_no;
-        new_row.declare_no = im_data.declare_no;
-        new_row.declare_date = im_data.declare_date;
-        data_returned.push(new_row);
-    }
-
-    //
-    console.log('q_export_details =>' + JSON.stringify(q_export_details));
-    for (let i = 0; i < q_export_details.length; i++) {
-        let row = q_export_details[i];
-        let im_data = {};
-        for (let j = 0; j < q_exports.length; j++) {
-            if (row.tran_type_id === q_exports[j]._id.toString()) {
-                im_data = q_imports[j];
-                break;
+            let new_row = convertTranImToNewRow(row);
+            new_row.invoice_no = im_data.invoice_no;
+            new_row.declare_no = im_data.declare_no;
+            new_row.declare_date = im_data.declare_date;
+            data_returned.push(new_row);
+        }else if (row.tran_type==='Xuất'){
+            let im_data = {};
+            for (let j = 0; j < q_exports.length; j++) {
+                if (row.tran_type_id === q_exports[j]._id.toString()) {
+                    im_data = q_exports[j];
+                    break;
+                }
             }
+            let new_row = convertTranExToNewRow(row);
+            data_returned.push(new_row);
         }
-        let new_row = convertTranExToNewRow(row);
-        data_returned.push(new_row);
+        
     }
-
-    data_returned.sort((a, b) => {
-        return a.date > b.date;
-    });
 
     //fill stt
     for (let i = 0; i < data_returned.length; i++) {
